@@ -1,0 +1,48 @@
+# Phase 1 enforced budgets (per MIGRATION_PLAN.md §13 + amendment D)
+# Theme Check must pass with ZERO errors before each phase exit.
+
+extends: theme-check:recommended
+
+# Templates omitted on purpose for landing-only theme.
+MissingTemplate:
+  enabled: false
+
+TemplateLength:
+  enabled: true
+  max_length: 800
+
+ParserBlockingScript:
+  enabled: true
+
+RemoteAsset:
+  enabled: true
+
+AssetSizeJavaScript:
+  enabled: true
+  threshold_in_bytes: 10000
+
+# AssetSizeCSS — raw byte threshold. CSS minifies ~1.5x; gzips further.
+# Real cap is gzip 17 KB (CDN-relevant); this raw cap is a soft guardrail.
+# Raised 25000 → 35000 (Turn 18, full section set) → 45000 (Phase 5 visual refactors,
+# all section CSS expanded; gzip still ~6.5 KB / 17 KB cap) → 55000 (Phase 5 polish:
+# carousels, cookie banner, scroll-reveal, mobile tweaks; gzip ~7 KB).
+AssetSizeCSS:
+  enabled: true
+  threshold_in_bytes: 55000
+
+AssetSizeAppBlockJavaScript:
+  enabled: true
+  threshold_in_bytes: 10000
+
+AssetSizeAppBlockCSS:
+  enabled: true
+  threshold_in_bytes: 35000
+
+ImgWidthAndHeight:
+  enabled: true
+
+UnusedAssign:
+  enabled: true
+
+UnusedSnippet:
+  enabled: true

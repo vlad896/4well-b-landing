@@ -1,0 +1,9 @@
+{%- comment -%}
+  dim-countdown-aria — shared aria-* attributes for <dim-countdown>.
+  OI5 fix: <dim-countdown> announces via a hidden sibling [data-clock-sr]
+  only when the humanized minute-bucket changes (not every second).
+  Each consumer (dim-announcement-countdown Turn 2, dim-final-cta Turn 19)
+  inlines this snippet inside the <dim-countdown ...> opening tag so the
+  Web Component can read locale-translated phrases off attributes.
+  Leading space in output ensures attribute separation from preceding ones.
+{%- endcomment -%} aria-under-minute="{{ 'sections.dim_countdown.aria_under_minute' | t | escape }}" aria-under-5-min="{{ 'sections.dim_countdown.aria_under_5_min' | t | escape }}" aria-under-30-min="{{ 'sections.dim_countdown.aria_under_30_min' | t | escape }}" aria-under-1-hour="{{ 'sections.dim_countdown.aria_under_1_hour' | t | escape }}" aria-hours-remaining="{{ 'sections.dim_countdown.aria_hours_remaining' | t | escape }}"

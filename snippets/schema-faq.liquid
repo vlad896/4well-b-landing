@@ -1,0 +1,31 @@
+{%- comment -%}
+  FAQPage JSON-LD. Rendered FROM dim-faq with all qa blocks.
+
+  Per CL2 + Google FAQPage spec: HTML in Answer.text is allowed and rendered
+  in rich results. `| strip_newlines | json` produces compact valid JSON;
+  `<strong>` / `<a>` markup inside richtext answer is preserved.
+
+  Params:
+    qa_blocks  (array)  Block objects with settings.question + settings.answer
+{%- endcomment -%}
+{%- if qa_blocks.size > 0 -%}
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {%- for block in qa_blocks -%}
+        {%- unless forloop.first -%},{%- endunless -%}
+        {
+          "@type": "Question",
+          "name": {{ block.settings.question | json }},
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": {{ block.settings.answer | strip_newlines | json }}
+          }
+        }
+      {%- endfor -%}
+    ]
+  }
+  </script>
+{%- endif -%}

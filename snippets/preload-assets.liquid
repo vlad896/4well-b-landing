@@ -1,0 +1,11 @@
+{%- comment -%}
+  preload-assets — preload tags for LCP image + critical fonts.
+
+  Phase 1: no preload needed. Hero is inline SVG <symbol id="bottle">,
+  renders with first byte of HTML; no separate image fetch.
+  No web fonts (system stack).
+
+  Phase 2: if merchant uploads a hero image via dim-hero settings, this
+  snippet will emit:
+    <link rel="preload" as="image" href="{HERO_IMAGE}" fetchpriority="high">
+{%- endcomment -%}

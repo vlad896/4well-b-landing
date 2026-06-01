@@ -1,0 +1,147 @@
+{%- comment -%}
+  section: dim-science
+  source mapping: index.html block 4 (lines 376-410)
+  Turn 8 (Batch C). 3-step mechanism with optional callout + dose-diagram per block.
+  1 CTA (sources-anchor, text-link style, internal=true).
+  Cross-section dependency: callout links point to #refs (dim-sources section ID, built Turn 20).
+{%- endcomment -%}
+
+<section class="mechanism" {{ section.shopify_attributes }}>
+  <div class="container">
+    <div class="mechanism__head">
+      {%- if section.settings.eyebrow != blank -%}
+        <div class="eyebrow">{{ section.settings.eyebrow }}</div>
+      {%- endif -%}
+      <h2 class="h2">{{ section.settings.h2 }}</h2>
+    </div>
+
+    {%- assign step_blocks = section.blocks | where: 'type', 'step' -%}
+    {%- for block in step_blocks -%}
+      <div class="mech-step" {{ block.shopify_attributes }}>
+        <h3>{{ block.settings.heading }}</h3>
+
+        {%- if block.settings.body != blank -%}
+          <div class="mech-step__body">{{ block.settings.body }}</div>
+        {%- endif -%}
+
+        {%- if block.settings.callout_text != blank -%}
+          <div class="callout">
+            <span>{{ block.settings.callout_text }}</span>
+            {%- if block.settings.callout_link_text != blank -%}
+              {%- render 'cta-button',
+                url: block.settings.callout_link_url,
+                label: block.settings.callout_link_text,
+                cta_id: 'sources-anchor',
+                section_id: 'science',
+                position: 'inline',
+                internal: true,
+                style: 'text-link'
+              -%}
+            {%- endif -%}
+          </div>
+        {%- endif -%}
+
+        {%- if block.settings.show_dose_diagram -%}
+          <div class="dose-diagram" aria-label="{{ 'sections.dim_science.dose_aria' | t }}">
+            <div class="dose-diagram__item">
+              {%- if block.settings.dose_left_icon != blank -%}
+                <div class="dose-diagram__icon" aria-hidden="true">{{ block.settings.dose_left_icon }}</div>
+              {%- endif -%}
+              <div>
+                {{ block.settings.dose_left_main }}
+                {%- if block.settings.dose_left_sub != blank -%}<br><em class="dose-diagram__sub">{{ block.settings.dose_left_sub }}</em>{%- endif -%}
+              </div>
+            </div>
+            {%- if block.settings.dose_arrow != blank -%}
+              <div class="dose-diagram__arrow" aria-hidden="true">{{ block.settings.dose_arrow }}</div>
+            {%- endif -%}
+            <div class="dose-diagram__item">
+              {%- if block.settings.dose_right_icon != blank -%}
+                <div class="dose-diagram__icon" aria-hidden="true">{{ block.settings.dose_right_icon }}</div>
+              {%- endif -%}
+              <div>
+                {{ block.settings.dose_right_main }}
+                {%- if block.settings.dose_right_sub != blank -%}<br><em class="dose-diagram__sub">{{ block.settings.dose_right_sub }}</em>{%- endif -%}
+              </div>
+            </div>
+          </div>
+        {%- endif -%}
+      </div>
+    {%- endfor -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "t:sections.dim_science.section_name",
+  "tag": "section",
+  "class": "dim-section dim-science-section",
+  "settings": [
+    { "type": "header", "content": "t:sections.dim_science.header_intro" },
+    { "type": "text",     "id": "eyebrow", "label": "t:sections.dim_science.label_eyebrow", "default": "t:sections.dim_science.eyebrow_default" },
+    { "type": "textarea", "id": "h2",      "label": "t:sections.dim_science.label_h2",      "default": "t:sections.dim_science.h2_default" }
+  ],
+  "blocks": [
+    {
+      "type": "step",
+      "name": "t:sections.dim_science.block_step_name",
+      "settings": [
+        { "type": "text", "id": "heading", "label": "t:sections.dim_science.label_heading" },
+        { "type": "textarea", "id": "body", "label": "t:sections.dim_science.label_body" },
+        { "type": "header", "content": "t:sections.dim_science.header_callout" },
+        { "type": "text", "id": "callout_text",      "label": "t:sections.dim_science.label_callout_text",      "info": "t:sections.dim_science.info_callout_text" },
+        { "type": "text", "id": "callout_link_text", "label": "t:sections.dim_science.label_callout_link_text" },
+        { "type": "text", "id": "callout_link_url",  "label": "t:sections.dim_science.label_callout_link_url", "default": "#refs" },
+        { "type": "header", "content": "t:sections.dim_science.header_dose" },
+        { "type": "checkbox", "id": "show_dose_diagram", "label": "t:sections.dim_science.label_show_dose", "default": false },
+        { "type": "text", "id": "dose_left_icon",  "label": "t:sections.dim_science.label_dose_left_icon" },
+        { "type": "text", "id": "dose_left_main",  "label": "t:sections.dim_science.label_dose_left_main" },
+        { "type": "text", "id": "dose_left_sub",   "label": "t:sections.dim_science.label_dose_left_sub" },
+        { "type": "text", "id": "dose_arrow",      "label": "t:sections.dim_science.label_dose_arrow", "default": "=" },
+        { "type": "text", "id": "dose_right_icon", "label": "t:sections.dim_science.label_dose_right_icon" },
+        { "type": "text", "id": "dose_right_main", "label": "t:sections.dim_science.label_dose_right_main" },
+        { "type": "text", "id": "dose_right_sub",  "label": "t:sections.dim_science.label_dose_right_sub" }
+      ]
+    }
+  ],
+  "max_blocks": 5,
+  "presets": [
+    {
+      "name": "t:sections.dim_science.preset_name",
+      "blocks": [
+        {
+          "type": "step",
+          "settings": {
+            "heading": "t:sections.dim_science.step_1_heading",
+            "body":    "t:sections.dim_science.step_1_body"
+          }
+        },
+        {
+          "type": "step",
+          "settings": {
+            "heading":            "t:sections.dim_science.step_2_heading",
+            "body":               "t:sections.dim_science.step_2_body",
+            "callout_text":       "t:sections.dim_science.step_2_callout_text",
+            "callout_link_text":  "t:sections.dim_science.step_2_callout_link_text"
+          }
+        },
+        {
+          "type": "step",
+          "settings": {
+            "heading":           "t:sections.dim_science.step_3_heading",
+            "body":              "t:sections.dim_science.step_3_body",
+            "show_dose_diagram": true,
+            "dose_left_icon":    "🥦🥦🥦🥦",
+            "dose_left_main":    "t:sections.dim_science.step_3_dose_left_main",
+            "dose_left_sub":     "t:sections.dim_science.step_3_dose_left_sub",
+            "dose_arrow":        "=",
+            "dose_right_icon":   "💊",
+            "dose_right_main":   "t:sections.dim_science.step_3_dose_right_main",
+            "dose_right_sub":    "t:sections.dim_science.step_3_dose_right_sub"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

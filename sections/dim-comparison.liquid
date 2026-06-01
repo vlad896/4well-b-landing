@@ -1,0 +1,145 @@
+{%- comment -%}
+  section: dim-comparison
+  source mapping: index.html block 11 (lines 873-938)
+  Turn 16 (Batch E). 4-column x 6-row comparison table. Mobile strategy: horizontal scroll
+  (Option 1) — preserves table semantics + scanability across columns. .compare__wrap is
+  role=region tabindex=0 so keyboard users can scroll. Cell statuses (ok/warn/bad/neutral)
+  drive icon + color + visually-hidden a11y label. 0 CTAs / 0 compliance / 0 JSON-LD.
+{%- endcomment -%}
+
+<section class="compare" {{ section.shopify_attributes }}>
+  <div class="container">
+    <div class="compare__head">
+      {%- if section.settings.eyebrow != blank -%}
+        <div class="eyebrow">{{ section.settings.eyebrow }}</div>
+      {%- endif -%}
+      <h2 class="h2">{{ section.settings.h2 }}</h2>
+    </div>
+
+    {%- assign row_blocks = section.blocks | where: 'type', 'row' -%}
+    {%- if row_blocks.size > 0 -%}
+      <div class="compare__wrap"
+           role="region"
+           aria-label="{{ 'sections.dim_comparison.region_aria' | t }}"
+           tabindex="0">
+        <table class="compare-table">
+          <caption class="visually-hidden">{{ section.settings.h2 }}</caption>
+          <thead>
+            <tr>
+              <th scope="col" class="compare-table__corner"><span class="visually-hidden">{{ 'sections.dim_comparison.corner_aria' | t }}</span></th>
+              {%- for n in (1..4) -%}
+                {%- assign header_key = 'col_' | append: n | append: '_header' -%}
+                {%- assign is_us_key = 'col_' | append: n | append: '_is_us' -%}
+                {%- assign header_text = section.settings[header_key] -%}
+                {%- assign is_us = section.settings[is_us_key] -%}
+                <th scope="col"{% if is_us %} class="compare-table__us"{% endif %}>{%- if is_us -%}<span class="compare-table__best" aria-hidden="true">BEST</span>{%- endif -%}{{ header_text }}</th>
+              {%- endfor -%}
+            </tr>
+          </thead>
+          <tbody>
+            {%- for block in row_blocks -%}
+              <tr {{ block.shopify_attributes }}>
+                <th scope="row" class="compare-table__row-label">{{ block.settings.label }}</th>
+                {%- for n in (1..4) -%}
+                  {%- assign status_key = 'cell_' | append: n | append: '_status' -%}
+                  {%- assign text_key = 'cell_' | append: n | append: '_text' -%}
+                  {%- assign is_us_key = 'col_' | append: n | append: '_is_us' -%}
+                  {%- assign cell_status = block.settings[status_key] | default: 'neutral' -%}
+                  {%- assign cell_text = block.settings[text_key] -%}
+                  {%- assign cell_is_us = section.settings[is_us_key] -%}
+                  <td class="compare-table__cell compare-table__cell--{{ cell_status }}{% if cell_is_us %} compare-table__cell--us{% endif %}">
+                    {%- case cell_status -%}
+                      {%- when 'ok'   -%}<span aria-hidden="true">✅</span><span class="visually-hidden">{{ 'sections.dim_comparison.status_ok'   | t }} </span>
+                      {%- when 'warn' -%}<span aria-hidden="true">⚠️</span><span class="visually-hidden">{{ 'sections.dim_comparison.status_warn' | t }} </span>
+                      {%- when 'bad'  -%}<span aria-hidden="true">❌</span><span class="visually-hidden">{{ 'sections.dim_comparison.status_bad'  | t }} </span>
+                    {%- endcase -%}
+                    {{ cell_text }}
+                  </td>
+                {%- endfor -%}
+              </tr>
+            {%- endfor -%}
+          </tbody>
+        </table>
+      </div>
+    {%- endif -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "t:sections.dim_comparison.section_name",
+  "tag": "section",
+  "class": "dim-section dim-comparison-section",
+  "settings": [
+    { "type": "header", "content": "t:sections.dim_comparison.header_intro" },
+    { "type": "text",     "id": "eyebrow", "label": "t:sections.dim_comparison.label_eyebrow", "default": "t:sections.dim_comparison.eyebrow_default" },
+    { "type": "textarea", "id": "h2",      "label": "t:sections.dim_comparison.label_h2",      "default": "t:sections.dim_comparison.h2_default" },
+
+    { "type": "header", "content": "t:sections.dim_comparison.header_columns", "info": "t:sections.dim_comparison.info_columns_header" },
+    { "type": "text",     "id": "col_1_header", "label": "t:sections.dim_comparison.label_col_1_header", "default": "t:sections.dim_comparison.col_1_header_default" },
+    { "type": "checkbox", "id": "col_1_is_us",  "label": "t:sections.dim_comparison.label_col_is_us",    "default": true },
+    { "type": "text",     "id": "col_2_header", "label": "t:sections.dim_comparison.label_col_2_header", "default": "t:sections.dim_comparison.col_2_header_default" },
+    { "type": "checkbox", "id": "col_2_is_us",  "label": "t:sections.dim_comparison.label_col_is_us",    "default": false },
+    { "type": "text",     "id": "col_3_header", "label": "t:sections.dim_comparison.label_col_3_header", "default": "t:sections.dim_comparison.col_3_header_default" },
+    { "type": "checkbox", "id": "col_3_is_us",  "label": "t:sections.dim_comparison.label_col_is_us",    "default": false },
+    { "type": "text",     "id": "col_4_header", "label": "t:sections.dim_comparison.label_col_4_header", "default": "t:sections.dim_comparison.col_4_header_default" },
+    { "type": "checkbox", "id": "col_4_is_us",  "label": "t:sections.dim_comparison.label_col_is_us",    "default": false }
+  ],
+  "blocks": [
+    {
+      "type": "row",
+      "name": "t:sections.dim_comparison.block_row_name",
+      "settings": [
+        { "type": "text", "id": "label", "label": "t:sections.dim_comparison.label_row_label" },
+        { "type": "header", "content": "t:sections.dim_comparison.header_cells" },
+        { "type": "text",   "id": "cell_1_text",   "label": "t:sections.dim_comparison.label_cell_1_text" },
+        { "type": "select", "id": "cell_1_status", "label": "t:sections.dim_comparison.label_cell_1_status", "options": [
+            { "value": "ok",      "label": "t:sections.dim_comparison.status_option_ok" },
+            { "value": "warn",    "label": "t:sections.dim_comparison.status_option_warn" },
+            { "value": "bad",     "label": "t:sections.dim_comparison.status_option_bad" },
+            { "value": "neutral", "label": "t:sections.dim_comparison.status_option_neutral" }
+          ], "default": "neutral"
+        },
+        { "type": "text",   "id": "cell_2_text",   "label": "t:sections.dim_comparison.label_cell_2_text" },
+        { "type": "select", "id": "cell_2_status", "label": "t:sections.dim_comparison.label_cell_2_status", "options": [
+            { "value": "ok",      "label": "t:sections.dim_comparison.status_option_ok" },
+            { "value": "warn",    "label": "t:sections.dim_comparison.status_option_warn" },
+            { "value": "bad",     "label": "t:sections.dim_comparison.status_option_bad" },
+            { "value": "neutral", "label": "t:sections.dim_comparison.status_option_neutral" }
+          ], "default": "neutral"
+        },
+        { "type": "text",   "id": "cell_3_text",   "label": "t:sections.dim_comparison.label_cell_3_text" },
+        { "type": "select", "id": "cell_3_status", "label": "t:sections.dim_comparison.label_cell_3_status", "options": [
+            { "value": "ok",      "label": "t:sections.dim_comparison.status_option_ok" },
+            { "value": "warn",    "label": "t:sections.dim_comparison.status_option_warn" },
+            { "value": "bad",     "label": "t:sections.dim_comparison.status_option_bad" },
+            { "value": "neutral", "label": "t:sections.dim_comparison.status_option_neutral" }
+          ], "default": "neutral"
+        },
+        { "type": "text",   "id": "cell_4_text",   "label": "t:sections.dim_comparison.label_cell_4_text" },
+        { "type": "select", "id": "cell_4_status", "label": "t:sections.dim_comparison.label_cell_4_status", "options": [
+            { "value": "ok",      "label": "t:sections.dim_comparison.status_option_ok" },
+            { "value": "warn",    "label": "t:sections.dim_comparison.status_option_warn" },
+            { "value": "bad",     "label": "t:sections.dim_comparison.status_option_bad" },
+            { "value": "neutral", "label": "t:sections.dim_comparison.status_option_neutral" }
+          ], "default": "neutral"
+        }
+      ]
+    }
+  ],
+  "max_blocks": 12,
+  "presets": [
+    {
+      "name": "t:sections.dim_comparison.preset_name",
+      "blocks": [
+        { "type": "row", "settings": { "label": "t:sections.dim_comparison.row_1_label", "cell_1_text": "t:sections.dim_comparison.row_1_cell_1", "cell_1_status": "ok",   "cell_2_text": "t:sections.dim_comparison.row_1_cell_2", "cell_2_status": "warn", "cell_3_text": "t:sections.dim_comparison.row_1_cell_3", "cell_3_status": "bad",  "cell_4_text": "t:sections.dim_comparison.row_1_cell_4", "cell_4_status": "bad" } },
+        { "type": "row", "settings": { "label": "t:sections.dim_comparison.row_2_label", "cell_1_text": "t:sections.dim_comparison.row_2_cell_1", "cell_1_status": "ok",   "cell_2_text": "t:sections.dim_comparison.row_2_cell_2", "cell_2_status": "warn", "cell_3_text": "t:sections.dim_comparison.row_2_cell_3", "cell_3_status": "bad",  "cell_4_text": "t:sections.dim_comparison.row_2_cell_4", "cell_4_status": "bad" } },
+        { "type": "row", "settings": { "label": "t:sections.dim_comparison.row_3_label", "cell_1_text": "t:sections.dim_comparison.row_3_cell_1", "cell_1_status": "ok",   "cell_2_text": "t:sections.dim_comparison.row_3_cell_2", "cell_2_status": "bad",  "cell_3_text": "t:sections.dim_comparison.row_3_cell_3", "cell_3_status": "bad",  "cell_4_text": "t:sections.dim_comparison.row_3_cell_4", "cell_4_status": "bad" } },
+        { "type": "row", "settings": { "label": "t:sections.dim_comparison.row_4_label", "cell_1_text": "t:sections.dim_comparison.row_4_cell_1", "cell_1_status": "ok",   "cell_2_text": "t:sections.dim_comparison.row_4_cell_2", "cell_2_status": "warn", "cell_3_text": "t:sections.dim_comparison.row_4_cell_3", "cell_3_status": "bad",  "cell_4_text": "t:sections.dim_comparison.row_4_cell_4", "cell_4_status": "warn" } },
+        { "type": "row", "settings": { "label": "t:sections.dim_comparison.row_5_label", "cell_1_text": "t:sections.dim_comparison.row_5_cell_1", "cell_1_status": "ok",   "cell_2_text": "t:sections.dim_comparison.row_5_cell_2", "cell_2_status": "neutral", "cell_3_text": "t:sections.dim_comparison.row_5_cell_3", "cell_3_status": "neutral", "cell_4_text": "t:sections.dim_comparison.row_5_cell_4", "cell_4_status": "neutral" } },
+        { "type": "row", "settings": { "label": "t:sections.dim_comparison.row_6_label", "cell_1_text": "t:sections.dim_comparison.row_6_cell_1", "cell_1_status": "ok",   "cell_2_text": "t:sections.dim_comparison.row_6_cell_2", "cell_2_status": "bad",  "cell_3_text": "t:sections.dim_comparison.row_6_cell_3", "cell_3_status": "bad",  "cell_4_text": "t:sections.dim_comparison.row_6_cell_4", "cell_4_status": "bad" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

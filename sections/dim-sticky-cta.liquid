@@ -1,0 +1,82 @@
+{%- comment -%}
+  section: dim-sticky-cta
+  source mapping: index.html block 0c (lines 152-164) + 0d affiliate micro (line 165)
+  Turn 3 conversion. First compliance verbatim consumer.
+  disclosure_text default = "t:compliance.ftc_amazon_top" (shared key, single source of truth).
+  No Web Component — pure CSS (always visible / hidden via @media).
+{%- endcomment -%}
+
+<div class="sticky-cta {% if section.settings.placement == 'mobile_only' %}sticky-cta--mobile{% endif %}"
+     role="region"
+     aria-label="{{ 'sections.dim_sticky_cta.region_aria' | t }}"
+     {{ section.shopify_attributes }}>
+  <div class="sticky-cta__inner container">
+    {%- if section.settings.show_thumb -%}
+      <div class="sticky-cta__thumb" aria-hidden="true">
+        <svg width="34" height="34" viewBox="0 0 220 320" aria-hidden="true" focusable="false"><use href="#bottle"></use></svg>
+      </div>
+    {%- endif -%}
+
+    <div class="sticky-cta__meta">
+      <div class="sticky-cta__name">{{ section.settings.product_name }}</div>
+      {%- if section.settings.rating_text != blank -%}
+        <div class="sticky-cta__sub">
+          <span class="sticky-cta__star" aria-hidden="true">★</span> {{ section.settings.rating_text }}
+        </div>
+      {%- endif -%}
+    </div>
+
+    {%- render 'cta-button',
+      url: settings.global_cta_url,
+      label: section.settings.cta_label,
+      cta_id: 'sticky-bottom-primary',
+      section_id: 'sticky-cta',
+      position: 'sticky',
+      style: 'amazon',
+      size: 'sm'
+    -%}
+  </div>
+
+  {%- if section.settings.disclosure_text != blank -%}
+    <p class="sticky-cta__disclosure">{{ section.settings.disclosure_text }}</p>
+  {%- endif -%}
+</div>
+
+{% schema %}
+{
+  "name": "t:sections.dim_sticky_cta.section_name",
+  "tag": "div",
+  "class": "dim-section dim-sticky-cta-wrapper",
+  "settings": [
+    { "type": "header", "content": "t:sections.dim_sticky_cta.header_visibility" },
+    {
+      "type": "select",
+      "id": "placement",
+      "label": "t:sections.dim_sticky_cta.label_placement",
+      "options": [
+        { "value": "mobile_only", "label": "t:sections.dim_sticky_cta.option_mobile_only" },
+        { "value": "always",      "label": "t:sections.dim_sticky_cta.option_always" }
+      ],
+      "default": "mobile_only"
+    },
+
+    { "type": "header", "content": "t:sections.dim_sticky_cta.header_content" },
+    { "type": "checkbox", "id": "show_thumb",   "label": "t:sections.dim_sticky_cta.label_show_thumb",   "default": true },
+    { "type": "text",     "id": "product_name", "label": "t:sections.dim_sticky_cta.label_product_name", "default": "t:sections.dim_sticky_cta.product_name_default" },
+    { "type": "text",     "id": "rating_text",  "label": "t:sections.dim_sticky_cta.label_rating_text",  "default": "t:sections.dim_sticky_cta.rating_text_default" },
+    { "type": "text",     "id": "cta_label",    "label": "t:sections.dim_sticky_cta.label_cta_label",    "default": "t:sections.dim_sticky_cta.cta_label_default" },
+
+    { "type": "header", "content": "t:sections.dim_sticky_cta.header_compliance", "info": "t:sections.dim_sticky_cta.info_compliance_header" },
+    {
+      "type": "text",
+      "id": "disclosure_text",
+      "label": "t:sections.dim_sticky_cta.label_disclosure_text",
+      "info": "t:sections.dim_sticky_cta.info_disclosure_text",
+      "default": "t:compliance.ftc_amazon_top"
+    }
+  ],
+  "presets": [
+    { "name": "t:sections.dim_sticky_cta.preset_name" }
+  ]
+}
+{% endschema %}

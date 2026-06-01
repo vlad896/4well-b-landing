@@ -1,0 +1,154 @@
+{%- comment -%}
+  section: dim-faq
+  source mapping: index.html block 12 (lines 943-985)
+  Turn 17 — per-turn STOP. THIRD and FINAL JSON-LD emitter (FAQPage).
+  Markup uses native <details>/<summary> — works without JS.
+  <dim-accordion> adds optional single-open behavior (one item open at a time).
+  Plus/minus icon swap via CSS [open] selector — no JS for visual feedback.
+  0 CTAs / 0 compliance.
+{%- endcomment -%}
+
+{%- assign qa_blocks = section.blocks | where: 'type', 'qa' -%}
+{%- liquid
+  assign faq_img_url = ''
+  if section.settings.portrait_image != blank
+    assign faq_img_url = section.settings.portrait_image | image_url: width: 1200
+  elsif section.settings.portrait_image_fallback != blank
+    assign faq_img_url = section.settings.portrait_image_fallback | asset_url
+  endif
+-%}
+
+<section class="faq" {{ section.shopify_attributes }}>
+  <div class="container">
+    <div class="faq__layout">
+      <div class="faq__intro">
+        <div class="faq__head">
+          {%- if section.settings.eyebrow != blank -%}
+            <div class="eyebrow faq__eyebrow">{{ section.settings.eyebrow }}</div>
+          {%- endif -%}
+          <h2 class="faq__h2">
+            {{ section.settings.h2 }}{%- if section.settings.h2_emphasis != blank -%}<br><em>{{ section.settings.h2_emphasis }}</em>{%- endif -%}
+          </h2>
+        </div>
+
+        {%- if faq_img_url != blank -%}
+          <figure class="faq__portrait">
+            <span class="faq__portrait-deco" aria-hidden="true"></span>
+            <img src="{{ faq_img_url }}"
+                 alt="{{ section.settings.portrait_alt | escape }}"
+                 loading="lazy" decoding="async">
+            {%- if section.settings.image_caption != blank -%}
+              <figcaption class="faq__portrait-caption">{{ section.settings.image_caption }}</figcaption>
+            {%- endif -%}
+          </figure>
+        {%- endif -%}
+      </div>
+
+      <div class="faq__body">
+        {%- if qa_blocks.size > 0 -%}
+          <dim-accordion {% if section.settings.single_open %}single-open{% endif %}>
+            <div class="faq__list" id="faq-list-{{ section.id }}">
+              {%- for block in qa_blocks -%}
+                <details class="faq-item{% if block.settings.hot %} faq-item--hot{% endif %}"{% if forloop.first %} open{% endif %} {{ block.shopify_attributes }}>
+                  <summary class="faq__q">
+                    <span class="faq__q-text">{{ block.settings.question }}</span>
+                    {%- if block.settings.hot and section.settings.hot_label != blank -%}
+                      <span class="faq__hot-badge">{{ section.settings.hot_label }}</span>
+                    {%- endif -%}
+                  </summary>
+                  <div class="faq__answer">{{ block.settings.answer }}</div>
+                </details>
+              {%- endfor -%}
+            </div>
+            {%- if qa_blocks.size > 4 -%}
+              <button class="faq__toggle"
+                      type="button"
+                      data-faq-toggle
+                      aria-expanded="false"
+                      aria-controls="faq-list-{{ section.id }}"
+                      data-label-more="{{ section.settings.toggle_label_more | default: 'Show more questions' }}"
+                      data-label-less="{{ section.settings.toggle_label_less | default: 'Show less' }}">
+                {{ section.settings.toggle_label_more | default: 'Show more questions' }}
+              </button>
+            {%- endif -%}
+          </dim-accordion>
+        {%- endif -%}
+      </div>
+    </div>
+  </div>
+</section>
+
+{%- if qa_blocks.size > 4 -%}
+<script>
+(function(){
+  document.querySelectorAll('[data-faq-toggle]').forEach(function(btn){
+    if(btn.dataset.faqBound) return;
+    btn.dataset.faqBound = '1';
+    btn.addEventListener('click', function(){
+      var list = btn.parentElement.querySelector('.faq__list');
+      if(!list) return;
+      var expanded = list.classList.toggle('is-expanded');
+      btn.setAttribute('aria-expanded', String(expanded));
+      btn.textContent = expanded ? btn.dataset.labelLess : btn.dataset.labelMore;
+    });
+  });
+})();
+</script>
+{%- endif -%}
+
+{%- render 'schema-faq', qa_blocks: qa_blocks -%}
+
+<script src="{{ 'dim-accordion.js' | asset_url }}" type="module" defer></script>
+
+{% schema %}
+{
+  "name": "t:sections.dim_faq.section_name",
+  "tag": "section",
+  "class": "dim-section dim-faq-section",
+  "settings": [
+    { "type": "header", "content": "t:sections.dim_faq.header_intro" },
+    { "type": "text",     "id": "eyebrow",      "label": "t:sections.dim_faq.label_eyebrow",      "default": "t:sections.dim_faq.eyebrow_default" },
+    { "type": "text",     "id": "h2",           "label": "t:sections.dim_faq.label_h2",           "default": "t:sections.dim_faq.h2_default" },
+    { "type": "text",     "id": "h2_emphasis",  "label": "t:sections.dim_faq.label_h2_emphasis",  "info": "t:sections.dim_faq.info_h2_emphasis", "default": "t:sections.dim_faq.h2_emphasis_default" },
+
+    { "type": "header", "content": "t:sections.dim_faq.header_portrait" },
+    { "type": "image_picker", "id": "portrait_image",          "label": "t:sections.dim_faq.label_portrait_image",          "info": "t:sections.dim_faq.info_portrait_image" },
+    { "type": "text",         "id": "portrait_image_fallback", "label": "t:sections.dim_faq.label_portrait_image_fallback", "info": "t:sections.dim_faq.info_portrait_image_fallback" },
+    { "type": "text",         "id": "portrait_alt",            "label": "t:sections.dim_faq.label_portrait_alt",            "default": "t:sections.dim_faq.portrait_alt_default" },
+    { "type": "text",         "id": "image_caption",           "label": "t:sections.dim_faq.label_image_caption",           "default": "t:sections.dim_faq.image_caption_default" },
+
+    { "type": "header", "content": "t:sections.dim_faq.header_behavior" },
+    { "type": "checkbox", "id": "single_open",       "label": "t:sections.dim_faq.label_single_open", "info": "t:sections.dim_faq.info_single_open", "default": true },
+    { "type": "text",     "id": "toggle_label_more", "label": "t:sections.dim_faq.label_toggle_more", "default": "t:sections.dim_faq.toggle_label_more_default" },
+    { "type": "text",     "id": "toggle_label_less", "label": "t:sections.dim_faq.label_toggle_less", "default": "t:sections.dim_faq.toggle_label_less_default" },
+    { "type": "text",     "id": "hot_label",         "label": "t:sections.dim_faq.label_hot_label",   "info": "t:sections.dim_faq.info_hot_label", "default": "t:sections.dim_faq.hot_label_default" }
+  ],
+  "blocks": [
+    {
+      "type": "qa",
+      "name": "t:sections.dim_faq.block_qa_name",
+      "settings": [
+        { "type": "text",     "id": "question", "label": "t:sections.dim_faq.label_question" },
+        { "type": "richtext", "id": "answer",   "label": "t:sections.dim_faq.label_answer", "info": "t:sections.dim_faq.info_answer" },
+        { "type": "checkbox", "id": "hot",      "label": "t:sections.dim_faq.label_hot",    "info": "t:sections.dim_faq.info_hot", "default": false }
+      ]
+    }
+  ],
+  "max_blocks": 15,
+  "presets": [
+    {
+      "name": "t:sections.dim_faq.preset_name",
+      "blocks": [
+        { "type": "qa", "settings": { "question": "t:sections.dim_faq.qa_1_question", "answer": "t:sections.dim_faq.qa_1_answer" } },
+        { "type": "qa", "settings": { "question": "t:sections.dim_faq.qa_2_question", "answer": "t:sections.dim_faq.qa_2_answer" } },
+        { "type": "qa", "settings": { "question": "t:sections.dim_faq.qa_3_question", "answer": "t:sections.dim_faq.qa_3_answer" } },
+        { "type": "qa", "settings": { "question": "t:sections.dim_faq.qa_4_question", "answer": "t:sections.dim_faq.qa_4_answer" } },
+        { "type": "qa", "settings": { "question": "t:sections.dim_faq.qa_5_question", "answer": "t:sections.dim_faq.qa_5_answer" } },
+        { "type": "qa", "settings": { "question": "t:sections.dim_faq.qa_6_question", "answer": "t:sections.dim_faq.qa_6_answer" } },
+        { "type": "qa", "settings": { "question": "t:sections.dim_faq.qa_7_question", "answer": "t:sections.dim_faq.qa_7_answer" } },
+        { "type": "qa", "settings": { "question": "t:sections.dim_faq.qa_8_question", "answer": "t:sections.dim_faq.qa_8_answer" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

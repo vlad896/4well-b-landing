@@ -1,0 +1,87 @@
+{%- comment -%}
+  section: dim-timeline
+  source mapping: index.html block 7 (lines 492-558)
+  Turn 11 (Batch D). 4-step results timeline + compliance.timeline_disclaimer (shared).
+  No CTAs.
+{%- endcomment -%}
+
+<section class="timeline-section" {{ section.shopify_attributes }}>
+  <div class="section-inner">
+    {%- if section.settings.eyebrow != blank -%}
+      <div class="section-tag">{{ section.settings.eyebrow }}</div>
+    {%- endif -%}
+    <h2 class="section-title">{{ section.settings.h2 }}</h2>
+    {%- if section.settings.lede != blank -%}
+      <p class="section-sub">{{ section.settings.lede }}</p>
+    {%- endif -%}
+
+    {%- assign step_blocks = section.blocks | where: 'type', 'step' -%}
+    {%- if step_blocks.size > 0 -%}
+      <div class="timeline-track">
+        {%- for block in step_blocks -%}
+          <div class="timeline-step" {{ block.shopify_attributes }}>
+            {%- if block.settings.dot_num != blank -%}
+              <div class="timeline-dot" aria-hidden="true">{{ block.settings.dot_num }}</div>
+            {%- endif -%}
+            {%- if block.settings.period != blank -%}
+              <div class="timeline-period">{{ block.settings.period }}</div>
+            {%- endif -%}
+            <div class="timeline-title">{{ block.settings.title }}</div>
+            <div class="timeline-body">
+              {{ block.settings.bullets }}
+              {%- if block.settings.quote != blank -%}
+                <div class="timeline-quote">{{ block.settings.quote }}</div>
+              {%- endif -%}
+            </div>
+          </div>
+        {%- endfor -%}
+      </div>
+    {%- endif -%}
+
+    {%- if section.settings.disclaimer != blank -%}
+      <p class="timeline-disclaimer">{{ section.settings.disclaimer }}</p>
+    {%- endif -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "t:sections.dim_timeline.section_name",
+  "tag": "section",
+  "class": "dim-section dim-timeline-section",
+  "settings": [
+    { "type": "header", "content": "t:sections.dim_timeline.header_intro" },
+    { "type": "text",     "id": "eyebrow",   "label": "t:sections.dim_timeline.label_eyebrow",   "default": "t:sections.dim_timeline.eyebrow_default" },
+    { "type": "textarea", "id": "h2",        "label": "t:sections.dim_timeline.label_h2",        "info": "t:sections.dim_timeline.info_h2", "default": "t:sections.dim_timeline.h2_default" },
+    { "type": "textarea", "id": "lede",      "label": "t:sections.dim_timeline.label_lede",      "default": "t:sections.dim_timeline.lede_default" },
+
+    { "type": "header", "content": "t:sections.dim_timeline.header_disclaimer", "info": "t:sections.dim_timeline.info_disclaimer_header" },
+    { "type": "text",     "id": "disclaimer", "label": "t:sections.dim_timeline.label_disclaimer", "info": "t:sections.dim_timeline.info_disclaimer", "default": "t:compliance.timeline_disclaimer" }
+  ],
+  "blocks": [
+    {
+      "type": "step",
+      "name": "t:sections.dim_timeline.block_step_name",
+      "settings": [
+        { "type": "text",     "id": "dot_num", "label": "t:sections.dim_timeline.label_dot_num" },
+        { "type": "text",     "id": "period",  "label": "t:sections.dim_timeline.label_period" },
+        { "type": "text",     "id": "title",   "label": "t:sections.dim_timeline.label_title" },
+        { "type": "richtext", "id": "bullets", "label": "t:sections.dim_timeline.label_bullets" },
+        { "type": "textarea", "id": "quote",   "label": "t:sections.dim_timeline.label_quote" }
+      ]
+    }
+  ],
+  "max_blocks": 6,
+  "presets": [
+    {
+      "name": "t:sections.dim_timeline.preset_name",
+      "blocks": [
+        { "type": "step", "settings": { "dot_num": "1", "period": "t:sections.dim_timeline.step_1_period", "title": "t:sections.dim_timeline.step_1_title", "bullets": "t:sections.dim_timeline.step_1_bullets", "quote": "t:sections.dim_timeline.step_1_quote" } },
+        { "type": "step", "settings": { "dot_num": "2", "period": "t:sections.dim_timeline.step_2_period", "title": "t:sections.dim_timeline.step_2_title", "bullets": "t:sections.dim_timeline.step_2_bullets", "quote": "t:sections.dim_timeline.step_2_quote" } },
+        { "type": "step", "settings": { "dot_num": "3", "period": "t:sections.dim_timeline.step_3_period", "title": "t:sections.dim_timeline.step_3_title", "bullets": "t:sections.dim_timeline.step_3_bullets", "quote": "t:sections.dim_timeline.step_3_quote" } },
+        { "type": "step", "settings": { "dot_num": "4", "period": "t:sections.dim_timeline.step_4_period", "title": "t:sections.dim_timeline.step_4_title", "bullets": "t:sections.dim_timeline.step_4_bullets", "quote": "t:sections.dim_timeline.step_4_quote" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

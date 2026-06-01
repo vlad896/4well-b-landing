@@ -1,0 +1,139 @@
+{%- comment -%}
+  section: dim-ingredients
+  source mapping: index.html block 5+6 (lines 427-487) - merged product intro + ingredients
+  Turn 10 (Batch C). 4-up ingredient grid + bottle visual + 1 CTA.
+  Cross-section dependency: footnote_ref per block links to #refs (dim-sources, Turn 20).
+{%- endcomment -%}
+
+<section class="product-merged" {{ section.shopify_attributes }}>
+  <div class="container">
+    <div class="product-merged__head">
+      {%- if section.settings.eyebrow != blank -%}
+        <div class="eyebrow">{{ section.settings.eyebrow }}</div>
+      {%- endif -%}
+      <h2 class="h2">{{ section.settings.h2 }}</h2>
+    </div>
+
+    <div class="product-merged__grid">
+      <div class="product-merged__left">
+        <div class="product-merged__visual">
+          {%- if section.settings.bottle_image != blank -%}
+            {%- render 'img',
+              image: section.settings.bottle_image,
+              sizes: '(min-width: 1024px) 320px, 80vw',
+              alt: section.settings.bottle_aria,
+              fetchpriority: 'high',
+              loading: 'eager'
+            -%}
+          {%- elsif section.settings.bottle_image_fallback != blank -%}
+            <img src="{{ section.settings.bottle_image_fallback | asset_url }}"
+                 alt="{{ section.settings.bottle_aria | escape }}"
+                 loading="eager" decoding="async" fetchpriority="high">
+          {%- else -%}
+            <svg class="bottle" viewBox="0 0 220 320" width="220" height="320" role="img" focusable="false" aria-label="{{ section.settings.bottle_aria | escape }}">
+              <use href="#bottle"></use>
+            </svg>
+          {%- endif -%}
+        </div>
+
+        <div class="product-merged__cta">
+          {%- render 'cta-button',
+            url: settings.global_cta_url,
+            label: section.settings.cta_label,
+            icon: section.settings.cta_icon,
+            cta_id: 'ingredients-primary',
+            section_id: 'ingredients',
+            position: 'mid'
+          -%}
+        </div>
+
+        {%- if section.settings.qualifiers != blank -%}
+          <p class="product-merged__qualifiers">{{ section.settings.qualifiers }}</p>
+        {%- endif -%}
+      </div>
+
+      <div class="product-merged__right">
+        {%- assign ing_blocks = section.blocks | where: 'type', 'ingredient' -%}
+        {%- if ing_blocks.size > 0 -%}
+          <div class="ing-grid">
+            {%- for block in ing_blocks -%}
+              <div class="ing-card" {{ block.shopify_attributes }}>
+                {%- if block.settings.icon != blank -%}
+                  <div class="ing-card__icon" aria-hidden="true">{{ block.settings.icon }}</div>
+                {%- endif -%}
+                <div>
+                  <div class="ing-card__name">
+                    <h3>{{ block.settings.name }}{%- if block.settings.footnote_ref != blank -%}<sup><a href="#refs">{{ block.settings.footnote_ref }}</a></sup>{%- endif -%}</h3>
+                    {%- if block.settings.dose != blank -%}
+                      <span class="ing-card__dose">{{ block.settings.dose }}</span>
+                    {%- endif -%}
+                  </div>
+                  {%- if block.settings.txt != blank -%}
+                    <p class="ing-card__txt">{{ block.settings.txt }}</p>
+                  {%- endif -%}
+                </div>
+              </div>
+            {%- endfor -%}
+          </div>
+        {%- endif -%}
+
+        {%- if section.settings.close_line != blank -%}
+          <p class="ingredients__close">{{ section.settings.close_line }}</p>
+        {%- endif -%}
+      </div>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "t:sections.dim_ingredients.section_name",
+  "tag": "section",
+  "class": "dim-section dim-ingredients-section",
+  "settings": [
+    { "type": "header", "content": "t:sections.dim_ingredients.header_intro" },
+    { "type": "text",     "id": "eyebrow", "label": "t:sections.dim_ingredients.label_eyebrow", "default": "t:sections.dim_ingredients.eyebrow_default" },
+    { "type": "textarea", "id": "h2",      "label": "t:sections.dim_ingredients.label_h2",      "default": "t:sections.dim_ingredients.h2_default" },
+
+    { "type": "header", "content": "t:sections.dim_ingredients.header_cta" },
+    { "type": "text", "id": "cta_icon",  "label": "t:sections.dim_ingredients.label_cta_icon",  "default": "t:sections.dim_ingredients.cta_icon_default" },
+    { "type": "text", "id": "cta_label", "label": "t:sections.dim_ingredients.label_cta_label", "default": "t:sections.dim_ingredients.cta_label_default" },
+
+    { "type": "header", "content": "t:sections.dim_ingredients.header_visual" },
+    { "type": "image_picker", "id": "bottle_image", "label": "t:sections.dim_ingredients.label_bottle_image", "info": "t:sections.dim_ingredients.info_bottle_image" },
+    { "type": "text", "id": "bottle_image_fallback", "label": "t:sections.dim_ingredients.label_bottle_image_fallback", "info": "t:sections.dim_ingredients.info_bottle_image_fallback", "default": "product-bottle.jpg" },
+    { "type": "text", "id": "bottle_aria", "label": "t:sections.dim_ingredients.label_bottle_aria", "default": "t:sections.dim_ingredients.bottle_aria_default" },
+
+    { "type": "header", "content": "t:sections.dim_ingredients.header_qualifiers" },
+    { "type": "textarea", "id": "qualifiers", "label": "t:sections.dim_ingredients.label_qualifiers", "default": "t:sections.dim_ingredients.qualifiers_default" },
+
+    { "type": "header", "content": "t:sections.dim_ingredients.header_close" },
+    { "type": "textarea", "id": "close_line", "label": "t:sections.dim_ingredients.label_close_line", "default": "t:sections.dim_ingredients.close_line_default" }
+  ],
+  "blocks": [
+    {
+      "type": "ingredient",
+      "name": "t:sections.dim_ingredients.block_ingredient_name",
+      "settings": [
+        { "type": "text",     "id": "icon", "label": "t:sections.dim_ingredients.label_ing_icon", "info": "t:sections.dim_ingredients.info_ing_icon" },
+        { "type": "text",     "id": "name", "label": "t:sections.dim_ingredients.label_ing_name" },
+        { "type": "text",     "id": "dose", "label": "t:sections.dim_ingredients.label_ing_dose" },
+        { "type": "textarea", "id": "txt",  "label": "t:sections.dim_ingredients.label_ing_txt" },
+        { "type": "text",     "id": "footnote_ref", "label": "t:sections.dim_ingredients.label_ing_footnote", "info": "t:sections.dim_ingredients.info_ing_footnote" }
+      ]
+    }
+  ],
+  "max_blocks": 6,
+  "presets": [
+    {
+      "name": "t:sections.dim_ingredients.preset_name",
+      "blocks": [
+        { "type": "ingredient", "settings": { "icon": "🥦", "name": "t:sections.dim_ingredients.ing_1_name", "dose": "t:sections.dim_ingredients.ing_1_dose", "txt": "t:sections.dim_ingredients.ing_1_txt", "footnote_ref": "1" } },
+        { "type": "ingredient", "settings": { "icon": "🌶️", "name": "t:sections.dim_ingredients.ing_2_name", "dose": "t:sections.dim_ingredients.ing_2_dose", "txt": "t:sections.dim_ingredients.ing_2_txt", "footnote_ref": "2" } },
+        { "type": "ingredient", "settings": { "icon": "💎", "name": "t:sections.dim_ingredients.ing_3_name", "dose": "t:sections.dim_ingredients.ing_3_dose", "txt": "t:sections.dim_ingredients.ing_3_txt", "footnote_ref": "3" } },
+        { "type": "ingredient", "settings": { "icon": "🌿", "name": "t:sections.dim_ingredients.ing_4_name", "dose": "t:sections.dim_ingredients.ing_4_dose", "txt": "t:sections.dim_ingredients.ing_4_txt", "footnote_ref": "4" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

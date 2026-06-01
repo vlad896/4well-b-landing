@@ -1,0 +1,143 @@
+{%- comment -%}
+  section: dim-before-after
+  source mapping: index.html block 8 (lines 563-611)
+  Turn 12 (Batch D). 3 photo testimonial cards + alt-comparison table.
+  Compliance: not_typical_section (legal_below). Per-card legal overlay removed.
+  Each card supports TWO images (before + after). image_picker overrides theme-asset fallback (fallback_before / fallback_after).
+{%- endcomment -%}
+
+<section class="beforeafter" {{ section.shopify_attributes }}>
+  <div class="container">
+    <div class="beforeafter__head">
+      {%- if section.settings.eyebrow != blank -%}
+        <div class="eyebrow">{{ section.settings.eyebrow }}</div>
+      {%- endif -%}
+      <h2 class="h2">{{ section.settings.h2 }}</h2>
+    </div>
+
+    {%- assign card_blocks = section.blocks | where: 'type', 'card' -%}
+    {%- if card_blocks.size > 0 -%}
+      <div class="ba-grid">
+        {%- for block in card_blocks -%}
+          <div class="ba-card" {{ block.shopify_attributes }}>
+            <div class="ba-card__pair">
+              <div class="ba-card__img-wrap ba-card__img-wrap--before">
+                {%- if block.settings.image_before != blank -%}
+                  {%- render 'img',
+                    image: block.settings.image_before,
+                    sizes: '(min-width: 768px) 16vw, 50vw',
+                    alt: block.settings.alt_before
+                  -%}
+                {%- elsif block.settings.fallback_before != blank -%}
+                  <img src="{{ block.settings.fallback_before | asset_url }}"
+                       alt="{{ block.settings.alt_before | escape }}"
+                       loading="lazy" decoding="async">
+                {%- else -%}
+                  <div class="ba-card__placeholder" role="img" aria-label="{{ block.settings.alt_before | escape }}"></div>
+                {%- endif -%}
+                <span class="ba-card__label ba-card__label--before" aria-hidden="true">BEFORE</span>
+              </div>
+
+              <div class="ba-card__img-wrap ba-card__img-wrap--after">
+                {%- if block.settings.image_after != blank -%}
+                  {%- render 'img',
+                    image: block.settings.image_after,
+                    sizes: '(min-width: 768px) 16vw, 50vw',
+                    alt: block.settings.alt_after
+                  -%}
+                {%- elsif block.settings.fallback_after != blank -%}
+                  <img src="{{ block.settings.fallback_after | asset_url }}"
+                       alt="{{ block.settings.alt_after | escape }}"
+                       loading="lazy" decoding="async">
+                {%- else -%}
+                  <div class="ba-card__placeholder" role="img" aria-label="{{ block.settings.alt_after | escape }}"></div>
+                {%- endif -%}
+                <span class="ba-card__label ba-card__label--after" aria-hidden="true">AFTER</span>
+              </div>
+            </div>
+            <div class="ba-card__txt">
+              {%- if block.settings.name_age != blank -%}
+                <strong>{{ block.settings.name_age }}</strong>
+              {%- endif -%}
+              {{ block.settings.quote }}
+            </div>
+          </div>
+        {%- endfor -%}
+      </div>
+    {%- endif -%}
+
+    {%- if section.settings.legal_below != blank -%}
+      <p class="beforeafter__legal">{{ section.settings.legal_below }}</p>
+    {%- endif -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "t:sections.dim_before_after.section_name",
+  "tag": "section",
+  "class": "dim-section dim-before-after-section",
+  "settings": [
+    { "type": "header", "content": "t:sections.dim_before_after.header_intro" },
+    { "type": "text",     "id": "eyebrow", "label": "t:sections.dim_before_after.label_eyebrow", "default": "t:sections.dim_before_after.eyebrow_default" },
+    { "type": "textarea", "id": "h2",      "label": "t:sections.dim_before_after.label_h2",      "default": "t:sections.dim_before_after.h2_default" },
+
+    { "type": "header", "content": "t:sections.dim_before_after.header_compliance", "info": "t:sections.dim_before_after.info_compliance_header" },
+    {
+      "type": "text",
+      "id": "legal_below",
+      "label": "t:sections.dim_before_after.label_legal_below",
+      "info": "t:sections.dim_before_after.info_legal_below",
+      "default": "t:compliance.not_typical_section"
+    },
+
+    { "type": "header", "content": "t:sections.dim_before_after.header_alt_table" },
+    { "type": "checkbox", "id": "show_alt_table", "label": "t:sections.dim_before_after.label_show_alt_table", "default": true },
+    { "type": "text",     "id": "before_th", "label": "t:sections.dim_before_after.label_before_th", "default": "t:sections.dim_before_after.before_th_default" },
+    { "type": "text",     "id": "after_th",  "label": "t:sections.dim_before_after.label_after_th",  "default": "t:sections.dim_before_after.after_th_default" }
+  ],
+  "blocks": [
+    {
+      "type": "card",
+      "name": "t:sections.dim_before_after.block_card_name",
+      "settings": [
+        { "type": "header", "content": "t:sections.dim_before_after.header_card_before" },
+        { "type": "image_picker", "id": "image_before",    "label": "t:sections.dim_before_after.label_card_image_before", "info": "t:sections.dim_before_after.info_card_image" },
+        { "type": "text",         "id": "alt_before",      "label": "t:sections.dim_before_after.label_card_alt_before" },
+        { "type": "text",         "id": "fallback_before", "label": "t:sections.dim_before_after.label_card_fallback_before", "info": "t:sections.dim_before_after.info_card_fallback" },
+
+        { "type": "header", "content": "t:sections.dim_before_after.header_card_after" },
+        { "type": "image_picker", "id": "image_after",    "label": "t:sections.dim_before_after.label_card_image_after", "info": "t:sections.dim_before_after.info_card_image" },
+        { "type": "text",         "id": "alt_after",      "label": "t:sections.dim_before_after.label_card_alt_after" },
+        { "type": "text",         "id": "fallback_after", "label": "t:sections.dim_before_after.label_card_fallback_after", "info": "t:sections.dim_before_after.info_card_fallback" },
+
+        { "type": "header", "content": "t:sections.dim_before_after.header_card_meta" },
+        { "type": "text",         "id": "name_age",  "label": "t:sections.dim_before_after.label_card_name_age" },
+        { "type": "textarea",     "id": "quote",     "label": "t:sections.dim_before_after.label_card_quote" }
+      ]
+    },
+    {
+      "type": "row",
+      "name": "t:sections.dim_before_after.block_row_name",
+      "settings": [
+        { "type": "text", "id": "before_text", "label": "t:sections.dim_before_after.label_row_before" },
+        { "type": "text", "id": "after_text",  "label": "t:sections.dim_before_after.label_row_after" }
+      ]
+    }
+  ],
+  "max_blocks": 12,
+  "presets": [
+    {
+      "name": "t:sections.dim_before_after.preset_name",
+      "blocks": [
+        { "type": "card", "settings": { "name_age": "t:sections.dim_before_after.card_1_name_age", "quote": "t:sections.dim_before_after.card_1_quote", "alt_before": "t:sections.dim_before_after.card_1_alt", "alt_after": "t:sections.dim_before_after.card_1_alt", "fallback_before": "ba-1-before.jpg", "fallback_after": "ba-1-after.jpg" } },
+        { "type": "card", "settings": { "name_age": "t:sections.dim_before_after.card_2_name_age", "quote": "t:sections.dim_before_after.card_2_quote", "alt_before": "t:sections.dim_before_after.card_2_alt", "alt_after": "t:sections.dim_before_after.card_2_alt", "fallback_before": "ba-2-before.jpg", "fallback_after": "ba-2-after.jpg" } },
+        { "type": "card", "settings": { "name_age": "t:sections.dim_before_after.card_3_name_age", "quote": "t:sections.dim_before_after.card_3_quote", "alt_before": "t:sections.dim_before_after.card_3_alt", "alt_after": "t:sections.dim_before_after.card_3_alt", "fallback_before": "ba-3-before.jpg", "fallback_after": "ba-3-after.jpg" } },
+        { "type": "row",  "settings": { "before_text": "t:sections.dim_before_after.row_1_before", "after_text": "t:sections.dim_before_after.row_1_after" } },
+        { "type": "row",  "settings": { "before_text": "t:sections.dim_before_after.row_2_before", "after_text": "t:sections.dim_before_after.row_2_after" } },
+        { "type": "row",  "settings": { "before_text": "t:sections.dim_before_after.row_3_before", "after_text": "t:sections.dim_before_after.row_3_after" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

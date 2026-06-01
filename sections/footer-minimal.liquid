@@ -1,0 +1,91 @@
+{%- comment -%}
+  section: footer-minimal
+  source mapping: index.html footer (lines 1099-1114)
+  Turn 22 — FINAL Phase 2 section.
+
+  Three shared-verbatim compliance disclosures pulled from locales:
+    - compliance.fda_disclaimer       (FDA structure/function rule)
+    - compliance.ftc_affiliate_footer (FTC affiliate disclosure)
+    - compliance.editorial_sponsor    (Advertorial sponsorship note)
+
+  Repeating "nav_link" block (max 8). Copyright uses {year} placeholder
+  substituted via Liquid `'now' | date: '%Y'` at render time so the year
+  ticks over without merchant action.
+
+  Footer nav links carry NO data-cta-id attributes — they are functional
+  navigation, not conversion CTAs (CTA_REGISTRY scope per Turn 22 spec).
+  Section wrapper is auto-rendered as <footer> via schema `tag` field.
+{%- endcomment -%}
+
+{%- assign current_year = 'now' | date: '%Y' -%}
+
+<div class="container footer__legal">
+  {%- if section.settings.fda_disclaimer != blank -%}
+    <p class="footer__disclaimer">{{ section.settings.fda_disclaimer }}</p>
+  {%- endif -%}
+  {%- if section.settings.ftc_disclosure != blank -%}
+    <p class="footer__disclaimer">{{ section.settings.ftc_disclosure }}</p>
+  {%- endif -%}
+  {%- if section.settings.editorial_sponsor != blank -%}
+    <p class="footer__disclaimer">{{ section.settings.editorial_sponsor }}</p>
+  {%- endif -%}
+
+  {%- if section.blocks.size > 0 -%}
+    <nav class="footer__links" aria-label="{{ 'sections.footer_minimal.nav_aria' | t }}">
+      <ul>
+        {%- for block in section.blocks -%}
+          {%- if block.type == 'nav_link' and block.settings.label != blank -%}
+            <li {{ block.shopify_attributes }}>
+              <a href="{{ block.settings.url | default: '#' }}">{{ block.settings.label }}</a>
+            </li>
+          {%- endif -%}
+        {%- endfor -%}
+      </ul>
+    </nav>
+  {%- endif -%}
+
+  {%- if section.settings.copyright_text != blank -%}
+    <p class="footer__copy">{{ section.settings.copyright_text | replace: '[year]', current_year }}</p>
+  {%- endif -%}
+</div>
+
+{% schema %}
+{
+  "name": "t:sections.footer_minimal.section_name",
+  "tag": "footer",
+  "class": "dim-section dim-footer section--tight footer",
+  "settings": [
+    { "type": "header", "content": "t:sections.footer_minimal.header_compliance" },
+    { "type": "paragraph", "content": "t:sections.footer_minimal.info_compliance_header" },
+    { "type": "textarea", "id": "fda_disclaimer",    "label": "t:sections.footer_minimal.label_fda_disclaimer",    "default": "t:compliance.fda_disclaimer" },
+    { "type": "textarea", "id": "ftc_disclosure",    "label": "t:sections.footer_minimal.label_ftc_disclosure",    "default": "t:compliance.ftc_affiliate_footer" },
+    { "type": "textarea", "id": "editorial_sponsor", "label": "t:sections.footer_minimal.label_editorial_sponsor", "default": "t:compliance.editorial_sponsor" },
+
+    { "type": "header", "content": "t:sections.footer_minimal.header_copyright" },
+    { "type": "text", "id": "copyright_text", "label": "t:sections.footer_minimal.label_copyright_text", "info": "t:sections.footer_minimal.info_copyright_text", "default": "t:sections.footer_minimal.copyright_text_default" }
+  ],
+  "blocks": [
+    {
+      "type": "nav_link",
+      "name": "t:sections.footer_minimal.block_nav_link_name",
+      "settings": [
+        { "type": "text", "id": "label", "label": "t:sections.footer_minimal.label_nav_label" },
+        { "type": "url",  "id": "url",   "label": "t:sections.footer_minimal.label_nav_url", "info": "t:sections.footer_minimal.info_nav_url" }
+      ]
+    }
+  ],
+  "max_blocks": 8,
+  "presets": [
+    {
+      "name": "t:sections.footer_minimal.preset_name",
+      "blocks": [
+        { "type": "nav_link", "settings": { "label": "t:sections.footer_minimal.nav_1_label_default" } },
+        { "type": "nav_link", "settings": { "label": "t:sections.footer_minimal.nav_2_label_default" } },
+        { "type": "nav_link", "settings": { "label": "t:sections.footer_minimal.nav_3_label_default" } },
+        { "type": "nav_link", "settings": { "label": "t:sections.footer_minimal.nav_4_label_default" } },
+        { "type": "nav_link", "settings": { "label": "t:sections.footer_minimal.nav_5_label_default", "url": "#refs" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

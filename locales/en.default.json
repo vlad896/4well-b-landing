@@ -1,0 +1,110 @@
+{
+  "compliance": {
+    "fda_disclaimer": "These statements have not been evaluated by the Food and Drug Administration. This product is not intended to diagnose, treat, cure, or prevent any disease.",
+    "ftc_amazon_top": "As an Amazon Associate, 4WELL earns from qualifying purchases.",
+    "ftc_affiliate_footer": "As an Amazon Associate, 4WELL earns from qualifying purchases. This page contains affiliate links.",
+    "editorial_sponsor": "Editorial content sponsored by 4WELL Products.",
+    "not_typical_card": "Individual results. Not typical.",
+    "not_typical_section": "Photos from verified customers. Individual results vary and are not typical of every user.",
+    "video_legal": "Stories from verified customers. Compensation: free product. Individual results vary and are not typical.",
+    "video_modal_legal": "Verified customer. Compensation: free product. Individual results vary.",
+    "timeline_disclaimer": "*Results vary by individual. Most customers report first changes within 2–4 weeks of consistent daily use.*",
+    "email_consent": "By submitting, you agree to receive emails from 4WELL. Unsubscribe anytime. We never share your data.",
+    "advertorial_badge": "Advertorial"
+  },
+  "ui": {
+    "skip_to_content": "Skip to main content",
+    "close": "Close",
+    "next": "Next",
+    "previous": "Previous",
+    "submit": "Submit",
+    "loading": "Loading…",
+    "play_video": "Play video",
+    "open_menu": "Open menu",
+    "dismiss": "Dismiss"
+  },
+  "shared": {
+    "trust_badges": {
+      "aria": "Purchase protections and certifications",
+      "guarantee": "30-Day Refund",
+      "shipping": "Free Shipping",
+      "lab": "3rd Party Tested",
+      "gmp": "GMP Certified",
+      "usa": "Made in USA"
+    }
+  },
+  "sections": {
+    "dim_hero": {
+      "chips_aria": "Common symptoms"
+    },
+    "dim_announcement_countdown": {
+      "region_aria": "Sticky purchase bar",
+      "timer_aria": "Limited-time offer countdown"
+    },
+    "dim_sticky_cta": {
+      "region_aria": "Quick checkout sticky bar"
+    },
+    "dim_social_proof": {
+      "region_aria": "Customer ratings and snippets",
+      "stars_aria": "4.6 out of 5 stars",
+      "snippets_aria": "What customers say"
+    },
+    "dim_quiz": {
+      "progress_aria": "Quiz progress"
+    },
+    "dim_science": {
+      "dose_aria": "Dose comparison"
+    },
+    "dim_skip_link": {
+      "region_aria": "Quick-access for ready visitors"
+    },
+    "dim_before_after": {
+      "alt_table_aria": "Before / After comparison"
+    },
+    "dim_video_testimonials": {
+      "carousel_aria": "Video testimonials carousel",
+      "modal_aria": "Customer testimonial video"
+    },
+    "dim_reviews": {
+      "summary_aria": "Reviews rating summary",
+      "carousel_aria": "Customer reviews carousel",
+      "stars_suffix_aria": "out of 5 stars",
+      "verified_label": "✓ Verified Purchase"
+    },
+    "dim_comparison": {
+      "region_aria": "Product comparison table (horizontally scrollable on mobile)",
+      "corner_aria": "Criterion",
+      "status_ok": "Yes",
+      "status_warn": "Partial",
+      "status_bad": "No"
+    },
+    "dim_email_optin": {
+      "email_label": "Email address",
+      "privacy_link": "Privacy",
+      "editor_warning": "Configure Klaviyo List ID in Theme Settings → Email (Klaviyo) to enable this form."
+    },
+    "dim_countdown": {
+      "aria_under_minute": "Less than 1 minute remaining",
+      "aria_under_5_min": "Less than 5 minutes remaining",
+      "aria_under_30_min": "Less than 30 minutes remaining",
+      "aria_under_1_hour": "Less than 1 hour remaining",
+      "aria_hours_remaining": "{count} hours remaining"
+    },
+    "dim_final_cta": {
+      "timer_aria": "Limited-time offer countdown",
+      "thumbs_aria": "Product image thumbnails",
+      "zoom_open_aria": "Open product image in zoom view",
+      "zoom_dialog_aria": "Product image — zoom view",
+      "zoom_close_aria": "Close zoom view"
+    },
+    "dim_sources": {
+      "region_aria": "Sources and substantiation"
+    },
+    "dim_exit_popup": {
+      "editor_warning": "Configure Klaviyo List ID in Theme Settings → Email (Klaviyo) to enable this popup."
+    },
+    "footer_minimal": {
+      "nav_aria": "Footer navigation"
+    }
+  }
+}

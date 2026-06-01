@@ -1,0 +1,92 @@
+{%- comment -%}
+  section: dim-social-proof
+  source mapping: index.html block 1.1 (lines 220-251)
+  Turn 4 (Batch B). No CTAs, no compliance, no JSON-LD, no JS.
+{%- endcomment -%}
+
+<section class="social-bar" aria-label="{{ 'sections.dim_social_proof.region_aria' | t }}" {{ section.shopify_attributes }}>
+  <div class="container">
+    <div class="social-bar__strip">
+      <span class="social-bar__stars" aria-label="{{ 'sections.dim_social_proof.stars_aria' | t }}">{{ section.settings.stars }}</span>
+      <strong class="social-bar__rating">{{ section.settings.rating }}</strong>
+      <span class="social-bar__dot" aria-hidden="true">·</span>
+      <span class="social-bar__count">{{ section.settings.count }}</span>
+      {%- if section.settings.badge != blank -%}
+        <span class="social-bar__dot" aria-hidden="true">·</span>
+        <span class="social-bar__badge">{{ section.settings.badge }}</span>
+      {%- endif -%}
+      {%- if section.settings.trusted != blank -%}
+        <span class="social-bar__dot" aria-hidden="true">·</span>
+        <span class="social-bar__trusted">{{ section.settings.trusted }}</span>
+      {%- endif -%}
+    </div>
+
+    {%- assign snippet_blocks = section.blocks | where: 'type', 'snippet' -%}
+    {%- if snippet_blocks.size > 0 -%}
+      <dim-carousel class="social-bar__carousel">
+        <button class="social-bar__nav social-bar__nav--prev" type="button" data-prev aria-label="{{ 'ui.previous' | t }}">
+          <span aria-hidden="true">‹</span>
+        </button>
+        <div class="carousel-track social-bar__snippets"
+             tabindex="0"
+             role="region"
+             aria-roledescription="carousel"
+             aria-label="{{ 'sections.dim_social_proof.snippets_aria' | t }}">
+          {%- for block in snippet_blocks -%}
+            <div class="snippet-card carousel-card" {{ block.shopify_attributes }}>
+              <div class="snippet-card__stars" aria-hidden="true">{{ block.settings.stars }}</div>
+              <div class="snippet-card__quote">{{ block.settings.quote }}</div>
+              <div class="snippet-card__name">{{ block.settings.name }}</div>
+            </div>
+          {%- endfor -%}
+        </div>
+        <button class="social-bar__nav social-bar__nav--next" type="button" data-next aria-label="{{ 'ui.next' | t }}">
+          <span aria-hidden="true">›</span>
+        </button>
+        <div class="social-bar__scrubber" aria-hidden="true">
+          <div class="social-bar__scrubber-bar" data-scrubber-bar></div>
+        </div>
+      </dim-carousel>
+    {%- endif -%}
+  </div>
+</section>
+
+<script src="{{ 'dim-carousel.js' | asset_url }}" type="module" defer></script>
+
+{% schema %}
+{
+  "name": "t:sections.dim_social_proof.section_name",
+  "tag": "section",
+  "class": "dim-section dim-social-proof",
+  "settings": [
+    { "type": "header", "content": "t:sections.dim_social_proof.header_strip" },
+    { "type": "text", "id": "stars",   "label": "t:sections.dim_social_proof.label_stars",   "default": "t:sections.dim_social_proof.stars_default" },
+    { "type": "text", "id": "rating",  "label": "t:sections.dim_social_proof.label_rating",  "default": "t:sections.dim_social_proof.rating_default" },
+    { "type": "text", "id": "count",   "label": "t:sections.dim_social_proof.label_count",   "default": "t:sections.dim_social_proof.count_default" },
+    { "type": "text", "id": "badge",   "label": "t:sections.dim_social_proof.label_badge",   "default": "t:sections.dim_social_proof.badge_default" },
+    { "type": "text", "id": "trusted", "label": "t:sections.dim_social_proof.label_trusted", "default": "t:sections.dim_social_proof.trusted_default" }
+  ],
+  "blocks": [
+    {
+      "type": "snippet",
+      "name": "t:sections.dim_social_proof.block_snippet_name",
+      "settings": [
+        { "type": "text", "id": "stars",  "label": "t:sections.dim_social_proof.label_snippet_stars",  "default": "★★★★★" },
+        { "type": "textarea", "id": "quote", "label": "t:sections.dim_social_proof.label_snippet_quote" },
+        { "type": "text", "id": "name",   "label": "t:sections.dim_social_proof.label_snippet_name" }
+      ]
+    }
+  ],
+  "max_blocks": 8,
+  "presets": [
+    {
+      "name": "t:sections.dim_social_proof.preset_name",
+      "blocks": [
+        { "type": "snippet", "settings": { "quote": "t:sections.dim_social_proof.snippet_1_quote", "name": "t:sections.dim_social_proof.snippet_1_name" } },
+        { "type": "snippet", "settings": { "quote": "t:sections.dim_social_proof.snippet_2_quote", "name": "t:sections.dim_social_proof.snippet_2_name" } },
+        { "type": "snippet", "settings": { "stars": "★★★★☆", "quote": "t:sections.dim_social_proof.snippet_3_quote", "name": "t:sections.dim_social_proof.snippet_3_name" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

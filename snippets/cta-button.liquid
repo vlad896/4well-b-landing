@@ -1,0 +1,51 @@
+{%- comment -%}
+  cta-button — shared CTA renderer. See CTA_REGISTRY.md for the id namespace.
+
+  Required params:
+    url, label, cta_id, section_id, position
+
+  Optional params:
+    icon       (string) leading emoji/glyph; rendered with aria-hidden
+    style      (string) 'amazon' (default) | 'sticky-once' | 'sticky-sub' | 'skip-link' | 'text-link' | <other>
+                        'text-link' → emits .cta-link only (no .btn baseline)
+                        all others → .btn .btn--{style}
+    size       (string) 'sm' | 'lg' | 'xl' — adds .btn--sm/.btn--lg/.btn--xl (ignored for text-link)
+    internal   (bool)   true for in-page anchors → drops target="_blank" + rel
+    aria_label (string) overrides visible label for assistive text
+
+  STANDING POLICY SP-MidCTA — section.id reuse pattern:
+    For sections placed multiple times in a template (e.g. dim-mid-cta),
+    pass cta_id: section.id, section_id: section.id. Shopify auto-generates
+    a unique section.id per template instance (mid-cta-1, mid-cta-2, ...).
+    Merchant adds another instance → new unique data-cta-id appears,
+    no schema change required. Adopted Batch D.
+{%- endcomment -%}
+{%- if style == 'text-link' -%}
+  {%- assign btn_classes = 'cta-link' -%}
+{%- else -%}
+  {%- assign btn_classes = 'btn' -%}
+  {%- if style == blank or style == 'amazon' -%}
+    {%- assign btn_classes = btn_classes | append: ' btn--amazon' -%}
+  {%- else -%}
+    {%- assign btn_classes = btn_classes | append: ' btn--' | append: style -%}
+  {%- endif -%}
+  {%- if size == 'sm' -%}
+    {%- assign btn_classes = btn_classes | append: ' btn--sm' -%}
+  {%- elsif size == 'lg' -%}
+    {%- assign btn_classes = btn_classes | append: ' btn--lg' -%}
+  {%- elsif size == 'xl' -%}
+    {%- assign btn_classes = btn_classes | append: ' btn--xl' -%}
+  {%- endif -%}
+{%- endif -%}
+
+<a class="{{ btn_classes }}"
+   href="{{ url | default: '#' }}"
+   {%- unless internal %} target="_blank" rel="noopener nofollow sponsored"{%- endunless %}
+   data-cta-id="{{ cta_id }}"
+   data-cta-section="{{ section_id }}"
+   data-cta-position="{{ position }}"
+   {%- if aria_label != blank %} aria-label="{{ aria_label | escape }}"{%- endif -%}
+>
+  {%- if icon != blank -%}<span class="btn__icon" aria-hidden="true">{{ icon }}</span> {% endif -%}
+  {{ label }}
+</a>

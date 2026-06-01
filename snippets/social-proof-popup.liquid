@@ -1,0 +1,80 @@
+{%- comment -%}
+  Social-proof rotating popup — bottom-left corner.
+  Storefront only (skipped in design_mode to avoid distraction in editor).
+{%- endcomment -%}
+
+{%- unless request.design_mode -%}
+<aside class="social-pop" id="social-pop" role="status" aria-live="polite" aria-atomic="true" hidden>
+  <div class="social-pop__avatar" aria-hidden="true" data-pop-avatar>L</div>
+  <div class="social-pop__body">
+    <div class="social-pop__title">
+      <strong data-pop-name>Lauren K.</strong>
+      <span class="social-pop__loc" data-pop-loc>from California</span>
+    </div>
+    <div class="social-pop__action">
+      Just purchased <strong>4WELL DIM</strong>
+      <span class="social-pop__time" data-pop-time>2 min ago</span>
+    </div>
+  </div>
+  <button class="social-pop__close" type="button" data-pop-close aria-label="Close notification">×</button>
+</aside>
+
+<script>
+(function(){
+  var el=document.getElementById('social-pop');
+  if(!el)return;
+  var KEY='social-pop-dismissed-v1';
+  try{ if(localStorage.getItem(KEY))return; }catch(_){}
+
+  var nameEl=el.querySelector('[data-pop-name]');
+  var locEl=el.querySelector('[data-pop-loc]');
+  var avatarEl=el.querySelector('[data-pop-avatar]');
+  var timeEl=el.querySelector('[data-pop-time]');
+  var closeBtn=el.querySelector('[data-pop-close]');
+
+  var pool=[
+    ['Lauren K.','California','2 min ago'],
+    ['Maya R.','New York','5 min ago'],
+    ['Ashley P.','Texas','8 min ago'],
+    ['Sarah M.','Florida','11 min ago'],
+    ['Jordan W.','Colorado','14 min ago'],
+    ['Emma T.','Washington','17 min ago'],
+    ['Olivia B.','Oregon','22 min ago'],
+    ['Sophia G.','Illinois','28 min ago']
+  ];
+  var idx=0;
+  var dismissed=false;
+  var timer;
+
+  function show(){
+    if(dismissed)return;
+    var p=pool[idx];
+    nameEl.textContent=p[0];
+    locEl.textContent='from '+p[1];
+    timeEl.textContent=p[2];
+    avatarEl.textContent=p[0].charAt(0);
+    el.hidden=false;
+    requestAnimationFrame(function(){el.classList.add('is-in')});
+    clearTimeout(timer);
+    timer=setTimeout(hide,5000);
+  }
+  function hide(){
+    el.classList.remove('is-in');
+    clearTimeout(timer);
+    timer=setTimeout(function(){
+      el.hidden=true;
+      idx=(idx+1)%pool.length;
+      if(!dismissed)timer=setTimeout(show,19650);
+    },350);
+  }
+  closeBtn.addEventListener('click',function(){
+    dismissed=true;
+    try{ localStorage.setItem(KEY,'1'); }catch(_){}
+    el.classList.remove('is-in');
+    clearTimeout(timer);
+    setTimeout(function(){el.hidden=true},350);
+  });
+  setTimeout(show,2500);
+})();
+</script>
+{%- endunless -%}

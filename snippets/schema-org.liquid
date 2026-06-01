@@ -1,0 +1,23 @@
+{%- comment -%} Organization JSON-LD built from theme settings. {%- endcomment -%}
+{%- if settings.org_name != blank -%}
+  {%- capture org_logo_url -%}
+    {%- if settings.org_logo != blank -%}{{ settings.org_logo | image_url: width: 512 }}{%- endif -%}
+  {%- endcapture -%}
+  {%- assign sameas_list = '' -%}
+  {%- if settings.org_sameas_1 != blank -%}{%- assign sameas_list = sameas_list | append: settings.org_sameas_1 | append: '|' -%}{%- endif -%}
+  {%- if settings.org_sameas_2 != blank -%}{%- assign sameas_list = sameas_list | append: settings.org_sameas_2 | append: '|' -%}{%- endif -%}
+  {%- if settings.org_sameas_3 != blank -%}{%- assign sameas_list = sameas_list | append: settings.org_sameas_3 | append: '|' -%}{%- endif -%}
+  {%- if settings.org_sameas_4 != blank -%}{%- assign sameas_list = sameas_list | append: settings.org_sameas_4 -%}{%- endif -%}
+  {%- assign sameas_list = sameas_list | remove_last: '|' -%}
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "name": {{ settings.org_name | json }},
+    "url": {{ shop.url | json }}{%- if org_logo_url != blank -%},
+    "logo": {{ org_logo_url | strip | json }}{%- endif -%}{%- if sameas_list != blank -%},
+    "sameAs": {{ sameas_list | split: '|' | json }}{%- endif -%}
+  }
+  </script>
+{%- endif -%}

@@ -1,0 +1,95 @@
+{%- comment -%}
+  section: dim-essentials-banner
+  Seed-style hero banner: full-bleed lifestyle photo + H2 overlay + frosted-glass
+  proposition strip (4 cards) along the bottom of the photo.
+  Replaces dim-problem in v2. Mobile: cards detach below photo (no overlay).
+{%- endcomment -%}
+
+{%- liquid
+  assign bg_url = ''
+  if section.settings.background_image != blank
+    assign bg_url = section.settings.background_image | image_url: width: 2400
+  elsif section.settings.background_image_fallback != blank
+    assign bg_url = section.settings.background_image_fallback | asset_url
+  endif
+  assign prop_blocks = section.blocks | where: 'type', 'proposition'
+-%}
+
+<section class="essentials-banner" {{ section.shopify_attributes }}>
+  <div class="container">
+    <div class="essentials-banner__hero">
+      {%- if bg_url != blank -%}
+        <img class="essentials-banner__bg" src="{{ bg_url }}"
+             alt="{{ section.settings.image_alt | escape }}"
+             loading="lazy" decoding="async">
+      {%- endif -%}
+      <div class="essentials-banner__copy">
+        {%- if section.settings.eyebrow != blank -%}
+          <p class="essentials-banner__eyebrow">{{ section.settings.eyebrow }}</p>
+        {%- endif -%}
+        {%- if section.settings.h2 != blank -%}
+          <h2 class="essentials-banner__h">{{ section.settings.h2 }}</h2>
+        {%- endif -%}
+      </div>
+
+      {%- if prop_blocks.size > 0 -%}
+        <div class="essentials-banner__cards" role="list">
+          {%- for block in prop_blocks -%}
+            <div class="essentials-banner__card" role="listitem" {{ block.shopify_attributes }}>
+              {%- if block.settings.icon_svg != blank -%}
+                <div class="essentials-banner__icon" aria-hidden="true">{{ block.settings.icon_svg }}</div>
+              {%- endif -%}
+              {%- if block.settings.title != blank -%}
+                <p class="essentials-banner__card-title">{{ block.settings.title }}</p>
+              {%- endif -%}
+              {%- if block.settings.body != blank -%}
+                <p class="essentials-banner__card-body">{{ block.settings.body }}</p>
+              {%- endif -%}
+            </div>
+          {%- endfor -%}
+        </div>
+      {%- endif -%}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "t:sections.dim_essentials_banner.section_name",
+  "tag": "section",
+  "class": "dim-section dim-essentials-banner-section",
+  "settings": [
+    { "type": "header", "content": "t:sections.dim_essentials_banner.header_intro" },
+    { "type": "text",     "id": "eyebrow",   "label": "t:sections.dim_essentials_banner.label_eyebrow",   "default": "t:sections.dim_essentials_banner.eyebrow_default" },
+    { "type": "textarea", "id": "h2",        "label": "t:sections.dim_essentials_banner.label_h2",        "default": "t:sections.dim_essentials_banner.h2_default" },
+    { "type": "text",     "id": "image_alt", "label": "t:sections.dim_essentials_banner.label_image_alt", "default": "t:sections.dim_essentials_banner.image_alt_default" },
+
+    { "type": "header", "content": "t:sections.dim_essentials_banner.header_background" },
+    { "type": "image_picker", "id": "background_image",          "label": "t:sections.dim_essentials_banner.label_background_image",          "info": "t:sections.dim_essentials_banner.info_background_image" },
+    { "type": "text",         "id": "background_image_fallback", "label": "t:sections.dim_essentials_banner.label_background_image_fallback", "info": "t:sections.dim_essentials_banner.info_background_image_fallback" }
+  ],
+  "blocks": [
+    {
+      "type": "proposition",
+      "name": "t:sections.dim_essentials_banner.block_proposition_name",
+      "settings": [
+        { "type": "textarea", "id": "icon_svg", "label": "t:sections.dim_essentials_banner.label_icon_svg", "info": "t:sections.dim_essentials_banner.info_icon_svg" },
+        { "type": "text",     "id": "title",    "label": "t:sections.dim_essentials_banner.label_card_title" },
+        { "type": "textarea", "id": "body",     "label": "t:sections.dim_essentials_banner.label_card_body" }
+      ]
+    }
+  ],
+  "max_blocks": 4,
+  "presets": [
+    {
+      "name": "t:sections.dim_essentials_banner.preset_name",
+      "blocks": [
+        { "type": "proposition", "settings": { "title": "t:sections.dim_essentials_banner.prop_1_title", "body": "t:sections.dim_essentials_banner.prop_1_body", "icon_svg": "t:sections.dim_essentials_banner.prop_1_icon" } },
+        { "type": "proposition", "settings": { "title": "t:sections.dim_essentials_banner.prop_2_title", "body": "t:sections.dim_essentials_banner.prop_2_body", "icon_svg": "t:sections.dim_essentials_banner.prop_2_icon" } },
+        { "type": "proposition", "settings": { "title": "t:sections.dim_essentials_banner.prop_3_title", "body": "t:sections.dim_essentials_banner.prop_3_body", "icon_svg": "t:sections.dim_essentials_banner.prop_3_icon" } },
+        { "type": "proposition", "settings": { "title": "t:sections.dim_essentials_banner.prop_4_title", "body": "t:sections.dim_essentials_banner.prop_4_body", "icon_svg": "t:sections.dim_essentials_banner.prop_4_icon" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,7 @@
+{%- comment -%}
+  Inlines assets/base.css into <head> for first-paint CSS.
+  Target: <= 8KB minified. base.css grows section-by-section in Phase 2.
+{%- endcomment -%}
+{%- style -%}
+  {{ 'base.css' | inline_asset_content }}
+{%- endstyle -%}

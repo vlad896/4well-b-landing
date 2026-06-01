@@ -1,0 +1,64 @@
+{%- comment -%}
+  Product JSON-LD. Rendered FROM dim-reviews (Turn 15+) with combined data:
+    - Product identity from GLOBAL settings (settings.product_name etc.)
+    - aggregateRating from section.settings.score + .aggregate_count
+    - review[] array passed as pre-built JSON string (caller builds via {% capture %})
+  Per CL2: content-derived schemas live with the content section. Single Product
+  emission per page = canonical pattern for Google Rich Results.
+
+  Params (all optional; snippet emits nothing if `name` is blank):
+    name, description, sku, brand, price, currency, image_url, offer_url
+    aggregate_rating_value (string|number) — e.g. "4.6"
+    aggregate_rating_count (integer)       — e.g. 2847
+    reviews_json (string)                  — pre-built JSON array, top 5 reviews
+  Fallbacks:
+    image_url -> settings.org_logo (via image_url filter)
+    brand     -> settings.org_name
+{%- endcomment -%}
+{%- if name != blank -%}
+  {%- assign product_image = image_url -%}
+  {%- if product_image == blank and settings.org_logo != blank -%}
+    {%- assign product_image = settings.org_logo | image_url: width: 1200 -%}
+  {%- endif -%}
+  {%- assign product_brand = brand | default: settings.org_name -%}
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Product",
+    "name": {{ name | json }}
+    {%- if description != blank -%},
+    "description": {{ description | json }}
+    {%- endif -%}
+    {%- if product_image != blank -%},
+    "image": [{{ product_image | strip | json }}]
+    {%- endif -%}
+    {%- if product_brand != blank -%},
+    "brand": { "@type": "Brand", "name": {{ product_brand | json }} }
+    {%- endif -%}
+    {%- if sku != blank -%},
+    "sku": {{ sku | json }}
+    {%- endif -%}
+    {%- if price != blank and currency != blank and offer_url != blank -%},
+    "offers": {
+      "@type": "Offer",
+      "url": {{ offer_url | json }},
+      "priceCurrency": {{ currency | json }},
+      "price": {{ price | json }},
+      "availability": "https://schema.org/InStock",
+      "itemCondition": "https://schema.org/NewCondition"
+    }
+    {%- endif -%}
+    {%- if aggregate_rating_value != blank and aggregate_rating_count != blank -%},
+    "aggregateRating": {
+      "@type": "AggregateRating",
+      "ratingValue": {{ aggregate_rating_value | json }},
+      "reviewCount": {{ aggregate_rating_count }},
+      "bestRating": "5"
+    }
+    {%- endif -%}
+    {%- if reviews_json != blank -%},
+    "review": {{ reviews_json }}
+    {%- endif -%}
+  }
+  </script>
+{%- endif -%}

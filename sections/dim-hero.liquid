@@ -1,0 +1,133 @@
+{%- comment -%}
+  section: dim-hero
+  source mapping: index.html block 1 (lines 178-215) — see MIGRATION_PLAN.md §2-3
+  Turn 1 conversion. Turn 15 REFACTOR: Product JSON-LD emission moved to dim-reviews
+  (where data is most complete). Product identity now read from global settings.product_*.
+  This section no longer emits any JSON-LD — purely visual.
+{%- endcomment -%}
+
+<div class="hero" {{ section.shopify_attributes }}>
+  <div class="container">
+    <div class="hero__grid">
+      <div class="hero__copy">
+        {%- if section.settings.eyebrow != blank -%}
+          <div class="eyebrow">{{ section.settings.eyebrow }}</div>
+        {%- endif -%}
+
+        <h1 class="hero__h1">{{ section.settings.h1 }}</h1>
+
+        {%- if section.settings.sub != blank -%}
+          <p class="hero__sub">{{ section.settings.sub }}</p>
+        {%- endif -%}
+
+        {%- assign chip_blocks = section.blocks | where: 'type', 'chip' -%}
+        {%- if chip_blocks.size > 0 -%}
+          <div class="pain-chips" aria-label="{{ 'sections.dim_hero.chips_aria' | t }}">
+            {%- for block in chip_blocks -%}
+              <span class="chip" {{ block.shopify_attributes }}>{{ block.settings.label }}</span>
+            {%- endfor -%}
+          </div>
+        {%- endif -%}
+
+        <div class="hero__cta">
+          {%- render 'cta-button',
+            url: settings.global_cta_url,
+            label: section.settings.cta_label,
+            icon: section.settings.cta_icon,
+            cta_id: 'hero-primary',
+            section_id: 'hero',
+            position: 'top',
+            size: 'lg'
+          -%}
+
+          <p class="hero__pricing">
+            <strong>{{ section.settings.price_amount_once }}</strong> {{ section.settings.price_label_once }} ·
+            <strong>{{ section.settings.price_amount_sub }}</strong> {{ section.settings.price_label_sub }}
+            {%- if section.settings.save_badge != blank %} <span class="hero__pricing-save">{{ section.settings.save_badge }}</span>{%- endif -%}
+          </p>
+
+          {%- render 'trust-badges', variant: 'hero' -%}
+        </div>
+      </div>
+
+      <div class="hero__visual">
+        {%- if section.settings.badge_text != blank -%}
+          <span class="hero__badge">{{ section.settings.badge_text }}</span>
+        {%- endif -%}
+        <div class="hero__bottle-wrap{% if section.settings.bottle_image != blank or section.settings.bottle_image_fallback != blank %} hero__bottle-wrap--photo{% endif %}">
+          {%- if section.settings.bottle_image != blank -%}
+            {%- render 'img',
+              image: section.settings.bottle_image,
+              sizes: '(min-width: 1024px) 480px, 80vw',
+              alt: section.settings.bottle_aria,
+              fetchpriority: 'high',
+              loading: 'eager'
+            -%}
+          {%- elsif section.settings.bottle_image_fallback != blank -%}
+            <img src="{{ section.settings.bottle_image_fallback | asset_url }}"
+                 alt="{{ section.settings.bottle_aria | escape }}"
+                 loading="eager" decoding="async" fetchpriority="high">
+          {%- else -%}
+            <svg class="bottle" viewBox="0 0 220 320" width="220" height="320" role="img" focusable="false" aria-label="{{ section.settings.bottle_aria | escape }}">
+              <use href="#bottle"></use>
+            </svg>
+          {%- endif -%}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "t:sections.dim_hero.section_name",
+  "tag": "section",
+  "class": "dim-section dim-hero-section",
+  "settings": [
+    { "type": "header", "content": "t:sections.dim_hero.header_headline" },
+    { "type": "text",     "id": "eyebrow", "label": "t:sections.dim_hero.label_eyebrow", "default": "t:sections.dim_hero.eyebrow_default" },
+    { "type": "text",     "id": "h1",      "label": "t:sections.dim_hero.label_h1",      "default": "t:sections.dim_hero.h1_default" },
+    { "type": "textarea", "id": "sub",     "label": "t:sections.dim_hero.label_sub",     "default": "t:sections.dim_hero.sub_default" },
+
+    { "type": "header",    "content": "t:sections.dim_hero.header_cta" },
+    { "type": "paragraph", "content": "t:sections.dim_hero.paragraph_cta_info" },
+    { "type": "text", "id": "cta_icon",  "label": "t:sections.dim_hero.label_cta_icon", "info": "t:sections.dim_hero.info_cta_icon", "default": "t:sections.dim_hero.cta_icon_default" },
+    { "type": "text", "id": "cta_label", "label": "t:sections.dim_hero.label_cta_label", "default": "t:sections.dim_hero.cta_label_default" },
+
+    { "type": "header", "content": "t:sections.dim_hero.header_price" },
+    { "type": "text", "id": "price_amount_once", "label": "t:sections.dim_hero.label_price_amount_once", "default": "t:sections.dim_hero.price_amount_once_default" },
+    { "type": "text", "id": "price_label_once",  "label": "t:sections.dim_hero.label_price_label_once",  "default": "t:sections.dim_hero.price_label_once_default" },
+    { "type": "text", "id": "price_amount_sub",  "label": "t:sections.dim_hero.label_price_amount_sub",  "default": "t:sections.dim_hero.price_amount_sub_default" },
+    { "type": "text", "id": "price_label_sub",   "label": "t:sections.dim_hero.label_price_label_sub",   "default": "t:sections.dim_hero.price_label_sub_default" },
+    { "type": "text", "id": "save_badge",        "label": "t:sections.dim_hero.label_save_badge",        "default": "t:sections.dim_hero.save_badge_default" },
+
+    { "type": "header", "content": "t:sections.dim_hero.header_visual" },
+    { "type": "text", "id": "badge_text",  "label": "t:sections.dim_hero.label_badge_text",  "default": "t:sections.dim_hero.badge_text_default" },
+    { "type": "image_picker", "id": "bottle_image", "label": "t:sections.dim_hero.label_bottle_image", "info": "t:sections.dim_hero.info_bottle_image" },
+    { "type": "text", "id": "bottle_image_fallback", "label": "t:sections.dim_hero.label_bottle_image_fallback", "info": "t:sections.dim_hero.info_bottle_image_fallback", "default": "hero-bottle.jpg" },
+    { "type": "text", "id": "bottle_aria", "label": "t:sections.dim_hero.label_bottle_aria", "info": "t:sections.dim_hero.info_bottle_aria", "default": "t:sections.dim_hero.bottle_aria_default" }
+  ],
+  "blocks": [
+    {
+      "type": "chip",
+      "name": "t:sections.dim_hero.block_chip_name",
+      "settings": [
+        { "type": "text", "id": "label", "label": "t:sections.dim_hero.label_chip_label" }
+      ]
+    }
+  ],
+  "max_blocks": 6,
+  "presets": [
+    {
+      "name": "t:sections.dim_hero.preset_name",
+      "blocks": [
+        { "type": "chip", "settings": { "label": "t:sections.dim_hero.chip_1_default" } },
+        { "type": "chip", "settings": { "label": "t:sections.dim_hero.chip_2_default" } },
+        { "type": "chip", "settings": { "label": "t:sections.dim_hero.chip_3_default" } },
+        { "type": "chip", "settings": { "label": "t:sections.dim_hero.chip_4_default" } },
+        { "type": "chip", "settings": { "label": "t:sections.dim_hero.chip_5_default" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

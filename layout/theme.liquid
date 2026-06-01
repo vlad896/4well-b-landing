@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="{{ request.locale.iso_code | default: 'en' }}">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="{{ settings.brand_color_primary }}">
+
+  {%- if settings.robots_index -%}
+    <meta name="robots" content="index,follow">
+  {%- else -%}
+    <meta name="robots" content="noindex,nofollow">
+  {%- endif -%}
+
+  {%- assign canonical_link = canonical_url -%}
+  {%- if settings.canonical_url_override != blank -%}
+    {%- assign canonical_link = settings.canonical_url_override -%}
+  {%- endif -%}
+  <link rel="canonical" href="{{ canonical_link }}">
+
+  <link rel="preconnect" href="https://cdn.shopify.com" crossorigin>
+
+  {%- if settings.favicon != blank -%}
+    <link rel="icon" type="image/png" href="{{ settings.favicon | image_url: width: 32 }}">
+  {%- endif -%}
+
+  <title>{{ page_title }}{% unless page_title contains shop.name %} &ndash; {{ shop.name }}{% endunless %}</title>
+  {%- if page_description -%}
+    <meta name="description" content="{{ page_description | escape }}">
+  {%- endif -%}
+
+  {%- render 'meta-tags' -%}
+  {%- render 'preload-assets' -%}
+
+  {{ content_for_header }}
+
+  {%- render 'critical-css' -%}
+
+  {{ 'deferred.css' | asset_url | stylesheet_tag: preload: true }}
+
+  {%- comment -%}
+    JSON-LD architecture (CL2): theme.liquid emits only data-independent schemas.
+    Content-derived schemas live inside sections, since JSON-template section
+    settings are not reliably accessible from layout's <head>:
+      - dim-hero emits Product
+      - dim-reviews emits AggregateRating + Review[]
+      - dim-faq emits FAQPage
+  {%- endcomment -%}
+  {%- render 'schema-org' -%}
+  {%- render 'schema-breadcrumb' -%}
+
+  {%- comment -%}
+    Progressive scaffold device. Snippets sit here until their consumer
+    section is converted in Phase 2; each leaves the block when adopted.
+    Removed entirely when the last consumer lands.
+  {%- endcomment -%}
+  {%- if false -%}
+    {%- render 'img', image: '', sizes: '' -%}
+    {%- render 'schema-faq' -%}
+  {%- endif -%}
+</head>
+<body class="template-{{ template | replace: '.', '-' | handle }}">
+  <a class="skip-to-content" href="#main">{{ 'ui.skip_to_content' | t }}</a>
+
+  {%- render 'svg-defs' -%}
+
+  <main id="main" role="main">
+    {{ content_for_layout }}
+  </main>
+
+  {%- render 'social-proof-popup' -%}
+</body>
+</html>

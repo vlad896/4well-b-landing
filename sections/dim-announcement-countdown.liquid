@@ -1,0 +1,109 @@
+{%- comment -%}
+  section: dim-announcement-countdown
+  source mapping: index.html block 0a (lines 90-115)
+  Turn 2 conversion. First Web Component <dim-countdown> arrives here.
+  No <dim-sticky-bar> in v1 — top bar stays visible always (countdown urgency feature).
+{%- endcomment -%}
+
+<div class="announcement-bar" role="region" aria-label="{{ 'sections.dim_announcement_countdown.region_aria' | t }}" {{ section.shopify_attributes }}>
+  <div class="announcement-bar__inner container">
+    {%- if section.settings.show_product_info -%}
+      <div class="announcement-bar__info">
+        {%- if section.settings.product_icon != blank -%}
+          <span class="announcement-bar__icon" aria-hidden="true">{{ section.settings.product_icon }}</span>
+        {%- endif -%}
+        <div class="announcement-bar__meta">
+          <div class="announcement-bar__name">{{ section.settings.product_name }}</div>
+          {%- if section.settings.rating_text != blank -%}
+            {%- assign rating_first = section.settings.rating_text | split: ' ' | first -%}
+            {%- assign rating_rest = section.settings.rating_text | remove_first: rating_first | strip -%}
+            <div class="announcement-bar__rating">
+              <span class="announcement-bar__stars" aria-hidden="true">{{ rating_first }}</span>{% if rating_rest != blank %} {{ rating_rest }}{% endif %}
+            </div>
+          {%- endif -%}
+        </div>
+      </div>
+    {%- endif -%}
+
+    <div class="announcement-bar__timer" aria-label="{{ 'sections.dim_announcement_countdown.timer_aria' | t }}">
+      {%- if section.settings.timer_icon != blank -%}
+        <span class="announcement-bar__timer-icon" aria-hidden="true">{{ section.settings.timer_icon }}</span>
+      {%- endif -%}
+      {%- if section.settings.timer_label != blank -%}
+        <span class="announcement-bar__timer-label">{{ section.settings.timer_label }}</span>
+      {%- endif -%}
+      <dim-countdown
+        {% if section.settings.timer_end_iso != blank %}end-date="{{ section.settings.timer_end_iso }}"{% endif %}
+        fallback-hours="{{ section.settings.timer_fallback_hours }}"
+        persist-key="dim-promo-timer-v1"
+        expired-action="{{ section.settings.expired_action }}"
+        expired-label="{{ section.settings.expired_label | escape }}"
+        class="announcement-bar__clock"
+        {% render 'dim-countdown-aria' %}
+      >
+        <strong data-clock aria-hidden="true">--:--:--</strong>
+        <span class="visually-hidden" data-clock-sr aria-live="polite"></span>
+      </dim-countdown>
+    </div>
+
+    <div class="announcement-bar__btns">
+      {%- render 'cta-button',
+        url: settings.global_cta_url,
+        label: section.settings.btn_once_label,
+        cta_id: 'sticky-top-once',
+        section_id: 'announcement-countdown',
+        position: 'sticky',
+        style: 'sticky-once'
+      -%}
+      {%- render 'cta-button',
+        url: settings.global_cta_url,
+        label: section.settings.btn_sub_label,
+        cta_id: 'sticky-top-sub',
+        section_id: 'announcement-countdown',
+        position: 'sticky',
+        style: 'sticky-sub'
+      -%}
+    </div>
+  </div>
+</div>
+
+<script src="{{ 'dim-countdown.js' | asset_url }}" type="module" defer></script>
+
+{% schema %}
+{
+  "name": "t:sections.dim_announcement_countdown.section_name",
+  "tag": "div",
+  "class": "dim-section dim-announcement-countdown",
+  "settings": [
+    { "type": "header", "content": "t:sections.dim_announcement_countdown.header_product" },
+    { "type": "checkbox", "id": "show_product_info", "label": "t:sections.dim_announcement_countdown.label_show_product_info", "default": true },
+    { "type": "text", "id": "product_icon", "label": "t:sections.dim_announcement_countdown.label_product_icon", "default": "t:sections.dim_announcement_countdown.product_icon_default" },
+    { "type": "text", "id": "product_name", "label": "t:sections.dim_announcement_countdown.label_product_name", "default": "t:sections.dim_announcement_countdown.product_name_default" },
+    { "type": "text", "id": "rating_text", "label": "t:sections.dim_announcement_countdown.label_rating_text", "default": "t:sections.dim_announcement_countdown.rating_text_default" },
+
+    { "type": "header", "content": "t:sections.dim_announcement_countdown.header_timer" },
+    { "type": "text", "id": "timer_icon", "label": "t:sections.dim_announcement_countdown.label_timer_icon", "default": "t:sections.dim_announcement_countdown.timer_icon_default" },
+    { "type": "text", "id": "timer_label", "label": "t:sections.dim_announcement_countdown.label_timer_label", "default": "t:sections.dim_announcement_countdown.timer_label_default" },
+    { "type": "text", "id": "timer_end_iso", "label": "t:sections.dim_announcement_countdown.label_timer_end_iso", "info": "t:sections.dim_announcement_countdown.info_timer_end_iso" },
+    { "type": "number", "id": "timer_fallback_hours", "label": "t:sections.dim_announcement_countdown.label_timer_fallback_hours", "info": "t:sections.dim_announcement_countdown.info_timer_fallback_hours", "default": 24 },
+    {
+      "type": "select",
+      "id": "expired_action",
+      "label": "t:sections.dim_announcement_countdown.label_expired_action",
+      "options": [
+        { "value": "label", "label": "t:sections.dim_announcement_countdown.option_action_label" },
+        { "value": "hide",  "label": "t:sections.dim_announcement_countdown.option_action_hide" }
+      ],
+      "default": "label"
+    },
+    { "type": "text", "id": "expired_label", "label": "t:sections.dim_announcement_countdown.label_expired_label", "default": "t:sections.dim_announcement_countdown.expired_label_default" },
+
+    { "type": "header", "content": "t:sections.dim_announcement_countdown.header_buttons" },
+    { "type": "text", "id": "btn_once_label", "label": "t:sections.dim_announcement_countdown.label_btn_once", "default": "t:sections.dim_announcement_countdown.btn_once_default" },
+    { "type": "text", "id": "btn_sub_label",  "label": "t:sections.dim_announcement_countdown.label_btn_sub",  "default": "t:sections.dim_announcement_countdown.btn_sub_default" }
+  ],
+  "presets": [
+    { "name": "t:sections.dim_announcement_countdown.preset_name" }
+  ]
+}
+{% endschema %}

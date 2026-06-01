@@ -1,0 +1,35 @@
+{%- comment -%}
+  section: dim-skip-link
+  source mapping: index.html block 4.5 (lines 415-422)
+  Turn 9 (Batch C). Smallest section in theme.
+  1 CTA (skip-to-buy, internal anchor, skip-link style).
+{%- endcomment -%}
+
+<div class="skip-link-bar" role="navigation" aria-label="{{ 'sections.dim_skip_link.region_aria' | t }}" {{ section.shopify_attributes }}>
+  <div class="container">
+    <a class="skip-link__link"
+       href="{{ section.settings.anchor | default: '#' }}"
+       data-cta-id="skip-to-buy"
+       data-cta-section="skip-link"
+       data-cta-position="inline">
+      {{ section.settings.text }}
+      {%- if section.settings.arrow != blank %} <span class="skip-link__arrow" aria-hidden="true">{{ section.settings.arrow }}</span>{% endif %}
+    </a>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "t:sections.dim_skip_link.section_name",
+  "tag": "div",
+  "class": "dim-section dim-skip-link-section",
+  "settings": [
+    { "type": "text", "id": "text",   "label": "t:sections.dim_skip_link.label_text",   "default": "t:sections.dim_skip_link.text_default" },
+    { "type": "text", "id": "arrow",  "label": "t:sections.dim_skip_link.label_arrow",  "default": "↓" },
+    { "type": "text", "id": "anchor", "label": "t:sections.dim_skip_link.label_anchor", "info": "t:sections.dim_skip_link.info_anchor", "default": "#buy" }
+  ],
+  "presets": [
+    { "name": "t:sections.dim_skip_link.preset_name" }
+  ]
+}
+{% endschema %}

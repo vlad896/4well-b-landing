@@ -1,0 +1,75 @@
+{%- comment -%}
+  section: dim-sources
+  source mapping: index.html sources block (lines 1080-1092)
+  Turn 20 (Batch F). Resolves cross-section `#refs` anchor target for Turns 8 (dim-science
+  callout link) + Turn 10 (dim-ingredients per-block footnotes 1-4).
+  Schema tag "div" so outer Shopify wrapper is <div>; inner <section id="refs"> is the
+  semantic anchor target. Each <li> also has stable id="ref-N" for potential future
+  cite-back navigation. 0 CTAs / 0 compliance / 0 JSON-LD / 0 JS.
+{%- endcomment -%}
+
+{%- assign ref_blocks = section.blocks | where: 'type', 'ref' -%}
+
+<section class="refs section--tight" id="refs" aria-label="{{ 'sections.dim_sources.region_aria' | t }}" {{ section.shopify_attributes }}>
+  <div class="container">
+    {%- if section.settings.eyebrow != blank -%}
+      <div class="eyebrow">{{ section.settings.eyebrow }}</div>
+    {%- endif -%}
+    <h2 class="h3 refs__h">{{ section.settings.h2 }}</h2>
+
+    {%- if ref_blocks.size > 0 -%}
+      <ol class="refs__list">
+        {%- for block in ref_blocks -%}
+          <li id="ref-{{ block.settings.sup_num | escape }}" {{ block.shopify_attributes }}>
+            {%- if block.settings.sup_num != blank -%}
+              <sup>{{ block.settings.sup_num }}</sup>
+            {%- endif -%}
+            {{ block.settings.citation_html }}
+          </li>
+        {%- endfor -%}
+      </ol>
+    {%- endif -%}
+
+    {%- if section.settings.note != blank -%}
+      <div class="refs__note">{{ section.settings.note }}</div>
+    {%- endif -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "t:sections.dim_sources.section_name",
+  "tag": "div",
+  "class": "dim-section dim-sources-section",
+  "settings": [
+    { "type": "header", "content": "t:sections.dim_sources.header_intro" },
+    { "type": "text",     "id": "eyebrow", "label": "t:sections.dim_sources.label_eyebrow" },
+    { "type": "text",     "id": "h2",      "label": "t:sections.dim_sources.label_h2",   "default": "t:sections.dim_sources.h2_default" },
+    { "type": "header", "content": "t:sections.dim_sources.header_note" },
+    { "type": "richtext", "id": "note",    "label": "t:sections.dim_sources.label_note", "default": "t:sections.dim_sources.note_default" }
+  ],
+  "blocks": [
+    {
+      "type": "ref",
+      "name": "t:sections.dim_sources.block_ref_name",
+      "settings": [
+        { "type": "text",     "id": "sup_num",        "label": "t:sections.dim_sources.label_sup_num", "info": "t:sections.dim_sources.info_sup_num" },
+        { "type": "richtext", "id": "citation_html",  "label": "t:sections.dim_sources.label_citation", "info": "t:sections.dim_sources.info_citation" }
+      ]
+    }
+  ],
+  "max_blocks": 12,
+  "presets": [
+    {
+      "name": "t:sections.dim_sources.preset_name",
+      "blocks": [
+        { "type": "ref", "settings": { "sup_num": "1", "citation_html": "t:sections.dim_sources.ref_1_citation" } },
+        { "type": "ref", "settings": { "sup_num": "2", "citation_html": "t:sections.dim_sources.ref_2_citation" } },
+        { "type": "ref", "settings": { "sup_num": "3", "citation_html": "t:sections.dim_sources.ref_3_citation" } },
+        { "type": "ref", "settings": { "sup_num": "4", "citation_html": "t:sections.dim_sources.ref_4_citation" } },
+        { "type": "ref", "settings": { "sup_num": "5", "citation_html": "t:sections.dim_sources.ref_5_citation" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,36 @@
+{%- comment -%}
+  img — responsive <picture> with AVIF + WebP via Shopify image_url filter.
+
+  Required:
+    image       (image)  Shopify image object. If blank, snippet emits nothing
+                         (call site responsible for placeholder fallback).
+  Optional:
+    sizes         (string)  sizes attribute, e.g. '(min-width: 768px) 50vw, 100vw'. Default '100vw'.
+    loading       (string)  'eager' | 'lazy'. Default 'lazy'.
+    fetchpriority (string)  'high' for LCP image only. Optional.
+    alt           (string)  Alt text; falls back to image.alt.
+    widths        (string)  Comma-separated widths. Default '320,480,640,960,1280'.
+
+  Output:
+    Modern <picture> with width/height attrs from image dimensions (no CLS).
+{%- endcomment -%}
+{%- if image != blank -%}
+  {%- assign widths_str = widths | default: '320,480,640,960,1280' -%}
+  {%- assign widths_arr = widths_str | split: ',' -%}
+  {%- assign loading_val = loading | default: 'lazy' -%}
+  {%- assign sizes_val = sizes | default: '100vw' -%}
+  {%- assign alt_val = alt | default: image.alt -%}
+  <picture>
+    <source type="image/avif" sizes="{{ sizes_val }}" srcset="{%- for w in widths_arr -%}{{ image | image_url: width: w, format: 'avif' }} {{ w | strip }}w{%- unless forloop.last -%}, {%- endunless -%}{%- endfor -%}">
+    <source type="image/webp" sizes="{{ sizes_val }}" srcset="{%- for w in widths_arr -%}{{ image | image_url: width: w, format: 'webp' }} {{ w | strip }}w{%- unless forloop.last -%}, {%- endunless -%}{%- endfor -%}">
+    <img src="{{ image | image_url: width: 960 }}"
+         srcset="{%- for w in widths_arr -%}{{ image | image_url: width: w }} {{ w | strip }}w{%- unless forloop.last -%}, {%- endunless -%}{%- endfor -%}"
+         sizes="{{ sizes_val }}"
+         width="{{ image.width }}"
+         height="{{ image.height }}"
+         alt="{{ alt_val | escape }}"
+         loading="{{ loading_val }}"
+         {%- if fetchpriority != blank %} fetchpriority="{{ fetchpriority }}"{%- endif %}
+         decoding="async">
+  </picture>
+{%- endif -%}

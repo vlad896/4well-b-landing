@@ -1,0 +1,261 @@
+{%- comment -%}
+  section: dim-final-cta
+  source mapping: index.html block 14 (lines 1018-1075)
+  Turn 19 — per-turn STOP. PDP-style final conversion CTA.
+  - Second <dim-countdown> consumer (re-uses Turn 14 dim-carousel.js? no — countdown.js. Already loaded by Turn 2.)
+  - OI5 aria-live fix APPLIED (data-clock-sr + dim-countdown-aria snippet)
+  - 2 CTAs via cta-button (final-cta-sub + final-cta-once) — both → settings.global_cta_url
+  - id="buy" anchor target for Turn 9 dim-skip-link (#buy navigation resolves)
+  - schema tag "div" so outer wrapper is <div>, inner <section id="buy"> = the named anchor
+  - Plan-card visual reuses .review-card pattern (border + radius + padding + box-shadow); .plan-card adds layout + featured variant
+{%- endcomment -%}
+
+<section class="final-cta" id="buy" {{ section.shopify_attributes }}>
+  <div class="container">
+    <div class="pdp-layout">
+      <div class="pdp-layout__visual">
+        {%- assign gallery_blocks = section.blocks | where: 'type', 'gallery_image' -%}
+        {%- if gallery_blocks.size > 0 -%}
+          <dim-pdp-gallery class="pdp-gallery">
+            <div class="pdp-gallery__main" data-pdp-main role="button" tabindex="0"
+                 aria-label="{{ 'sections.dim_final_cta.zoom_open_aria' | t }}">
+              {%- assign first = gallery_blocks[0] -%}
+              {%- if first.settings.image != blank -%}
+                {%- assign first_url = first.settings.image | image_url: width: 1200 -%}
+                {%- assign first_alt = first.settings.alt | default: section.settings.bottle_aria -%}
+                <img src="{{ first_url }}" alt="{{ first_alt | escape }}"
+                     loading="eager" decoding="async" fetchpriority="high"
+                     data-pdp-main-img>
+              {%- elsif first.settings.fallback_image != blank -%}
+                {%- assign first_alt = first.settings.alt | default: section.settings.bottle_aria -%}
+                <img src="{{ first.settings.fallback_image | asset_url }}"
+                     alt="{{ first_alt | escape }}"
+                     loading="eager" decoding="async" fetchpriority="high"
+                     data-pdp-main-img>
+              {%- endif -%}
+              <span class="pdp-gallery__zoom-hint" aria-hidden="true">
+                <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5M11 8v6M8 11h6"/></svg>
+              </span>
+            </div>
+
+            {%- if gallery_blocks.size > 1 -%}
+              <ul class="pdp-gallery__thumbs" role="tablist"
+                  aria-label="{{ 'sections.dim_final_cta.thumbs_aria' | t }}">
+                {%- for block in gallery_blocks -%}
+                  {%- if block.settings.image != blank -%}
+                    {%- assign thumb_url = block.settings.image | image_url: width: 160 -%}
+                    {%- assign full_url  = block.settings.image | image_url: width: 1600 -%}
+                  {%- elsif block.settings.fallback_image != blank -%}
+                    {%- assign thumb_url = block.settings.fallback_image | asset_url -%}
+                    {%- assign full_url  = block.settings.fallback_image | asset_url -%}
+                  {%- else -%}
+                    {%- continue -%}
+                  {%- endif -%}
+                  {%- assign thumb_alt = block.settings.alt | default: section.settings.bottle_aria -%}
+                  <li role="presentation" {{ block.shopify_attributes }}>
+                    <button type="button" class="pdp-gallery__thumb"
+                            role="tab"
+                            aria-selected="{% if forloop.first %}true{% else %}false{% endif %}"
+                            aria-current="{% if forloop.first %}true{% else %}false{% endif %}"
+                            data-pdp-thumb
+                            data-full="{{ full_url }}"
+                            data-alt="{{ thumb_alt | escape }}">
+                      <img src="{{ thumb_url }}" alt="" loading="lazy" decoding="async">
+                    </button>
+                  </li>
+                {%- endfor -%}
+              </ul>
+            {%- endif -%}
+
+            <dialog class="pdp-gallery__zoom" data-pdp-zoom aria-label="{{ 'sections.dim_final_cta.zoom_dialog_aria' | t }}">
+              <button type="button" class="pdp-gallery__zoom-close" data-pdp-zoom-close
+                      aria-label="{{ 'sections.dim_final_cta.zoom_close_aria' | t }}">
+                <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18M6 6l12 12"/></svg>
+              </button>
+              <div class="pdp-gallery__zoom-scroll">
+                <img alt="" data-pdp-zoom-img>
+              </div>
+            </dialog>
+          </dim-pdp-gallery>
+        {%- else -%}
+          <div class="pdp-visual">
+            <svg class="bottle pdp-bottle" viewBox="0 0 220 320" width="220" height="320" role="img" focusable="false" aria-label="{{ section.settings.bottle_aria | escape }}">
+              <use href="#bottle"></use>
+            </svg>
+          </div>
+        {%- endif -%}
+      </div>
+
+      <div class="pdp-layout__copy">
+        {%- if section.settings.rating_stars != blank or section.settings.rating_text != blank -%}
+          <div class="pdp-rating">
+            {%- if section.settings.rating_stars != blank -%}
+              <span class="pdp-rating__stars" aria-hidden="true">{{ section.settings.rating_stars }}</span>
+            {%- endif -%}
+            {%- if section.settings.rating_text != blank -%}
+              <span class="pdp-rating__text">{{ section.settings.rating_text }}</span>
+            {%- endif -%}
+          </div>
+        {%- endif -%}
+
+        <div class="pdp-title-row">
+          <h2 class="pdp-title">{{ section.settings.h2_title }}</h2>
+        </div>
+        {%- if section.settings.subtitle != blank -%}
+          <p class="pdp-subtitle">{{ section.settings.subtitle }}</p>
+        {%- endif -%}
+
+        <div class="pdp-timer" aria-label="{{ 'sections.dim_final_cta.timer_aria' | t }}">
+          {%- if section.settings.timer_label_prefix != blank -%}
+            <span class="pdp-timer__label">{{ section.settings.timer_label_prefix }}</span>
+          {%- endif -%}
+          <dim-countdown
+            {% if section.settings.timer_end_iso != blank %}end-date="{{ section.settings.timer_end_iso }}"{% endif %}
+            fallback-hours="{{ section.settings.timer_fallback_hours }}"
+            persist-key="dim-promo-timer-v1"
+            expired-action="label"
+            expired-label="{{ section.settings.timer_expired_label | escape }}"
+            class="pdp-timer__clock"
+            {% render 'dim-countdown-aria' %}
+          >
+            <strong data-clock aria-hidden="true">--:--:--</strong>
+            <span class="visually-hidden" data-clock-sr aria-live="polite"></span>
+          </dim-countdown>
+        </div>
+
+        <div class="pdp-plans">
+          <div class="plan-card plan-card--featured">
+            {%- if section.settings.sub_badge != blank -%}
+              <span class="plan-card__badge">{{ section.settings.sub_badge }}</span>
+            {%- endif -%}
+            <div class="plan-card__copy">
+              <span class="plan-card__label">{{ section.settings.sub_label }}</span>
+              <span class="plan-card__pricing">
+                {%- if section.settings.sub_price_was != blank -%}
+                  <span class="plan-card__was">{{ section.settings.sub_price_was }}</span>
+                {%- endif -%}
+                <span class="plan-card__now">{{ section.settings.sub_price_now }}</span>
+              </span>
+            </div>
+            {%- render 'cta-button',
+              url: settings.global_cta_url,
+              label: section.settings.sub_cta_label,
+              cta_id: 'final-cta-sub',
+              section_id: 'final-cta',
+              position: 'bottom',
+              size: 'lg'
+            -%}
+          </div>
+
+          {%- assign perk_blocks = section.blocks | where: 'type', 'perk' -%}
+          {%- if perk_blocks.size > 0 -%}
+            <ul class="plan-perks">
+              {%- for block in perk_blocks -%}
+                <li {{ block.shopify_attributes }}>{{ block.settings.text }}</li>
+              {%- endfor -%}
+            </ul>
+          {%- endif -%}
+
+          <div class="plan-card">
+            <div class="plan-card__copy">
+              <span class="plan-card__label">{{ section.settings.once_label }}</span>
+              <span class="plan-card__pricing">
+                <span class="plan-card__now">{{ section.settings.once_price }}</span>
+              </span>
+            </div>
+            {%- render 'cta-button',
+              url: settings.global_cta_url,
+              label: section.settings.once_cta_label,
+              cta_id: 'final-cta-once',
+              section_id: 'final-cta',
+              position: 'bottom',
+              style: 'secondary',
+              size: 'lg'
+            -%}
+          </div>
+        </div>
+
+        {%- render 'trust-badges', variant: 'final' -%}
+      </div>
+    </div>
+  </div>
+</section>
+
+<script src="{{ 'dim-countdown.js' | asset_url }}" type="module" defer></script>
+<script src="{{ 'dim-pdp-gallery.js' | asset_url }}" type="module" defer></script>
+
+{% schema %}
+{
+  "name": "t:sections.dim_final_cta.section_name",
+  "tag": "div",
+  "class": "dim-section dim-final-cta-section",
+  "settings": [
+    { "type": "header", "content": "t:sections.dim_final_cta.header_rating" },
+    { "type": "text", "id": "rating_stars", "label": "t:sections.dim_final_cta.label_rating_stars", "default": "t:sections.dim_final_cta.rating_stars_default" },
+    { "type": "text", "id": "rating_text",  "label": "t:sections.dim_final_cta.label_rating_text",  "default": "t:sections.dim_final_cta.rating_text_default" },
+
+    { "type": "header", "content": "t:sections.dim_final_cta.header_title" },
+    { "type": "text",     "id": "h2_title",  "label": "t:sections.dim_final_cta.label_h2_title",  "default": "t:sections.dim_final_cta.h2_title_default" },
+    { "type": "text",     "id": "pill_text", "label": "t:sections.dim_final_cta.label_pill_text", "default": "t:sections.dim_final_cta.pill_text_default" },
+    { "type": "text",     "id": "subtitle",  "label": "t:sections.dim_final_cta.label_subtitle",  "default": "t:sections.dim_final_cta.subtitle_default" },
+    { "type": "text",     "id": "bottle_aria", "label": "t:sections.dim_final_cta.label_bottle_aria", "default": "t:sections.dim_final_cta.bottle_aria_default" },
+
+    { "type": "header", "content": "t:sections.dim_final_cta.header_timer" },
+    { "type": "text",   "id": "timer_label_prefix",  "label": "t:sections.dim_final_cta.label_timer_label_prefix",  "default": "t:sections.dim_final_cta.timer_label_prefix_default" },
+    { "type": "text",   "id": "timer_end_iso",       "label": "t:sections.dim_final_cta.label_timer_end_iso",       "info": "t:sections.dim_final_cta.info_timer_end_iso" },
+    { "type": "number", "id": "timer_fallback_hours","label": "t:sections.dim_final_cta.label_timer_fallback_hours","default": 24 },
+    { "type": "text",   "id": "timer_expired_label", "label": "t:sections.dim_final_cta.label_timer_expired_label", "default": "t:sections.dim_final_cta.timer_expired_label_default" },
+
+    { "type": "header", "content": "t:sections.dim_final_cta.header_plans" },
+    { "type": "text", "id": "sub_badge",     "label": "t:sections.dim_final_cta.label_sub_badge",     "default": "t:sections.dim_final_cta.sub_badge_default" },
+    { "type": "text", "id": "sub_label",     "label": "t:sections.dim_final_cta.label_sub_label",     "default": "t:sections.dim_final_cta.sub_label_default" },
+    { "type": "text", "id": "sub_price_was", "label": "t:sections.dim_final_cta.label_sub_price_was", "default": "t:sections.dim_final_cta.sub_price_was_default" },
+    { "type": "text", "id": "sub_price_now", "label": "t:sections.dim_final_cta.label_sub_price_now", "default": "t:sections.dim_final_cta.sub_price_now_default" },
+    { "type": "text", "id": "sub_cta_label", "label": "t:sections.dim_final_cta.label_sub_cta_label", "default": "t:sections.dim_final_cta.sub_cta_label_default" },
+
+    { "type": "text", "id": "once_label",     "label": "t:sections.dim_final_cta.label_once_label",     "default": "t:sections.dim_final_cta.once_label_default" },
+    { "type": "text", "id": "once_price",     "label": "t:sections.dim_final_cta.label_once_price",     "default": "t:sections.dim_final_cta.once_price_default" },
+    { "type": "text", "id": "once_cta_label", "label": "t:sections.dim_final_cta.label_once_cta_label", "default": "t:sections.dim_final_cta.once_cta_label_default" }
+  ],
+  "blocks": [
+    {
+      "type": "perk",
+      "name": "t:sections.dim_final_cta.block_perk_name",
+      "settings": [
+        { "type": "text", "id": "text", "label": "t:sections.dim_final_cta.label_perk_text" }
+      ]
+    },
+    {
+      "type": "gallery_image",
+      "name": "t:sections.dim_final_cta.block_gallery_image_name",
+      "settings": [
+        { "type": "image_picker", "id": "image",          "label": "t:sections.dim_final_cta.label_gallery_image",          "info": "t:sections.dim_final_cta.info_gallery_image" },
+        { "type": "text",         "id": "fallback_image", "label": "t:sections.dim_final_cta.label_gallery_fallback_image", "info": "t:sections.dim_final_cta.info_gallery_fallback_image" },
+        { "type": "text",         "id": "alt",            "label": "t:sections.dim_final_cta.label_gallery_alt" }
+      ]
+    }
+  ],
+  "max_blocks": 24,
+  "presets": [
+    {
+      "name": "t:sections.dim_final_cta.preset_name",
+      "blocks": [
+        { "type": "gallery_image", "settings": { "fallback_image": "pdp-1.png",  "alt": "4WELL DIM bottle — primary product shot" } },
+        { "type": "gallery_image", "settings": { "fallback_image": "pdp-2.png",  "alt": "4WELL DIM with broccoli and ingredients composition" } },
+        { "type": "gallery_image", "settings": { "fallback_image": "pdp-3.png",  "alt": "Feel like you again — DIM benefits" } },
+        { "type": "gallery_image", "settings": { "fallback_image": "pdp-4.png",  "alt": "Advanced Complex 4-in-1 formula breakdown" } },
+        { "type": "gallery_image", "settings": { "fallback_image": "pdp-5.png",  "alt": "4WELL DIM vs other brands comparison" } },
+        { "type": "gallery_image", "settings": { "fallback_image": "pdp-6.png",  "alt": "Science-backed synergy — 3.13x bioavailability" } },
+        { "type": "gallery_image", "settings": { "fallback_image": "pdp-7.png",  "alt": "Supplement Facts label" } },
+        { "type": "gallery_image", "settings": { "fallback_image": "pdp-8.png",  "alt": "Results timeline — days, weeks, months" } },
+        { "type": "gallery_image", "settings": { "fallback_image": "pdp-9.png",  "alt": "Skin clarity — before and after" } },
+        { "type": "gallery_image", "settings": { "fallback_image": "pdp-10.jpg", "alt": "Amazon delivery unboxing" } },
+        { "type": "perk", "settings": { "text": "t:sections.dim_final_cta.perk_1_text" } },
+        { "type": "perk", "settings": { "text": "t:sections.dim_final_cta.perk_2_text" } },
+        { "type": "perk", "settings": { "text": "t:sections.dim_final_cta.perk_3_text" } },
+        { "type": "perk", "settings": { "text": "t:sections.dim_final_cta.perk_4_text" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

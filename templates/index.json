@@ -1,0 +1,257 @@
+{
+  "sections": {
+    "announcement-countdown": { "type": "dim-announcement-countdown", "settings": {} },
+    "sticky-cta":              { "type": "dim-sticky-cta", "settings": {} },
+
+    "hero": {
+      "type": "dim-hero",
+      "blocks": {
+        "chip-1": { "type": "chip", "settings": { "label": "Cystic Acne" } },
+        "chip-2": { "type": "chip", "settings": { "label": "Jawline Breakouts" } },
+        "chip-3": { "type": "chip", "settings": { "label": "Monthly Flare-ups" } },
+        "chip-4": { "type": "chip", "settings": { "label": "Oily Skin" } },
+        "chip-5": { "type": "chip", "settings": { "label": "Perimenopause Acne" } }
+      },
+      "block_order": ["chip-1", "chip-2", "chip-3", "chip-4", "chip-5"],
+      "settings": {}
+    },
+
+    "social-proof": {
+      "type": "dim-social-proof",
+      "blocks": {
+        "snip-1": { "type": "snippet", "settings": { "stars": "★★★★★", "quote": "\"My acne is finally gone after 15 years.\"",          "name": "Lauren K. · Verified review" } },
+        "snip-2": { "type": "snippet", "settings": { "stars": "★★★★★", "quote": "\"Lost the bloat AND clearer skin.\"",              "name": "Maya R. · Verified review" } },
+        "snip-3": { "type": "snippet", "settings": { "stars": "★★★★☆", "quote": "\"Took 6 weeks for me, but it worked.\"",           "name": "Sam T. · Verified review" } },
+        "snip-4": { "type": "snippet", "settings": { "stars": "★★★★★", "quote": "\"First product that's worked for my hormonal acne.\"", "name": "Ashley P. · Verified review" } },
+        "snip-5": { "type": "snippet", "settings": { "stars": "★★★★★", "quote": "\"Cycle finally feels normal — less PMS too.\"",    "name": "Jordan W. · Verified review" } },
+        "snip-6": { "type": "snippet", "settings": { "stars": "★★★★★", "quote": "\"Perimenopause acne calmed by month two.\"",       "name": "Sarah M. · Verified review" } }
+      },
+      "block_order": ["snip-1", "snip-2", "snip-3", "snip-4", "snip-5", "snip-6"],
+      "settings": {}
+    },
+
+    "quiz": {
+      "type": "dim-quiz",
+      "blocks": {
+        "q1": { "type": "question", "settings": { "heading": "When do your breakouts usually flare up?",         "option_1_label": "The week before my period", "option_1_value": "cyclical", "option_2_label": "Randomly, no pattern", "option_2_value": "random", "option_3_label": "During stressful weeks", "option_3_value": "stress", "option_4_label": "I have them constantly", "option_4_value": "constant" } },
+        "q2": { "type": "question", "settings": { "heading": "Where on your face do they show up most?",        "option_1_label": "Chin and jawline", "option_1_value": "chin-jaw", "option_2_label": "Forehead and cheeks", "option_2_value": "forehead", "option_3_label": "All over", "option_3_value": "all-over", "option_4_label": "Around the mouth", "option_4_value": "mouth" } },
+        "q3": { "type": "question", "settings": { "heading": "Have you tried any of these?",                     "option_1_label": "Retinoids / antibiotics", "option_1_value": "rx", "option_2_label": "Birth control for acne", "option_2_value": "bc", "option_3_label": "Diet and elimination", "option_3_value": "diet", "option_4_label": "Nothing so far", "option_4_value": "none" } },
+        "q4": { "type": "question", "settings": { "heading": "Which of these also sounds familiar?",             "option_1_label": "Heavy PMS or bloating", "option_1_value": "pms", "option_2_label": "Irregular cycles", "option_2_value": "irreg", "option_3_label": "Both", "option_3_value": "both", "option_4_label": "Neither", "option_4_value": "neither" } },
+        "r-cyclical": { "type": "result_card", "settings": { "outcome_value": "cyclical", "badge": "Your result · Cyclical pattern",  "heading": "Your skin is on a hormonal clock",                                  "paragraph": "Breakouts that arrive on schedule (the week before your period) are the textbook hormonal-acne pattern. Estrogen fluctuations drive sebum, inflammation, and chin/jaw breakouts. DIM is formulated to support how your body metabolizes estrogen — which is why cyclical breakouts are exactly the use-case it's built for.", "cta_label": "See DIM for cyclical breakouts →",  "micro": "Most users notice the first shift within 2–4 weeks of consistent use." } },
+        "r-constant": { "type": "result_card", "settings": { "outcome_value": "constant", "badge": "Your result · Persistent pattern", "heading": "When topicals aren't enough — look inside",                          "paragraph": "If retinoids, antibiotics, and cleansers keep failing, the trigger is likely INTERNAL — not on the surface of your skin. Persistent adult breakouts almost always trace back to the hormonal pathway: DIM supports the estrogen metabolism that topical treatments can't touch.",                              "cta_label": "See DIM for persistent acne →",     "micro": "Full effect typically takes 60–90 days. Stay consistent." } },
+        "r-stress":   { "type": "result_card", "settings": { "outcome_value": "stress",   "badge": "Your result · Stress-amplified",   "heading": "Stress messes with your hormones — and your skin",                  "paragraph": "Cortisol from chronic stress raises androgen activity, which boosts sebum and inflammation. The result: breakouts that flare during your hardest weeks. DIM supports the hormone balance that stress most reliably disrupts.",                                                                                "cta_label": "See DIM for stress-driven breakouts →", "micro": "Pair DIM with sleep + magnesium for the strongest results." } },
+        "r-random":   { "type": "result_card", "settings": { "outcome_value": "random",   "badge": "Your result · Mixed pattern",      "heading": "Random isn't always random — there's usually a pattern underneath", "paragraph": "What looks random often masks a cycle-linked or stress-linked pattern that becomes visible only after a few months of consistent observation. DIM is a 60-day commitment that helps reveal — and improve — the pattern beneath.",                                                                       "cta_label": "See DIM and start tracking →",      "micro": "Keep a quick skin journal for the first 8 weeks — patterns will emerge." } }
+      },
+      "block_order": ["q1", "q2", "q3", "q4", "r-cyclical", "r-constant", "r-stress", "r-random"],
+      "settings": {}
+    },
+
+    "essentials-banner": {
+      "type": "dim-essentials-banner",
+      "blocks": {
+        "prop-1": { "type": "proposition", "settings": { "title": "Multi-Pathway Hormonal Support", "body": "Targets the estrogen-metabolism pathway behind adult chin & jawline breakouts.", "icon_svg": "<svg viewBox='0 0 40 40' fill='none' stroke='currentColor' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'><path d='M14 9l-5 3v6l5 3 5-3v-6l-5-3z'/><path d='M26 9l-5 3v6l5 3 5-3v-6l-5-3z'/><path d='M20 22l-5 3v6l5 3 5-3v-6l-5-3z'/></svg>" } },
+        "prop-2": { "type": "proposition", "settings": { "title": "370mg DIM Per Capsule", "body": "Clinically meaningful dose — one capsule replaces pounds of broccoli daily.", "icon_svg": "<svg viewBox='0 0 40 40' fill='none' stroke='currentColor' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'><rect x='7' y='14' width='26' height='12' rx='6'/><path d='M20 14v12'/></svg>" } },
+        "prop-3": { "type": "proposition", "settings": { "title": "BioPerine® Enhanced Absorption", "body": "Patented black-pepper extract studied for improved nutrient bioavailability.", "icon_svg": "<svg viewBox='0 0 40 40' fill='none' stroke='currentColor' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'><path d='M20 30V14m-6 6 6-6 6 6'/><circle cx='20' cy='10' r='2'/></svg>" } },
+        "prop-4": { "type": "proposition", "settings": { "title": "Third-Party Lab Tested", "body": "Independently verified for purity & potency. Made in USA, GMP-certified.", "icon_svg": "<svg viewBox='0 0 40 40' fill='none' stroke='currentColor' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'><path d='M16 8h8M17 8v9l-6 11a3 3 0 0 0 2.6 4.5h12.8A3 3 0 0 0 29 28l-6-11V8'/><path d='M13.5 22h13'/></svg>" } }
+      },
+      "block_order": ["prop-1", "prop-2", "prop-3", "prop-4"],
+      "settings": {
+        "eyebrow": "Why DIM works",
+        "h2": "Feel like yourself again — clear skin from the inside out.",
+        "background_image_fallback": "essentials-bg.jpg",
+        "image_alt": "Calm woman with clear skin, eyes closed at golden hour"
+      }
+    },
+
+    "science": {
+      "type": "dim-science",
+      "blocks": {
+        "step-1": { "type": "step", "settings": { "heading": "1. The Problem", "body": "<p>Your skin reflects your hormones. When estrogen builds up faster than your body can break it down, some of that excess gets converted into 4-hydroxyestrone — a metabolite linked in research to inflammation, increased sebum production, and breakouts along the jawline and chin.</p>" } },
+        "step-2": { "type": "step", "settings": { "heading": "2. The Science", "body": "<p>DIM (diindolylmethane) is a compound naturally found in cruciferous vegetables like broccoli and cauliflower. Clinical research shows DIM helps the body convert excess estrogen into its gentler form (2-hydroxyestrone) — supporting the hormonal pathway behind adult acne.<sup><a href=\"#refs\">1</a></sup></p>", "callout_text": "📚 Backed by decades of peer-reviewed research on DIM and estrogen metabolism.", "callout_link_text": "View sources →" } },
+        "step-3": { "type": "step", "settings": { "heading": "3. The Catch",   "body": "<p>The problem? You'd need to eat pounds of raw broccoli every day to get a meaningful dose of DIM. One 4WELL capsule delivers 370mg — paired with BioPerine®, the patented black-pepper extract studied for enhanced absorption.<sup><a href=\"#refs\">2</a></sup></p>", "show_dose_diagram": true, "dose_left_icon": "🥦🥦🥦🥦", "dose_left_main": "Pounds of broccoli", "dose_left_sub": "every day", "dose_arrow": "=", "dose_right_icon": "💊", "dose_right_main": "1 capsule", "dose_right_sub": "4WELL DIM 370mg" } }
+      },
+      "block_order": ["step-1", "step-2", "step-3"],
+      "settings": {}
+    },
+
+    "skip-link":               { "type": "dim-skip-link", "settings": {} },
+
+    "ingredients": {
+      "type": "dim-ingredients",
+      "blocks": {
+        "ing-1": { "type": "ingredient", "settings": { "icon": "🥦",  "name": "DIM",              "dose": "370 mg", "txt": "Supports how your body metabolizes estrogen — a factor in adult hormonal acne.", "footnote_ref": "1" } },
+        "ing-2": { "type": "ingredient", "settings": { "icon": "🌶️", "name": "BioPerine®",       "dose": "5 mg",   "txt": "Patented black pepper extract, studied for enhanced nutrient absorption.",     "footnote_ref": "2" } },
+        "ing-3": { "type": "ingredient", "settings": { "icon": "💎",  "name": "Zinc",             "dose": "15 mg",  "txt": "Studied for its role in supporting skin health and managing breakouts.",         "footnote_ref": "3" } },
+        "ing-4": { "type": "ingredient", "settings": { "icon": "🌿",  "name": "Niacinamide (B3)", "dose": "30 mg",  "txt": "Supports skin's natural inflammation response and balanced sebum.",              "footnote_ref": "4" } }
+      },
+      "block_order": ["ing-1", "ing-2", "ing-3", "ing-4"],
+      "settings": {}
+    },
+
+    "timeline": {
+      "type": "dim-timeline",
+      "blocks": {
+        "t1": { "type": "step", "settings": { "dot_num": "1", "period": "Days 1–7",   "title": "Your Body Is Adjusting",   "bullets": "<ul><li>Possible mild headache in days 1–3</li><li>This means hormones are beginning to shift</li><li>Take with food + drink plenty of water</li><li>Many people experience no side effects at all</li></ul>",     "quote": "\"I had a headache on day 2 but pushed through. By day 10 I was sleeping better than I had in months.\"" } },
+        "t2": { "type": "step", "settings": { "dot_num": "2", "period": "Weeks 2–4",  "title": "Early Signals",            "bullets": "<ul><li>Less bloating &amp; water retention</li><li>PMS symptoms beginning to soften</li><li>Sleep becoming more even</li><li>Skin starting to calm down</li></ul>",                                            "quote": "\"Still waiting for the big changes, but I already feel less puffy. Something is happening.\"" } },
+        "t3": { "type": "step", "settings": { "dot_num": "3", "period": "Month 1–2",  "title": "Noticeable Shifts",        "bullets": "<ul><li>Hormonal breakouts visibly reduced</li><li>Energy more stable throughout the day</li><li>Fewer mood swings around your cycle</li><li>Hot flashes less frequent and less intense</li></ul>",            "quote": "\"After about a month, I looked in the mirror and my skin was actually clear. I hadn't seen that in years.\"" } },
+        "t4": { "type": "step", "settings": { "dot_num": "4", "period": "Month 2–3",  "title": "Full Effect",              "bullets": "<ul><li>Clearest skin of your adult life</li><li>Hormonal cycle more regular</li><li>Feeling like yourself again</li><li>Energy and mood consistently stable</li></ul>",                                       "quote": "\"I finally feel like myself. The difference is dramatic. I won't go a day without it.\"" } }
+      },
+      "block_order": ["t1", "t2", "t3", "t4"],
+      "settings": {}
+    },
+
+    "before-after": {
+      "type": "dim-before-after",
+      "blocks": {
+        "c1": { "type": "card", "settings": { "name_age": "Jessica, 29", "quote": "\"After 60 days, my chin is finally calmer. I haven't had a cyst in 4 months.\"", "alt_before": "Jessica — before DIM", "alt_after": "Jessica — after 60 days on DIM", "fallback_before": "ba-1-before.jpg", "fallback_after": "ba-1-after.jpg" } },
+        "c2": { "type": "card", "settings": { "name_age": "Maya, 34",    "quote": "\"I'd given up on adult acne. DIM was the missing piece for me.\"",            "alt_before": "Maya — before DIM",    "alt_after": "Maya — after DIM",            "fallback_before": "ba-2-before.jpg", "fallback_after": "ba-2-after.jpg" } },
+        "c3": { "type": "card", "settings": { "name_age": "Ashley, 27",  "quote": "\"First time in 10 years I'm not wearing concealer most days.\"",              "alt_before": "Ashley — before DIM",  "alt_after": "Ashley — after DIM",          "fallback_before": "ba-3-before.jpg", "fallback_after": "ba-3-after.jpg" } }
+      },
+      "block_order": ["c1", "c2", "c3"],
+      "settings": { "show_alt_table": false }
+    },
+
+    "mid-cta-1": { "type": "dim-mid-cta", "settings": { "background_image_fallback": "mid-cta-bg.jpg" } },
+
+    "video-testimonials": {
+      "type": "dim-video-testimonials",
+      "blocks": {
+        "v1": { "type": "video", "settings": { "poster_bg_gradient": "linear-gradient(135deg,#5C3A92,#3A2161)", "duration": "0:48", "name_age": "Lauren, 32", "quote": "\"Three months in. Clearer than I've been since high school.\"" } },
+        "v2": { "type": "video", "settings": { "poster_bg_gradient": "linear-gradient(135deg,#E63946,#8B1E29)", "duration": "1:12", "name_age": "Maya, 34",   "quote": "\"Bonus: less bloating, calmer PMS.\"" } },
+        "v3": { "type": "video", "settings": { "poster_bg_gradient": "linear-gradient(135deg,#FFB800,#C28200)", "duration": "0:39", "name_age": "Ashley, 27", "quote": "\"Bare-faced more often. Took about 8 weeks.\"" } },
+        "v4": { "type": "video", "settings": { "poster_bg_gradient": "linear-gradient(135deg,#D85AA8,#8C2F62)", "duration": "1:24", "name_age": "Sarah, 38",  "quote": "\"Perimenopause acne calmed down. Cycle by month two.\"" } },
+        "v5": { "type": "video", "settings": { "poster_bg_gradient": "linear-gradient(135deg,#3A9D8E,#1A6961)", "duration": "0:56", "name_age": "Jordan, 29", "quote": "\"Cycle is finally predictable. Less PMS too.\"" } }
+      },
+      "block_order": ["v1", "v2", "v3", "v4", "v5"],
+      "settings": {}
+    },
+
+    "reviews": {
+      "type": "dim-reviews",
+      "blocks": {
+        "rev-1": { "type": "review", "settings": { "avatar_letter": "L", "name": "Lauren K.", "verified": true, "stars": 5, "headline": "\"My acne is finally gone after 15 years\"", "body": "I've tried Accutane twice. Every prescription cream. This is the only thing that's actually worked long-term. Three months in and my skin is clearer than it's been since I was 14.", "date_iso": "2025-11-22" } },
+        "rev-2": { "type": "review", "settings": { "avatar_letter": "M", "name": "Maya R.",   "verified": true, "stars": 5, "headline": "\"Lost the bloat AND clearer skin\"",       "body": "Didn't expect the bloating to fade too. PMS used to be a week of misery — now barely two days for me. And my chin breakouts? Way fewer by month two.", "date_iso": "2025-10-14" } },
+        "rev-3": { "type": "review", "settings": { "avatar_letter": "A", "name": "Ashley P.", "verified": true, "stars": 5, "headline": "\"First product that's worked for my hormonal acne\"", "body": "I'm 34 and had cystic acne since my 20s. Nothing topical ever worked for me. Started DIM in August, by November I had way fewer breakouts. Telling all my friends.", "date_iso": "2025-11-02" } },
+        "rev-4": { "type": "review", "settings": { "avatar_letter": "S", "name": "Sam T.",    "verified": true, "stars": 4, "headline": "\"Took 6 weeks for me, but it worked\"",     "body": "Almost gave up around week 4 — nothing was happening. By week 6, the chin breakouts slowed way down. Wish it kicked in sooner, but sticking with it.", "date_iso": "2025-10-30" } },
+        "rev-5": { "type": "review", "settings": { "avatar_letter": "J", "name": "Jordan W.", "verified": true, "stars": 5, "headline": "\"Cycle finally feels normal\"",            "body": "Periods used to wreck my face for a week. Three months in, breakouts are minimal and my cycle is way more predictable.", "date_iso": "2025-08-17" } }
+      },
+      "block_order": ["rev-1", "rev-2", "rev-3", "rev-4", "rev-5"],
+      "settings": {}
+    },
+
+    "mid-cta-2": { "type": "dim-mid-cta", "settings": { "background_image_fallback": "mid-cta-bg.jpg" } },
+
+    "comparison": {
+      "type": "dim-comparison",
+      "blocks": {
+        "cmp-1": { "type": "row", "settings": { "label": "Addresses root cause",         "cell_1_text": "Hormones",       "cell_1_status": "ok",      "cell_2_text": "Sometimes",   "cell_2_status": "warn",    "cell_3_text": "Masks symptoms", "cell_3_status": "bad",     "cell_4_text": "Surface only",     "cell_4_status": "bad" } },
+        "cmp-2": { "type": "row", "settings": { "label": "DIM dose per serving",         "cell_1_text": "370 mg",         "cell_1_status": "ok",      "cell_2_text": "100–200 mg",  "cell_2_status": "warn",    "cell_3_text": "N/A",            "cell_3_status": "bad",     "cell_4_text": "N/A",              "cell_4_status": "bad" } },
+        "cmp-3": { "type": "row", "settings": { "label": "Absorption (BioPerine®)",      "cell_1_text": "Yes",            "cell_1_status": "ok",      "cell_2_text": "No",          "cell_2_status": "bad",     "cell_3_text": "N/A",            "cell_3_status": "bad",     "cell_4_text": "N/A",              "cell_4_status": "bad" } },
+        "cmp-4": { "type": "row", "settings": { "label": "Side effects",                 "cell_1_text": "None reported",  "cell_1_status": "ok",      "cell_2_text": "Varies",      "cell_2_status": "warn",    "cell_3_text": "Many",           "cell_3_status": "bad",     "cell_4_text": "Dryness, irritation","cell_4_status": "warn" } },
+        "cmp-5": { "type": "row", "settings": { "label": "Cost per day",                 "cell_1_text": "$0.83",          "cell_1_status": "ok",      "cell_2_text": "$1.50+",      "cell_2_status": "neutral", "cell_3_text": "$30–50/mo",      "cell_3_status": "neutral", "cell_4_text": "$50+",             "cell_4_status": "neutral" } },
+        "cmp-6": { "type": "row", "settings": { "label": "Money-back guarantee",         "cell_1_text": "30 days",        "cell_1_status": "ok",      "cell_2_text": "Rare",        "cell_2_status": "bad",     "cell_3_text": "No",             "cell_3_status": "bad",     "cell_4_text": "No",               "cell_4_status": "bad" } }
+      },
+      "block_order": ["cmp-1", "cmp-2", "cmp-3", "cmp-4", "cmp-5", "cmp-6"],
+      "settings": {}
+    },
+
+    "faq": {
+      "type": "dim-faq",
+      "blocks": {
+        "faq-1": { "type": "qa", "settings": { "question": "How fast will I see results?",                                "answer": "<p>Many women notice initial changes within 2–4 weeks. Most see fuller results around weeks 6–8 of consistent daily use. For full hormonal balance, plan on 3 months. Individual results vary.</p>" } },
+        "faq-2": { "type": "qa", "settings": { "question": "Are there any side effects?",                                 "answer": "<p>DIM is generally well-tolerated. Some women report mild headaches or darker urine in the first week — both are normal as your body adjusts to estrogen metabolism. If symptoms feel unusual, stop and consult your doctor.</p>", "hot": true } },
+        "faq-3": { "type": "qa", "settings": { "question": "Can I take DIM with birth control or other medications?",     "answer": "<p><strong>Talk to your doctor first.</strong> DIM can affect how your body processes certain medications, including birth control. Don't combine without medical guidance.</p>" } },
+        "faq-4": { "type": "qa", "settings": { "question": "Is it safe for perimenopause and menopause?",                  "answer": "<p>Yes — DIM supports estrogen balance at any life stage. Many women in their 40s and 50s use it for perimenopause symptoms.</p>" } },
+        "faq-5": { "type": "qa", "settings": { "question": "How many capsules per day?",                                  "answer": "<p>One capsule per day with a meal. The 30-capsule bottle is a 1-month supply.</p>" } },
+        "faq-6": { "type": "qa", "settings": { "question": "Is it vegan and gluten-free?",                                "answer": "<p>Yes — 100% vegan, gluten-free, soy-free, and non-GMO.</p>" } },
+        "faq-7": { "type": "qa", "settings": { "question": "What if it doesn't work for me?",                             "answer": "<p>You're protected by a 30-day money-back guarantee. Email customer service for a full refund. Refund processed within 5 business days of receiving the bottle.</p>" } },
+        "faq-8": { "type": "qa", "settings": { "question": "Where is it made?",                                           "answer": "<p>4WELL DIM is manufactured in a GMP-certified facility in the USA. Each batch is third-party lab tested for purity, potency, and heavy metals. COA available on request.</p>" } }
+      },
+      "block_order": ["faq-1", "faq-2", "faq-3", "faq-4", "faq-5", "faq-6", "faq-7", "faq-8"],
+      "settings": {
+        "eyebrow": "Frequently asked",
+        "h2": "Questions?",
+        "h2_emphasis": "We're here to help.",
+        "portrait_image_fallback": "faq-portrait.jpg",
+        "portrait_alt": "A thoughtful woman with hand resting on jaw, gazing into the distance",
+        "image_caption": "Real answers. From real science."
+      }
+    },
+
+    "email-optin":             { "type": "dim-email-optin", "settings": {} },
+
+    "final-cta": {
+      "type": "dim-final-cta",
+      "blocks": {
+        "g-1":  { "type": "gallery_image", "settings": { "fallback_image": "pdp-1.png",  "alt": "4WELL DIM bottle — primary product shot" } },
+        "g-2":  { "type": "gallery_image", "settings": { "fallback_image": "pdp-2.png",  "alt": "4WELL DIM with broccoli and ingredients composition" } },
+        "g-3":  { "type": "gallery_image", "settings": { "fallback_image": "pdp-3.png",  "alt": "Feel like you again — DIM benefits" } },
+        "g-4":  { "type": "gallery_image", "settings": { "fallback_image": "pdp-4.png",  "alt": "Advanced Complex 4-in-1 formula breakdown" } },
+        "g-5":  { "type": "gallery_image", "settings": { "fallback_image": "pdp-5.png",  "alt": "4WELL DIM vs other brands comparison" } },
+        "g-6":  { "type": "gallery_image", "settings": { "fallback_image": "pdp-6.png",  "alt": "Science-backed synergy — 3.13x bioavailability" } },
+        "g-7":  { "type": "gallery_image", "settings": { "fallback_image": "pdp-7.png",  "alt": "Supplement Facts label" } },
+        "g-8":  { "type": "gallery_image", "settings": { "fallback_image": "pdp-8.png",  "alt": "Results timeline — days, weeks, months" } },
+        "g-9":  { "type": "gallery_image", "settings": { "fallback_image": "pdp-9.png",  "alt": "Skin clarity — before and after" } },
+        "g-10": { "type": "gallery_image", "settings": { "fallback_image": "pdp-10.jpg", "alt": "Amazon delivery unboxing" } },
+        "perk-1": { "type": "perk", "settings": { "text": "<strong>FREE</strong> Fast Shipping" } },
+        "perk-2": { "type": "perk", "settings": { "text": "<strong>15% DISCOUNT</strong> each delivery" } },
+        "perk-3": { "type": "perk", "settings": { "text": "<strong>NO CONTRACT</strong> Cancel anytime" } },
+        "perk-4": { "type": "perk", "settings": { "text": "<strong>Out of Stock</strong> PROTECTION" } }
+      },
+      "block_order": ["g-1", "g-2", "g-3", "g-4", "g-5", "g-6", "g-7", "g-8", "g-9", "g-10", "perk-1", "perk-2", "perk-3", "perk-4"],
+      "settings": {}
+    },
+
+    "sources": {
+      "type": "dim-sources",
+      "blocks": {
+        "ref-1": { "type": "ref", "settings": { "sup_num": "1", "citation_html": "<p>Bradlow HL, Telang NT, Sepkovic DW, Osborne MP. <em>2-hydroxyestrone: the 'good' estrogen.</em> J Endocrinol. 1996 · and subsequent DIM clinical literature on PubMed.</p>" } },
+        "ref-2": { "type": "ref", "settings": { "sup_num": "2", "citation_html": "<p>Majeed M et al. <em>Studies on piperine and BioPerine®.</em> Planta Medica, 1998.</p>" } },
+        "ref-3": { "type": "ref", "settings": { "sup_num": "3", "citation_html": "<p>Cervantes J, Eber AE, Perper M, Nascimento VM, Nouri K, Keri JE. <em>The role of zinc in the treatment of acne.</em> Dermatol Ther. 2018.</p>" } },
+        "ref-4": { "type": "ref", "settings": { "sup_num": "4", "citation_html": "<p>Walocko FM, Eber AE, Keri JE, Al-Harbi MA, Nouri K. <em>The role of nicotinamide in acne treatment.</em> Dermatol Ther. 2017.</p>" } },
+        "ref-5": { "type": "ref", "settings": { "sup_num": "5", "citation_html": "<p>Bhate K, Williams HC. <em>Epidemiology of acne vulgaris.</em> Br J Dermatol. 2013 · Khunger N, Mehrotra K. <em>Menopausal Acne — Challenges And Solutions.</em> Indian Dermatol Online J. 2019.</p>" } }
+      },
+      "block_order": ["ref-1", "ref-2", "ref-3", "ref-4", "ref-5"],
+      "settings": {}
+    },
+
+    "footer": {
+      "type": "footer-minimal",
+      "blocks": {
+        "nav-1": { "type": "nav_link", "settings": { "label": "Privacy Policy" } },
+        "nav-2": { "type": "nav_link", "settings": { "label": "Terms of Service" } },
+        "nav-3": { "type": "nav_link", "settings": { "label": "Contact" } },
+        "nav-4": { "type": "nav_link", "settings": { "label": "Refund Policy" } },
+        "nav-5": { "type": "nav_link", "settings": { "label": "Sources", "url": "#refs" } }
+      },
+      "block_order": ["nav-1", "nav-2", "nav-3", "nav-4", "nav-5"],
+      "settings": {}
+    },
+
+    "exit-popup":              { "type": "dim-exit-popup", "settings": {} }
+  },
+  "order": [
+    "announcement-countdown",
+    "sticky-cta",
+    "hero",
+    "social-proof",
+    "quiz",
+    "essentials-banner",
+    "science",
+    "skip-link",
+    "ingredients",
+    "timeline",
+    "before-after",
+    "mid-cta-1",
+    "video-testimonials",
+    "reviews",
+    "mid-cta-2",
+    "comparison",
+    "faq",
+    "email-optin",
+    "final-cta",
+    "sources",
+    "footer",
+    "exit-popup"
+  ]
+}

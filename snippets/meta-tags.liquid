@@ -1,0 +1,27 @@
+{%- comment -%} OG + Twitter meta. Falls back to page_title / page_description / shop info. {%- endcomment -%}
+{%- assign og_title = page_title -%}
+{%- assign og_description = page_description -%}
+{%- assign og_image_url = '' -%}
+{%- if settings.og_image != blank -%}
+  {%- assign og_image_url = settings.og_image | image_url: width: 1200 -%}
+{%- endif -%}
+
+<meta property="og:type" content="website">
+<meta property="og:title" content="{{ og_title | escape }}">
+{%- if og_description != blank -%}
+  <meta property="og:description" content="{{ og_description | escape }}">
+{%- endif -%}
+{%- if og_image_url != blank -%}
+  <meta property="og:image" content="{{ og_image_url }}">
+{%- endif -%}
+<meta property="og:url" content="{{ canonical_url }}">
+<meta property="og:site_name" content="{{ shop.name | escape }}">
+
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="{{ og_title | escape }}">
+{%- if og_description != blank -%}
+  <meta name="twitter:description" content="{{ og_description | escape }}">
+{%- endif -%}
+{%- if og_image_url != blank -%}
+  <meta name="twitter:image" content="{{ og_image_url }}">
+{%- endif -%}

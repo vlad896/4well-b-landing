@@ -1,0 +1,139 @@
+{%- comment -%}
+  section: dim-exit-popup
+  source mapping: index.html exit modal (lines 1119-1139)
+  Turn 21 — per-turn STOP. Last <dim-exit-intent> Web Component.
+  Architecture:
+    - <dim-exit-intent> wraps the modal (role=dialog, aria-modal, hidden by default)
+    - <dim-email-optin> reused inside (same code as Turn 18 inline form, source="exit_intent_popup")
+    - .modal__backdrop + .modal__close reuse from Turn 14 video modal
+  Gating:
+    - section.settings.enabled toggles whether modal renders at all
+    - list_id empty + storefront → section omitted entirely (no broken popup)
+    - list_id empty + editor → modal shown with merchant warning
+    - editor-preview attribute on <dim-exit-intent> bypasses sessionStorage one-shot
+{%- endcomment -%}
+
+{%- assign klaviyo_id = settings.klaviyo_list_id -%}
+{%- assign in_editor = request.design_mode -%}
+
+{%- if section.settings.enabled -%}{%- if klaviyo_id != blank or in_editor -%}
+  <dim-exit-intent
+    dwell-desktop="{{ section.settings.dwell_seconds_desktop | default: 8 }}"
+    dwell-mobile="{{ section.settings.dwell_seconds_mobile | default: 30 }}"
+    persist-key="dim-exit-popup-shown-v1"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="dim-exit-popup-h"
+    hidden
+    {%- if in_editor %} editor-preview{% endif %}
+    {{ section.shopify_attributes }}>
+    <div class="modal__backdrop" data-close-modal></div>
+    <div class="modal__card exit-modal__card">
+      <button type="button" class="modal__close" data-close-modal aria-label="{{ 'ui.close' | t }}">×</button>
+
+      {%- if in_editor and klaviyo_id == blank -%}
+        <p class="email-gate__warning" role="status">⚠ {{ 'sections.dim_exit_popup.editor_warning' | t }}</p>
+      {%- endif -%}
+
+      <div class="exit-modal__copy">
+        {%- if section.settings.eyebrow != blank -%}
+          <div class="eyebrow">{{ section.settings.eyebrow }}</div>
+        {%- endif -%}
+        <h2 class="h2" id="dim-exit-popup-h">{{ section.settings.h2 }}</h2>
+        {%- if section.settings.lede != blank -%}
+          <div class="lede">{{ section.settings.lede }}</div>
+        {%- endif -%}
+      </div>
+
+      <dim-email-optin
+        endpoint="https://manage.kmail-lists.com/ajax/subscriptions/subscribe"
+        list-id="{{ klaviyo_id | escape }}"
+        source="exit_intent_popup"
+        success-text="{{ section.settings.success_text | escape }}"
+        error-text="{{ section.settings.error_text | escape }}"
+        loading-text="{{ section.settings.loading_text | escape }}">
+        <form class="email-gate__form"
+              action="https://manage.kmail-lists.com/ajax/subscriptions/subscribe"
+              method="POST"
+              novalidate>
+          <input type="hidden" name="g" value="{{ klaviyo_id | escape }}">
+          <input type="hidden" name="$consent" value="web">
+          <input type="hidden" name="$source" value="exit_intent_popup">
+          <input type="text" name="phone" class="email-gate__honeypot" tabindex="-1" autocomplete="off" aria-hidden="true">
+
+          <div class="email-gate__form-row">
+            <label for="dim-exit-popup-email" class="visually-hidden">{{ 'sections.dim_email_optin.email_label' | t }}</label>
+            <input id="dim-exit-popup-email"
+                   type="email" name="email" required autocomplete="email"
+                   placeholder="{{ section.settings.field_placeholder | escape }}"
+                   class="email-gate__input">
+            <button type="submit"
+                    class="btn btn--amazon email-gate__submit"
+                    data-cta-id="exit-popup-submit"
+                    data-cta-section="exit-popup"
+                    data-cta-position="popup">
+              {{ section.settings.submit_label }}
+            </button>
+          </div>
+
+          {%- if section.settings.consent_text != blank -%}
+            <p class="email-gate__consent">
+              {{ section.settings.consent_text }}
+              {%- if section.settings.privacy_url != blank %} <a href="{{ section.settings.privacy_url }}">{{ 'sections.dim_email_optin.privacy_link' | t }}</a>.{%- endif -%}
+            </p>
+          {%- endif -%}
+        </form>
+
+        <div data-success hidden role="status" aria-live="polite" class="email-gate__success"></div>
+        <div data-error hidden role="alert" class="email-gate__error"></div>
+      </dim-email-optin>
+
+      <button type="button"
+              class="exit-modal__dismiss"
+              data-close-modal
+              data-cta-id="exit-popup-dismiss"
+              data-cta-section="exit-popup"
+              data-cta-position="popup">
+        {{ section.settings.dismiss_label }}
+      </button>
+    </div>
+  </dim-exit-intent>
+
+  <script src="{{ 'dim-email-optin.js' | asset_url }}" type="module" defer></script>
+  <script src="{{ 'dim-exit-intent.js' | asset_url }}" type="module" defer></script>
+{%- endif -%}{%- endif -%}
+
+{% schema %}
+{
+  "name": "t:sections.dim_exit_popup.section_name",
+  "tag": "aside",
+  "class": "dim-section dim-exit-popup-section",
+  "settings": [
+    { "type": "header", "content": "t:sections.dim_exit_popup.header_intro" },
+    { "type": "paragraph", "content": "t:sections.dim_exit_popup.paragraph_klaviyo_info" },
+    { "type": "checkbox", "id": "enabled", "label": "t:sections.dim_exit_popup.label_enabled", "default": true },
+    { "type": "text",     "id": "eyebrow", "label": "t:sections.dim_exit_popup.label_eyebrow", "default": "t:sections.dim_exit_popup.eyebrow_default" },
+    { "type": "textarea", "id": "h2",      "label": "t:sections.dim_exit_popup.label_h2",      "default": "t:sections.dim_exit_popup.h2_default" },
+    { "type": "richtext", "id": "lede",    "label": "t:sections.dim_exit_popup.label_lede",    "default": "t:sections.dim_exit_popup.lede_default" },
+
+    { "type": "header", "content": "t:sections.dim_exit_popup.header_triggers" },
+    { "type": "number", "id": "dwell_seconds_desktop", "label": "t:sections.dim_exit_popup.label_dwell_desktop", "info": "t:sections.dim_exit_popup.info_dwell_desktop", "default": 8 },
+    { "type": "number", "id": "dwell_seconds_mobile",  "label": "t:sections.dim_exit_popup.label_dwell_mobile",  "info": "t:sections.dim_exit_popup.info_dwell_mobile",  "default": 30 },
+
+    { "type": "header", "content": "t:sections.dim_exit_popup.header_form" },
+    { "type": "text",     "id": "field_placeholder", "label": "t:sections.dim_exit_popup.label_field_placeholder", "default": "t:sections.dim_exit_popup.field_placeholder_default" },
+    { "type": "text",     "id": "submit_label",      "label": "t:sections.dim_exit_popup.label_submit_label",      "default": "t:sections.dim_exit_popup.submit_label_default" },
+    { "type": "text",     "id": "loading_text",      "label": "t:sections.dim_exit_popup.label_loading_text",      "default": "t:sections.dim_exit_popup.loading_text_default" },
+    { "type": "textarea", "id": "success_text",      "label": "t:sections.dim_exit_popup.label_success_text",      "default": "t:sections.dim_exit_popup.success_text_default" },
+    { "type": "textarea", "id": "error_text",        "label": "t:sections.dim_exit_popup.label_error_text",        "default": "t:sections.dim_exit_popup.error_text_default" },
+    { "type": "text",     "id": "dismiss_label",     "label": "t:sections.dim_exit_popup.label_dismiss_label",     "default": "t:sections.dim_exit_popup.dismiss_label_default" },
+
+    { "type": "header", "content": "t:sections.dim_exit_popup.header_compliance" },
+    { "type": "text", "id": "consent_text", "label": "t:sections.dim_exit_popup.label_consent_text", "info": "t:sections.dim_exit_popup.info_consent_text", "default": "t:compliance.email_consent" },
+    { "type": "url",  "id": "privacy_url",  "label": "t:sections.dim_exit_popup.label_privacy_url" }
+  ],
+  "presets": [
+    { "name": "t:sections.dim_exit_popup.preset_name" }
+  ]
+}
+{% endschema %}

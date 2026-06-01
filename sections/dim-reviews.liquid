@@ -1,0 +1,215 @@
+{%- comment -%}
+  section: dim-reviews
+  source mapping: index.html block 9 (lines 737-847)
+  Turn 15 — per-turn STOP. Second <dim-carousel> consumer.
+  Emits Product + AggregateRating + Review[] JSON-LD (Approach 2: single complete Product emission per page).
+  Product identity from global settings.product_*. Local settings: score / aggregate_count / bar_*_pct + 5 review blocks.
+  Date handling: schema field date_iso (YYYY-MM-DD); | date: filter for display; raw ISO for JSON-LD.
+{%- endcomment -%}
+
+{%- assign review_blocks = section.blocks | where: 'type', 'review' -%}
+{%- assign start_idx = section.settings.start_index | default: 1 -%}
+
+<section class="reviews" {{ section.shopify_attributes }}>
+  <div class="container">
+    <div class="reviews__head">
+      {%- if section.settings.eyebrow != blank -%}
+        <div class="eyebrow">{{ section.settings.eyebrow }}</div>
+      {%- endif -%}
+      <h2 class="h2">{{ section.settings.h2 }}</h2>
+    </div>
+
+    <div class="reviews__layout">
+      <aside class="rating-summary" aria-label="{{ 'sections.dim_reviews.summary_aria' | t }}">
+        <div class="rating-summary__top">
+          <div class="rating-summary__score">{{ section.settings.score }}</div>
+          <div>
+            <div class="rating-summary__stars" aria-label="{{ section.settings.score }} {{ 'sections.dim_reviews.stars_suffix_aria' | t }}">{{ section.settings.stars_display }}</div>
+            <div class="rating-summary__count">{{ section.settings.count_label }}</div>
+          </div>
+        </div>
+        <div class="rating-bars" role="list">
+          {%- for n in (1..5) reversed -%}
+            {%- assign pct_key = 'bar_' | append: n | append: '_pct' -%}
+            {%- assign pct = section.settings[pct_key] | default: 0 -%}
+            <div class="rating-bar" role="listitem">
+              <span>{{ n }}★</span>
+              <span class="rating-bar__track"><span class="rating-bar__fill" style="--bar-pct:{{ pct }}%"></span></span>
+              <span>{{ pct }}%</span>
+            </div>
+          {%- endfor -%}
+        </div>
+      </aside>
+
+      {%- if review_blocks.size > 0 -%}
+        <dim-carousel class="reviews__carousel"
+                      start-index="{{ start_idx }}"
+                      intercept-inactive-click="false">
+          <button class="reviews__nav reviews__nav--prev" type="button" data-prev aria-label="{{ 'ui.previous' | t }}">
+            <span aria-hidden="true">‹</span>
+          </button>
+
+          <div class="carousel-track reviews__track"
+               tabindex="0"
+               role="region"
+               aria-roledescription="carousel"
+               aria-label="{{ 'sections.dim_reviews.carousel_aria' | t }}">
+            {%- for block in review_blocks -%}
+              {%- assign is_initial_active = false -%}
+              {%- if forloop.index0 == start_idx -%}{%- assign is_initial_active = true -%}{%- endif -%}
+              {%- assign stars_count = block.settings.stars | default: 5 -%}
+              <article class="review-card carousel-card{% if is_initial_active %} is-active{% endif %}"
+                       aria-current="{% if is_initial_active %}true{% else %}false{% endif %}"
+                       {{ block.shopify_attributes }}>
+                <div class="review-card__top">
+                  {%- if block.settings.avatar_image != blank -%}
+                    <div class="review-card__avatar review-card__avatar--photo" aria-hidden="true">
+                      {%- assign avatar_url = block.settings.avatar_image | image_url: width: 96 -%}
+                      <img src="{{ avatar_url }}" alt="" loading="lazy" decoding="async" width="36" height="36">
+                    </div>
+                  {%- elsif block.settings.avatar_fallback != blank -%}
+                    <div class="review-card__avatar review-card__avatar--photo" aria-hidden="true">
+                      <img src="{{ block.settings.avatar_fallback | asset_url }}" alt="" loading="lazy" decoding="async" width="36" height="36">
+                    </div>
+                  {%- elsif block.settings.avatar_letter != blank -%}
+                    <div class="review-card__avatar" aria-hidden="true">{{ block.settings.avatar_letter }}</div>
+                  {%- endif -%}
+                  <div>
+                    <div class="review-card__name">{{ block.settings.name }}</div>
+                    {%- if block.settings.verified -%}
+                      <div class="review-card__verified">{{ 'sections.dim_reviews.verified_label' | t }}</div>
+                    {%- endif -%}
+                  </div>
+                </div>
+                <div class="review-card__stars" aria-label="{{ stars_count }} {{ 'sections.dim_reviews.stars_suffix_aria' | t }}">
+                  {%- case stars_count -%}
+                    {%- when 1 -%}★☆☆☆☆
+                    {%- when 2 -%}★★☆☆☆
+                    {%- when 3 -%}★★★☆☆
+                    {%- when 4 -%}★★★★☆
+                    {%- else -%}★★★★★
+                  {%- endcase -%}
+                </div>
+                {%- if block.settings.headline != blank -%}
+                  <div class="review-card__headline">{{ block.settings.headline }}</div>
+                {%- endif -%}
+                {%- if block.settings.body != blank -%}
+                  <p class="review-card__body">{{ block.settings.body }}</p>
+                {%- endif -%}
+                {%- if block.settings.date_iso != blank -%}
+                  <div class="review-card__date">
+                    <time datetime="{{ block.settings.date_iso }}">{{ block.settings.date_iso | date: "%B %d, %Y" }}</time>
+                  </div>
+                {%- endif -%}
+              </article>
+            {%- endfor -%}
+          </div>
+
+          <button class="reviews__nav reviews__nav--next" type="button" data-next aria-label="{{ 'ui.next' | t }}">
+            <span aria-hidden="true">›</span>
+          </button>
+
+          <div class="reviews__scrubber" aria-hidden="true">
+            <div class="reviews__scrubber-bar" data-scrubber-bar></div>
+          </div>
+        </dim-carousel>
+      {%- endif -%}
+    </div>
+  </div>
+</section>
+
+{%- comment -%} Build review[] JSON-LD array, top 5 reviews per Google guidelines. {%- endcomment -%}
+{%- capture reviews_json -%}
+[
+{%- assign top_reviews = review_blocks | slice: 0, 5 -%}
+{%- for block in top_reviews -%}
+  {%- unless forloop.first -%},{%- endunless -%}
+  {
+    "@type": "Review",
+    "author": { "@type": "Person", "name": {{ block.settings.name | json }} },
+    "reviewRating": { "@type": "Rating", "ratingValue": {{ block.settings.stars | default: 5 | json }}, "bestRating": "5" }
+    {%- if block.settings.body != blank -%},
+    "reviewBody": {{ block.settings.body | json }}
+    {%- endif -%}
+    {%- if block.settings.date_iso != blank -%},
+    "datePublished": {{ block.settings.date_iso | json }}
+    {%- endif -%}
+  }
+{%- endfor -%}
+]
+{%- endcapture -%}
+
+{%- render 'schema-product',
+  name: settings.product_name,
+  description: settings.product_description,
+  sku: settings.product_sku,
+  brand: settings.product_brand,
+  price: settings.product_price,
+  currency: settings.product_currency,
+  image_url: settings.product_image_url,
+  offer_url: settings.global_cta_url,
+  aggregate_rating_value: section.settings.score,
+  aggregate_rating_count: section.settings.aggregate_count,
+  reviews_json: reviews_json
+-%}
+
+<script src="{{ 'dim-carousel.js' | asset_url }}" type="module" defer></script>
+
+{% schema %}
+{
+  "name": "t:sections.dim_reviews.section_name",
+  "tag": "section",
+  "class": "dim-section dim-reviews-section",
+  "settings": [
+    { "type": "header", "content": "t:sections.dim_reviews.header_intro" },
+    { "type": "paragraph", "content": "t:sections.dim_reviews.paragraph_seo_warning" },
+    { "type": "text",     "id": "eyebrow", "label": "t:sections.dim_reviews.label_eyebrow", "default": "t:sections.dim_reviews.eyebrow_default" },
+    { "type": "textarea", "id": "h2",      "label": "t:sections.dim_reviews.label_h2",      "default": "t:sections.dim_reviews.h2_default" },
+
+    { "type": "header", "content": "t:sections.dim_reviews.header_summary" },
+    { "type": "text",   "id": "score",          "label": "t:sections.dim_reviews.label_score",         "default": "t:sections.dim_reviews.score_default" },
+    { "type": "text",   "id": "stars_display",  "label": "t:sections.dim_reviews.label_stars_display", "default": "t:sections.dim_reviews.stars_display_default" },
+    { "type": "text",   "id": "count_label",    "label": "t:sections.dim_reviews.label_count_label",   "default": "t:sections.dim_reviews.count_label_default" },
+    { "type": "number", "id": "aggregate_count", "label": "t:sections.dim_reviews.label_aggregate_count", "info": "t:sections.dim_reviews.info_aggregate_count", "default": 2847 },
+    { "type": "header", "content": "t:sections.dim_reviews.header_distribution" },
+    { "type": "number", "id": "bar_5_pct", "label": "5★ %", "default": 74 },
+    { "type": "number", "id": "bar_4_pct", "label": "4★ %", "default": 18 },
+    { "type": "number", "id": "bar_3_pct", "label": "3★ %", "default": 5 },
+    { "type": "number", "id": "bar_2_pct", "label": "2★ %", "default": 2 },
+    { "type": "number", "id": "bar_1_pct", "label": "1★ %", "default": 1 },
+
+    { "type": "header", "content": "t:sections.dim_reviews.header_carousel" },
+    { "type": "number", "id": "start_index", "label": "t:sections.dim_reviews.label_start_index", "info": "t:sections.dim_reviews.info_start_index", "default": 1 }
+  ],
+  "blocks": [
+    {
+      "type": "review",
+      "name": "t:sections.dim_reviews.block_review_name",
+      "settings": [
+        { "type": "image_picker", "id": "avatar_image",    "label": "t:sections.dim_reviews.label_avatar_image",    "info": "t:sections.dim_reviews.info_avatar_image" },
+        { "type": "text",         "id": "avatar_fallback", "label": "t:sections.dim_reviews.label_avatar_fallback", "info": "t:sections.dim_reviews.info_avatar_fallback" },
+        { "type": "text",         "id": "avatar_letter",   "label": "t:sections.dim_reviews.label_avatar_letter",   "info": "t:sections.dim_reviews.info_avatar_letter" },
+        { "type": "text",         "id": "name",            "label": "t:sections.dim_reviews.label_review_name" },
+        { "type": "checkbox", "id": "verified",      "label": "t:sections.dim_reviews.label_verified",     "default": true },
+        { "type": "number",   "id": "stars",         "label": "t:sections.dim_reviews.label_stars",         "info": "t:sections.dim_reviews.info_stars", "default": 5 },
+        { "type": "text",     "id": "headline",      "label": "t:sections.dim_reviews.label_headline" },
+        { "type": "textarea", "id": "body",          "label": "t:sections.dim_reviews.label_body" },
+        { "type": "text",     "id": "date_iso",      "label": "t:sections.dim_reviews.label_date_iso",     "info": "t:sections.dim_reviews.info_date_iso" }
+      ]
+    }
+  ],
+  "max_blocks": 12,
+  "presets": [
+    {
+      "name": "t:sections.dim_reviews.preset_name",
+      "blocks": [
+        { "type": "review", "settings": { "avatar_letter": "L", "name": "Lauren K.", "verified": true, "stars": 5, "headline": "t:sections.dim_reviews.review_1_headline", "body": "t:sections.dim_reviews.review_1_body", "date_iso": "2025-11-22" } },
+        { "type": "review", "settings": { "avatar_letter": "M", "name": "Maya R.",   "verified": true, "stars": 5, "headline": "t:sections.dim_reviews.review_2_headline", "body": "t:sections.dim_reviews.review_2_body", "date_iso": "2025-10-14" } },
+        { "type": "review", "settings": { "avatar_letter": "A", "name": "Ashley P.", "verified": true, "stars": 5, "headline": "t:sections.dim_reviews.review_3_headline", "body": "t:sections.dim_reviews.review_3_body", "date_iso": "2025-11-02" } },
+        { "type": "review", "settings": { "avatar_letter": "S", "name": "Sam T.",    "verified": true, "stars": 4, "headline": "t:sections.dim_reviews.review_4_headline", "body": "t:sections.dim_reviews.review_4_body", "date_iso": "2025-10-30" } },
+        { "type": "review", "settings": { "avatar_letter": "J", "name": "Jordan W.", "verified": true, "stars": 5, "headline": "t:sections.dim_reviews.review_5_headline", "body": "t:sections.dim_reviews.review_5_body", "date_iso": "2025-08-17" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

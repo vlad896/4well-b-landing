@@ -1,0 +1,242 @@
+{%- comment -%}
+  section: dim-quiz
+  source mapping: index.html block 1.5 (lines 256-315)
+  Turn 5 (Batch B). First quiz wizard. <dim-quiz> Web Component, lazy-init via IO.
+  1 CTA via cta-button (quiz-result-cta).
+{%- endcomment -%}
+
+<dim-quiz class="quiz" persist-key="dim-quiz-v1" {{ section.shopify_attributes }}>
+  <div class="container">
+    <div class="quiz__head">
+      {%- if section.settings.eyebrow != blank -%}
+        <div class="eyebrow">{{ section.settings.eyebrow }}</div>
+      {%- endif -%}
+      <h2 class="h2">{{ section.settings.h2 }}</h2>
+      {%- if section.settings.lede != blank -%}
+        <p class="lede">{{ section.settings.lede }}</p>
+      {%- endif -%}
+    </div>
+
+    <div class="quiz__progress" aria-label="{{ 'sections.dim_quiz.progress_aria' | t }}">
+      <div class="quiz__progress-bar"
+           data-quiz-bar
+           role="progressbar"
+           aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"></div>
+    </div>
+
+    {%- assign question_blocks = section.blocks | where: 'type', 'question' -%}
+    {%- for block in question_blocks -%}
+      <div class="quiz__step" data-step="{{ forloop.index }}" {% unless forloop.first %}hidden{% endunless %} {{ block.shopify_attributes }}>
+        <h3 class="quiz__q">{{ block.settings.heading }}</h3>
+        <div class="quiz__opts">
+          {%- if block.settings.option_1_label != blank -%}
+            <button class="quiz__opt" type="button" data-val="{{ block.settings.option_1_value | escape }}">{{ block.settings.option_1_label }}</button>
+          {%- endif -%}
+          {%- if block.settings.option_2_label != blank -%}
+            <button class="quiz__opt" type="button" data-val="{{ block.settings.option_2_value | escape }}">{{ block.settings.option_2_label }}</button>
+          {%- endif -%}
+          {%- if block.settings.option_3_label != blank -%}
+            <button class="quiz__opt" type="button" data-val="{{ block.settings.option_3_value | escape }}">{{ block.settings.option_3_label }}</button>
+          {%- endif -%}
+          {%- if block.settings.option_4_label != blank -%}
+            <button class="quiz__opt" type="button" data-val="{{ block.settings.option_4_value | escape }}">{{ block.settings.option_4_label }}</button>
+          {%- endif -%}
+        </div>
+      </div>
+    {%- endfor -%}
+
+    {%- assign result_blocks = section.blocks | where: 'type', 'result_card' -%}
+    {%- if result_blocks.size > 0 -%}
+      {%- for block in result_blocks -%}
+        <div class="quiz__step quiz__result quiz__result--{{ block.settings.outcome_value | escape }}"
+             data-outcome="{{ block.settings.outcome_value | escape }}"
+             hidden {{ block.shopify_attributes }}>
+          {%- if block.settings.badge != blank -%}
+            <div class="quiz__result-badge">{{ block.settings.badge }}</div>
+          {%- endif -%}
+          <h3 class="quiz__result-h">{{ block.settings.heading }}</h3>
+          <p class="quiz__result-p">{{ block.settings.paragraph }}</p>
+          {%- render 'cta-button',
+            url: settings.global_cta_url,
+            label: block.settings.cta_label,
+            icon: section.settings.cta_icon,
+            cta_id: 'quiz-result-cta',
+            section_id: 'quiz',
+            position: 'inline',
+            size: 'lg'
+          -%}
+          {%- if block.settings.micro != blank -%}
+            <p class="quiz__result-micro">{{ block.settings.micro }}</p>
+          {%- endif -%}
+        </div>
+      {%- endfor -%}
+    {%- endif -%}
+
+    <div class="quiz__step quiz__result quiz__result--default" data-outcome="_default" hidden>
+      {%- if section.settings.result_badge != blank -%}
+        <div class="quiz__result-badge">{{ section.settings.result_badge }}</div>
+      {%- endif -%}
+      <h3 class="quiz__result-h">{{ section.settings.result_h }}</h3>
+      <p class="quiz__result-p">{{ section.settings.result_p }}</p>
+      {%- render 'cta-button',
+        url: settings.global_cta_url,
+        label: section.settings.cta_label,
+        icon: section.settings.cta_icon,
+        cta_id: 'quiz-result-cta',
+        section_id: 'quiz',
+        position: 'inline',
+        size: 'lg'
+      -%}
+      {%- if section.settings.result_micro != blank -%}
+        <p class="quiz__result-micro">{{ section.settings.result_micro }}</p>
+      {%- endif -%}
+    </div>
+  </div>
+</dim-quiz>
+
+<script src="{{ 'dim-quiz.js' | asset_url }}" type="module" defer></script>
+
+{% schema %}
+{
+  "name": "t:sections.dim_quiz.section_name",
+  "tag": "section",
+  "class": "dim-section dim-quiz-section",
+  "settings": [
+    { "type": "header", "content": "t:sections.dim_quiz.header_intro" },
+    { "type": "paragraph", "content": "t:sections.dim_quiz.paragraph_utm_warning" },
+    { "type": "text",     "id": "eyebrow", "label": "t:sections.dim_quiz.label_eyebrow", "default": "t:sections.dim_quiz.eyebrow_default" },
+    { "type": "text",     "id": "h2",      "label": "t:sections.dim_quiz.label_h2",      "default": "t:sections.dim_quiz.h2_default" },
+    { "type": "textarea", "id": "lede",    "label": "t:sections.dim_quiz.label_lede",    "default": "t:sections.dim_quiz.lede_default" },
+
+    { "type": "header", "content": "t:sections.dim_quiz.header_result" },
+    { "type": "text",     "id": "result_badge", "label": "t:sections.dim_quiz.label_result_badge", "default": "t:sections.dim_quiz.result_badge_default" },
+    { "type": "text",     "id": "result_h",     "label": "t:sections.dim_quiz.label_result_h",     "default": "t:sections.dim_quiz.result_h_default" },
+    { "type": "textarea", "id": "result_p",     "label": "t:sections.dim_quiz.label_result_p",     "default": "t:sections.dim_quiz.result_p_default" },
+    { "type": "text",     "id": "cta_icon",     "label": "t:sections.dim_quiz.label_cta_icon",     "default": "t:sections.dim_quiz.cta_icon_default" },
+    { "type": "text",     "id": "cta_label",    "label": "t:sections.dim_quiz.label_cta_label",    "default": "t:sections.dim_quiz.cta_label_default" },
+    { "type": "text",     "id": "result_micro", "label": "t:sections.dim_quiz.label_result_micro", "default": "t:sections.dim_quiz.result_micro_default" }
+  ],
+  "blocks": [
+    {
+      "type": "question",
+      "name": "t:sections.dim_quiz.block_question_name",
+      "settings": [
+        { "type": "text", "id": "heading", "label": "t:sections.dim_quiz.label_q_heading" },
+        { "type": "header", "content": "t:sections.dim_quiz.header_options" },
+        { "type": "text", "id": "option_1_label", "label": "t:sections.dim_quiz.label_option_1_label" },
+        { "type": "text", "id": "option_1_value", "label": "t:sections.dim_quiz.label_option_1_value" },
+        { "type": "text", "id": "option_2_label", "label": "t:sections.dim_quiz.label_option_2_label" },
+        { "type": "text", "id": "option_2_value", "label": "t:sections.dim_quiz.label_option_2_value" },
+        { "type": "text", "id": "option_3_label", "label": "t:sections.dim_quiz.label_option_3_label" },
+        { "type": "text", "id": "option_3_value", "label": "t:sections.dim_quiz.label_option_3_value" },
+        { "type": "text", "id": "option_4_label", "label": "t:sections.dim_quiz.label_option_4_label" },
+        { "type": "text", "id": "option_4_value", "label": "t:sections.dim_quiz.label_option_4_value" }
+      ]
+    },
+    {
+      "type": "result_card",
+      "name": "t:sections.dim_quiz.block_result_card_name",
+      "settings": [
+        { "type": "text",     "id": "outcome_value", "label": "t:sections.dim_quiz.label_outcome_value", "info": "t:sections.dim_quiz.info_outcome_value" },
+        { "type": "text",     "id": "badge",         "label": "t:sections.dim_quiz.label_result_badge" },
+        { "type": "text",     "id": "heading",       "label": "t:sections.dim_quiz.label_result_h" },
+        { "type": "textarea", "id": "paragraph",     "label": "t:sections.dim_quiz.label_result_p" },
+        { "type": "text",     "id": "cta_label",     "label": "t:sections.dim_quiz.label_cta_label" },
+        { "type": "text",     "id": "micro",         "label": "t:sections.dim_quiz.label_result_micro" }
+      ]
+    }
+  ],
+  "max_blocks": 12,
+  "presets": [
+    {
+      "name": "t:sections.dim_quiz.preset_name",
+      "blocks": [
+        {
+          "type": "question",
+          "settings": {
+            "heading": "t:sections.dim_quiz.q1_heading",
+            "option_1_label": "t:sections.dim_quiz.q1_option_1", "option_1_value": "cyclical",
+            "option_2_label": "t:sections.dim_quiz.q1_option_2", "option_2_value": "random",
+            "option_3_label": "t:sections.dim_quiz.q1_option_3", "option_3_value": "stress",
+            "option_4_label": "t:sections.dim_quiz.q1_option_4", "option_4_value": "constant"
+          }
+        },
+        {
+          "type": "question",
+          "settings": {
+            "heading": "t:sections.dim_quiz.q2_heading",
+            "option_1_label": "t:sections.dim_quiz.q2_option_1", "option_1_value": "chin-jaw",
+            "option_2_label": "t:sections.dim_quiz.q2_option_2", "option_2_value": "forehead",
+            "option_3_label": "t:sections.dim_quiz.q2_option_3", "option_3_value": "all-over",
+            "option_4_label": "t:sections.dim_quiz.q2_option_4", "option_4_value": "mouth"
+          }
+        },
+        {
+          "type": "question",
+          "settings": {
+            "heading": "t:sections.dim_quiz.q3_heading",
+            "option_1_label": "t:sections.dim_quiz.q3_option_1", "option_1_value": "rx",
+            "option_2_label": "t:sections.dim_quiz.q3_option_2", "option_2_value": "bc",
+            "option_3_label": "t:sections.dim_quiz.q3_option_3", "option_3_value": "diet",
+            "option_4_label": "t:sections.dim_quiz.q3_option_4", "option_4_value": "none"
+          }
+        },
+        {
+          "type": "question",
+          "settings": {
+            "heading": "t:sections.dim_quiz.q4_heading",
+            "option_1_label": "t:sections.dim_quiz.q4_option_1", "option_1_value": "pms",
+            "option_2_label": "t:sections.dim_quiz.q4_option_2", "option_2_value": "irreg",
+            "option_3_label": "t:sections.dim_quiz.q4_option_3", "option_3_value": "both",
+            "option_4_label": "t:sections.dim_quiz.q4_option_4", "option_4_value": "neither"
+          }
+        },
+        {
+          "type": "result_card",
+          "settings": {
+            "outcome_value": "cyclical",
+            "badge":     "t:sections.dim_quiz.outcome_cyclical_badge",
+            "heading":   "t:sections.dim_quiz.outcome_cyclical_h",
+            "paragraph": "t:sections.dim_quiz.outcome_cyclical_p",
+            "cta_label": "t:sections.dim_quiz.outcome_cyclical_cta",
+            "micro":     "t:sections.dim_quiz.outcome_cyclical_micro"
+          }
+        },
+        {
+          "type": "result_card",
+          "settings": {
+            "outcome_value": "constant",
+            "badge":     "t:sections.dim_quiz.outcome_constant_badge",
+            "heading":   "t:sections.dim_quiz.outcome_constant_h",
+            "paragraph": "t:sections.dim_quiz.outcome_constant_p",
+            "cta_label": "t:sections.dim_quiz.outcome_constant_cta",
+            "micro":     "t:sections.dim_quiz.outcome_constant_micro"
+          }
+        },
+        {
+          "type": "result_card",
+          "settings": {
+            "outcome_value": "stress",
+            "badge":     "t:sections.dim_quiz.outcome_stress_badge",
+            "heading":   "t:sections.dim_quiz.outcome_stress_h",
+            "paragraph": "t:sections.dim_quiz.outcome_stress_p",
+            "cta_label": "t:sections.dim_quiz.outcome_stress_cta",
+            "micro":     "t:sections.dim_quiz.outcome_stress_micro"
+          }
+        },
+        {
+          "type": "result_card",
+          "settings": {
+            "outcome_value": "random",
+            "badge":     "t:sections.dim_quiz.outcome_random_badge",
+            "heading":   "t:sections.dim_quiz.outcome_random_h",
+            "paragraph": "t:sections.dim_quiz.outcome_random_p",
+            "cta_label": "t:sections.dim_quiz.outcome_random_cta",
+            "micro":     "t:sections.dim_quiz.outcome_random_micro"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

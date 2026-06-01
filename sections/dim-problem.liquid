@@ -1,0 +1,70 @@
+{%- comment -%}
+  section: dim-problem
+  source mapping: index.html block 3 (lines 353-371)
+  Turn 7 (Batch B). No CTAs, no compliance, no JSON-LD.
+{%- endcomment -%}
+
+<section class="problem" {{ section.shopify_attributes }}>
+  <div class="container">
+    <div class="problem__head">
+      <h2 class="h2">{{ section.settings.h2 }}</h2>
+      {%- if section.settings.lede != blank -%}
+        <p class="lede">{{ section.settings.lede }}</p>
+      {%- endif -%}
+    </div>
+
+    {%- assign pain_blocks = section.blocks | where: 'type', 'pain_card' -%}
+    {%- if pain_blocks.size > 0 -%}
+      <ul class="problem__grid">
+        {%- for block in pain_blocks -%}
+          <li class="pain-card" {{ block.shopify_attributes }}>
+            <span class="pain-card__icon" aria-hidden="true">{{ block.settings.icon }}</span>
+            <span class="pain-card__txt">{{ block.settings.text }}</span>
+          </li>
+        {%- endfor -%}
+      </ul>
+    {%- endif -%}
+
+    {%- if section.settings.close_line != blank -%}
+      <p class="problem__close">{{ section.settings.close_line }}</p>
+    {%- endif -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "t:sections.dim_problem.section_name",
+  "tag": "section",
+  "class": "dim-section dim-problem-section",
+  "settings": [
+    { "type": "header", "content": "t:sections.dim_problem.header_intro" },
+    { "type": "text",     "id": "h2",         "label": "t:sections.dim_problem.label_h2",         "default": "t:sections.dim_problem.h2_default" },
+    { "type": "textarea", "id": "lede",       "label": "t:sections.dim_problem.label_lede",       "default": "t:sections.dim_problem.lede_default" },
+    { "type": "textarea", "id": "close_line", "label": "t:sections.dim_problem.label_close_line", "default": "t:sections.dim_problem.close_line_default" }
+  ],
+  "blocks": [
+    {
+      "type": "pain_card",
+      "name": "t:sections.dim_problem.block_pain_card_name",
+      "settings": [
+        { "type": "text", "id": "icon", "label": "t:sections.dim_problem.label_pain_icon", "info": "t:sections.dim_problem.info_pain_icon" },
+        { "type": "textarea", "id": "text", "label": "t:sections.dim_problem.label_pain_text" }
+      ]
+    }
+  ],
+  "max_blocks": 8,
+  "presets": [
+    {
+      "name": "t:sections.dim_problem.preset_name",
+      "blocks": [
+        { "type": "pain_card", "settings": { "icon": "🔴",  "text": "t:sections.dim_problem.pain_1_text" } },
+        { "type": "pain_card", "settings": { "icon": "📅",  "text": "t:sections.dim_problem.pain_2_text" } },
+        { "type": "pain_card", "settings": { "icon": "💊",  "text": "t:sections.dim_problem.pain_3_text" } },
+        { "type": "pain_card", "settings": { "icon": "🛢️", "text": "t:sections.dim_problem.pain_4_text" } },
+        { "type": "pain_card", "settings": { "icon": "😞",  "text": "t:sections.dim_problem.pain_5_text" } },
+        { "type": "pain_card", "settings": { "icon": "🩸",  "text": "t:sections.dim_problem.pain_6_text" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

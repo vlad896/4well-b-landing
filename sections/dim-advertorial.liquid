@@ -1,0 +1,85 @@
+{%- comment -%}
+  section: dim-advertorial
+  source mapping: index.html block 2 (lines 320-348)
+  Turn 6 (Batch B). First compliance.advertorial_badge consumer.
+  Drop-cap removed per Phase 1 amendment B (Lora font dropped).
+{%- endcomment -%}
+
+<article class="advertorial" {{ section.shopify_attributes }}>
+  <div class="container">
+    {%- if section.settings.show_badge -%}
+      <div class="advertorial__badge">{{ section.settings.badge_text }}</div>
+    {%- endif -%}
+
+    <div class="advertorial__byline">
+      <span>
+        {%- if section.settings.byline_name != blank -%}
+          By <strong>{{ section.settings.byline_name }}</strong>{% if section.settings.byline_role != blank %}, {{ section.settings.byline_role }}{% endif %}
+        {%- endif -%}
+      </span>
+      {%- if section.settings.date_text != blank -%}
+        <span aria-hidden="true">·</span>
+        <span>{{ section.settings.date_text }}</span>
+      {%- endif -%}
+      {%- if section.settings.read_time != blank -%}
+        <span aria-hidden="true">·</span>
+        <span>{{ section.settings.read_time }}</span>
+      {%- endif -%}
+    </div>
+
+    {%- if section.settings.lede != blank -%}
+      <div class="advertorial__lede">{{ section.settings.lede }}</div>
+    {%- endif -%}
+
+    <div class="advertorial__body">
+      {{ section.settings.body_p1 }}
+      {{ section.settings.body_p2 }}
+      {{ section.settings.body_p3 }}
+      {{ section.settings.body_p4 }}
+      {{ section.settings.body_p5 }}
+    </div>
+
+    {%- if section.settings.show_divider -%}
+      <div class="advertorial__divider" aria-hidden="true">• • •</div>
+    {%- endif -%}
+  </div>
+</article>
+
+{% schema %}
+{
+  "name": "t:sections.dim_advertorial.section_name",
+  "tag": "section",
+  "class": "dim-section dim-advertorial-section",
+  "settings": [
+    { "type": "header", "content": "t:sections.dim_advertorial.header_badge", "info": "t:sections.dim_advertorial.info_badge_header" },
+    { "type": "checkbox", "id": "show_badge", "label": "t:sections.dim_advertorial.label_show_badge", "default": true },
+    {
+      "type": "text",
+      "id": "badge_text",
+      "label": "t:sections.dim_advertorial.label_badge_text",
+      "info": "t:sections.dim_advertorial.info_badge_text",
+      "default": "t:compliance.advertorial_badge"
+    },
+
+    { "type": "header", "content": "t:sections.dim_advertorial.header_byline" },
+    { "type": "text", "id": "byline_name", "label": "t:sections.dim_advertorial.label_byline_name", "default": "t:sections.dim_advertorial.byline_name_default" },
+    { "type": "text", "id": "byline_role", "label": "t:sections.dim_advertorial.label_byline_role", "default": "t:sections.dim_advertorial.byline_role_default" },
+    { "type": "text", "id": "date_text",   "label": "t:sections.dim_advertorial.label_date_text",   "default": "t:sections.dim_advertorial.date_text_default" },
+    { "type": "text", "id": "read_time",   "label": "t:sections.dim_advertorial.label_read_time",   "default": "t:sections.dim_advertorial.read_time_default" },
+
+    { "type": "header", "content": "t:sections.dim_advertorial.header_body", "info": "t:sections.dim_advertorial.info_body_header" },
+    { "type": "richtext", "id": "lede",   "label": "t:sections.dim_advertorial.label_lede",   "default": "t:sections.dim_advertorial.lede_default" },
+    { "type": "richtext", "id": "body_p1", "label": "t:sections.dim_advertorial.label_body_p1", "default": "t:sections.dim_advertorial.body_p1_default" },
+    { "type": "richtext", "id": "body_p2", "label": "t:sections.dim_advertorial.label_body_p2", "default": "t:sections.dim_advertorial.body_p2_default" },
+    { "type": "richtext", "id": "body_p3", "label": "t:sections.dim_advertorial.label_body_p3", "default": "t:sections.dim_advertorial.body_p3_default" },
+    { "type": "richtext", "id": "body_p4", "label": "t:sections.dim_advertorial.label_body_p4", "default": "t:sections.dim_advertorial.body_p4_default" },
+    { "type": "richtext", "id": "body_p5", "label": "t:sections.dim_advertorial.label_body_p5", "default": "t:sections.dim_advertorial.body_p5_default" },
+
+    { "type": "header", "content": "t:sections.dim_advertorial.header_divider" },
+    { "type": "checkbox", "id": "show_divider", "label": "t:sections.dim_advertorial.label_show_divider", "default": true }
+  ],
+  "presets": [
+    { "name": "t:sections.dim_advertorial.preset_name" }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,64 @@
+[
+  {
+    "name": "t:settings.brand_panel",
+    "settings": [
+      { "type": "header", "content": "t:settings.brand_colors_header" },
+      { "type": "color", "id": "brand_color_primary", "label": "t:settings.label_brand_color_primary", "default": "#4A2C7A" },
+      { "type": "color", "id": "brand_color_amazon",  "label": "t:settings.label_brand_color_amazon",  "default": "#FF9900" }
+    ]
+  },
+  {
+    "name": "t:settings.cta_panel",
+    "settings": [
+      { "type": "url", "id": "global_cta_url", "label": "t:settings.label_global_cta_url", "info": "t:settings.info_global_cta_url" }
+    ]
+  },
+  {
+    "name": "t:settings.product_panel",
+    "settings": [
+      { "type": "paragraph", "content": "t:settings.product_panel_info" },
+      { "type": "text",     "id": "product_name",        "label": "t:settings.label_product_name",        "default": "t:settings.product_name_default" },
+      { "type": "textarea", "id": "product_description", "label": "t:settings.label_product_description", "default": "t:settings.product_description_default" },
+      { "type": "text",     "id": "product_sku",         "label": "t:settings.label_product_sku",         "default": "4W-DIM-370" },
+      { "type": "text",     "id": "product_brand",       "label": "t:settings.label_product_brand",       "default": "t:settings.product_brand_default" },
+      { "type": "url",      "id": "product_image_url",   "label": "t:settings.label_product_image_url",   "info": "t:settings.info_product_image_url" },
+      { "type": "text",     "id": "product_price",       "label": "t:settings.label_product_price",       "default": "22.95" },
+      { "type": "text",     "id": "product_currency",    "label": "t:settings.label_product_currency",    "default": "USD" }
+    ]
+  },
+  {
+    "name": "t:settings.email_panel",
+    "settings": [
+      { "type": "paragraph", "content": "t:settings.email_panel_info" },
+      { "type": "text", "id": "klaviyo_company_id", "label": "t:settings.label_klaviyo_company_id", "info": "t:settings.info_klaviyo_company_id" },
+      { "type": "text", "id": "klaviyo_list_id",    "label": "t:settings.label_klaviyo_list_id",    "info": "t:settings.info_klaviyo_list_id" }
+    ]
+  },
+  {
+    "name": "t:settings.seo_panel",
+    "settings": [
+      { "type": "checkbox",     "id": "robots_index",           "label": "t:settings.label_robots_index",       "default": false, "info": "t:settings.info_robots_index" },
+      { "type": "url",          "id": "canonical_url_override", "label": "t:settings.label_canonical_override", "info": "t:settings.info_canonical_override" },
+      { "type": "image_picker", "id": "og_image",               "label": "t:settings.label_og_image",           "info": "t:settings.info_og_image" }
+    ]
+  },
+  {
+    "name": "t:settings.org_panel",
+    "settings": [
+      { "type": "paragraph", "content": "t:settings.org_panel_info" },
+      { "type": "text",         "id": "org_name", "label": "t:settings.label_org_name", "default": "4WELL" },
+      { "type": "image_picker", "id": "org_logo", "label": "t:settings.label_org_logo" },
+      { "type": "header", "content": "t:settings.org_sameas_header" },
+      { "type": "url", "id": "org_sameas_1", "label": "t:settings.label_org_sameas_1" },
+      { "type": "url", "id": "org_sameas_2", "label": "t:settings.label_org_sameas_2" },
+      { "type": "url", "id": "org_sameas_3", "label": "t:settings.label_org_sameas_3" },
+      { "type": "url", "id": "org_sameas_4", "label": "t:settings.label_org_sameas_4" }
+    ]
+  },
+  {
+    "name": "t:settings.favicon_panel",
+    "settings": [
+      { "type": "image_picker", "id": "favicon", "label": "t:settings.label_favicon", "info": "t:settings.info_favicon" }
+    ]
+  }
+]

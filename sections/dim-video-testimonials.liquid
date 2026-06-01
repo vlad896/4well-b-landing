@@ -1,0 +1,165 @@
+{%- comment -%}
+  section: dim-video-testimonials
+  source mapping: index.html block 8.6 (lines 637-732) + video modal (lines 1144-1151)
+  Turn 14 — per-turn STOP. First <dim-carousel> consumer (shared infra also used by Turn 15 dim-reviews).
+  v1: tiles non-interactive (all video_src_url=""). <dim-video-modal> JS NOT loaded unless any block has real URL.
+  Compliance: legal_text default = t:compliance.video_legal; modal_legal default = t:compliance.video_modal_legal (shared).
+  SSR-renders initial aria-current based on start_index — no hydration flash.
+{%- endcomment -%}
+
+{%- assign video_blocks = section.blocks | where: 'type', 'video' -%}
+{%- assign start_idx = section.settings.start_index | default: 0 -%}
+
+{%- assign has_real_videos = false -%}
+{%- for block in video_blocks -%}
+  {%- if block.settings.video_src_url != blank -%}
+    {%- assign has_real_videos = true -%}
+  {%- endif -%}
+{%- endfor -%}
+
+<section class="videos" {{ section.shopify_attributes }}>
+  <div class="container">
+    <div class="videos__head">
+      {%- if section.settings.eyebrow != blank -%}
+        <div class="eyebrow">{{ section.settings.eyebrow }}</div>
+      {%- endif -%}
+      <h2 class="h2">{{ section.settings.h2 }}</h2>
+    </div>
+
+    {%- if video_blocks.size > 0 -%}
+      <dim-carousel class="videos__carousel"
+                    start-index="{{ start_idx }}"
+                    intercept-inactive-click="true">
+        <button class="videos__nav videos__nav--prev"
+                type="button"
+                data-prev
+                aria-label="{{ 'ui.previous' | t }}">
+          <span aria-hidden="true">‹</span>
+        </button>
+
+        <div class="carousel-track videos__track"
+             tabindex="0"
+             role="region"
+             aria-roledescription="carousel"
+             aria-label="{{ 'sections.dim_video_testimonials.carousel_aria' | t }}">
+          {%- for block in video_blocks -%}
+            {%- assign is_initial_active = false -%}
+            {%- if forloop.index0 == start_idx -%}{%- assign is_initial_active = true -%}{%- endif -%}
+            <button class="video-tile carousel-card{% if is_initial_active %} is-active{% endif %}"
+                    type="button"
+                    aria-current="{% if is_initial_active %}true{% else %}false{% endif %}"
+                    style="--poster-gradient:{{ block.settings.poster_bg_gradient | default: 'linear-gradient(135deg,#5C3A92,#3A2161)' | escape }};"
+                    {%- if block.settings.video_src_url != blank %}
+                      data-video-src="{{ block.settings.video_src_url | escape }}"
+                      data-video-type="{{ block.settings.video_src_type | default: 'video/mp4' | escape }}"
+                    {%- endif -%}
+                    {{ block.shopify_attributes }}>
+              <div class="video-tile__poster">
+                {%- if block.settings.verified_label != blank -%}
+                  <span class="video-tile__verified">{{ block.settings.verified_label }}</span>
+                {%- endif -%}
+                <span class="video-tile__play" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true" focusable="false"><path d="M8 5v14l11-7z" fill="currentColor"/></svg>
+                </span>
+                {%- if block.settings.duration != blank -%}
+                  <span class="video-tile__duration">{{ block.settings.duration }}</span>
+                {%- endif -%}
+              </div>
+              <div class="video-tile__caption">
+                {%- if block.settings.name_age != blank -%}
+                  <strong>{{ block.settings.name_age }}</strong>
+                {%- endif -%}
+                <span>{{ block.settings.quote }}</span>
+              </div>
+            </button>
+          {%- endfor -%}
+        </div>
+
+        <button class="videos__nav videos__nav--next"
+                type="button"
+                data-next
+                aria-label="{{ 'ui.next' | t }}">
+          <span aria-hidden="true">›</span>
+        </button>
+
+        <div class="videos__scrubber" aria-hidden="true">
+          <div class="videos__scrubber-bar" data-scrubber-bar></div>
+        </div>
+      </dim-carousel>
+    {%- endif -%}
+
+    {%- if section.settings.legal_text != blank -%}
+      <p class="videos__legal">{{ section.settings.legal_text }}</p>
+    {%- endif -%}
+  </div>
+</section>
+
+{%- if has_real_videos -%}
+  <dim-video-modal id="video-modal"
+                   hidden
+                   role="dialog"
+                   aria-modal="true"
+                   aria-label="{{ 'sections.dim_video_testimonials.modal_aria' | t }}">
+    <div class="modal__backdrop" data-close-modal></div>
+    <div class="modal__card modal__card--video">
+      <button type="button" class="modal__close" data-close-modal aria-label="{{ 'ui.close' | t }}">×</button>
+      <video controls preload="none" playsinline></video>
+      {%- if section.settings.modal_legal != blank -%}
+        <p class="video-modal__legal">{{ section.settings.modal_legal }}</p>
+      {%- endif -%}
+    </div>
+  </dim-video-modal>
+{%- endif -%}
+
+<script src="{{ 'dim-carousel.js' | asset_url }}" type="module" defer></script>
+{%- if has_real_videos -%}
+  <script src="{{ 'dim-video-modal.js' | asset_url }}" type="module" defer></script>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "t:sections.dim_video_testimonials.section_name",
+  "tag": "section",
+  "class": "dim-section dim-video-testimonials-section",
+  "settings": [
+    { "type": "header", "content": "t:sections.dim_video_testimonials.header_intro" },
+    { "type": "text",     "id": "eyebrow", "label": "t:sections.dim_video_testimonials.label_eyebrow", "default": "t:sections.dim_video_testimonials.eyebrow_default" },
+    { "type": "textarea", "id": "h2",      "label": "t:sections.dim_video_testimonials.label_h2",      "default": "t:sections.dim_video_testimonials.h2_default" },
+
+    { "type": "header", "content": "t:sections.dim_video_testimonials.header_carousel" },
+    { "type": "number", "id": "start_index", "label": "t:sections.dim_video_testimonials.label_start_index", "info": "t:sections.dim_video_testimonials.info_start_index", "default": 1 },
+
+    { "type": "header", "content": "t:sections.dim_video_testimonials.header_compliance", "info": "t:sections.dim_video_testimonials.info_compliance_header" },
+    { "type": "text", "id": "legal_text",  "label": "t:sections.dim_video_testimonials.label_legal_text",  "info": "t:sections.dim_video_testimonials.info_legal_text",  "default": "t:compliance.video_legal" },
+    { "type": "text", "id": "modal_legal", "label": "t:sections.dim_video_testimonials.label_modal_legal", "info": "t:sections.dim_video_testimonials.info_modal_legal", "default": "t:compliance.video_modal_legal" }
+  ],
+  "blocks": [
+    {
+      "type": "video",
+      "name": "t:sections.dim_video_testimonials.block_video_name",
+      "settings": [
+        { "type": "text",     "id": "poster_bg_gradient", "label": "t:sections.dim_video_testimonials.label_poster_bg_gradient", "info": "t:sections.dim_video_testimonials.info_poster_bg_gradient", "default": "linear-gradient(135deg,#5C3A92,#3A2161)" },
+        { "type": "text",     "id": "verified_label", "label": "t:sections.dim_video_testimonials.label_verified_label", "default": "t:sections.dim_video_testimonials.verified_label_default" },
+        { "type": "text",     "id": "duration", "label": "t:sections.dim_video_testimonials.label_duration" },
+        { "type": "text",     "id": "name_age", "label": "t:sections.dim_video_testimonials.label_name_age" },
+        { "type": "textarea", "id": "quote",    "label": "t:sections.dim_video_testimonials.label_quote" },
+        { "type": "url",      "id": "video_src_url",  "label": "t:sections.dim_video_testimonials.label_video_src_url",  "info": "t:sections.dim_video_testimonials.info_video_src_url" },
+        { "type": "text",     "id": "video_src_type", "label": "t:sections.dim_video_testimonials.label_video_src_type", "default": "video/mp4" }
+      ]
+    }
+  ],
+  "max_blocks": 10,
+  "presets": [
+    {
+      "name": "t:sections.dim_video_testimonials.preset_name",
+      "blocks": [
+        { "type": "video", "settings": { "poster_bg_gradient": "linear-gradient(135deg,#5C3A92,#3A2161)", "duration": "0:48", "name_age": "t:sections.dim_video_testimonials.video_1_name_age", "quote": "t:sections.dim_video_testimonials.video_1_quote" } },
+        { "type": "video", "settings": { "poster_bg_gradient": "linear-gradient(135deg,#E63946,#8B1E29)", "duration": "1:12", "name_age": "t:sections.dim_video_testimonials.video_2_name_age", "quote": "t:sections.dim_video_testimonials.video_2_quote" } },
+        { "type": "video", "settings": { "poster_bg_gradient": "linear-gradient(135deg,#FFB800,#C28200)", "duration": "0:39", "name_age": "t:sections.dim_video_testimonials.video_3_name_age", "quote": "t:sections.dim_video_testimonials.video_3_quote" } },
+        { "type": "video", "settings": { "poster_bg_gradient": "linear-gradient(135deg,#D85AA8,#8C2F62)", "duration": "1:24", "name_age": "t:sections.dim_video_testimonials.video_4_name_age", "quote": "t:sections.dim_video_testimonials.video_4_quote" } },
+        { "type": "video", "settings": { "poster_bg_gradient": "linear-gradient(135deg,#3A9D8E,#1A6961)", "duration": "0:56", "name_age": "t:sections.dim_video_testimonials.video_5_name_age", "quote": "t:sections.dim_video_testimonials.video_5_quote" } }
+      ]
+    }
+  ]
+}
+{% endschema %}
