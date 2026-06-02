@@ -22,16 +22,8 @@
       { "type": "text",     "id": "product_sku",         "label": "t:settings.label_product_sku",         "default": "4W-DIM-370" },
       { "type": "text",     "id": "product_brand",       "label": "t:settings.label_product_brand",       "default": "t:settings.product_brand_default" },
       { "type": "url",      "id": "product_image_url",   "label": "t:settings.label_product_image_url",   "info": "t:settings.info_product_image_url" },
-      { "type": "text",     "id": "product_price",       "label": "t:settings.label_product_price",       "default": "22.95" },
+      { "type": "text",     "id": "product_price",       "label": "t:settings.label_product_price",       "default": "19.99" },
       { "type": "text",     "id": "product_currency",    "label": "t:settings.label_product_currency",    "default": "USD" }
-    ]
-  },
-  {
-    "name": "t:settings.email_panel",
-    "settings": [
-      { "type": "paragraph", "content": "t:settings.email_panel_info" },
-      { "type": "text", "id": "klaviyo_company_id", "label": "t:settings.label_klaviyo_company_id", "info": "t:settings.info_klaviyo_company_id" },
-      { "type": "text", "id": "klaviyo_list_id",    "label": "t:settings.label_klaviyo_list_id",    "info": "t:settings.info_klaviyo_list_id" }
     ]
   },
   {

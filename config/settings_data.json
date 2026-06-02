@@ -3,8 +3,6 @@
     "brand_color_primary": "#4A2C7A",
     "brand_color_amazon": "#FF9900",
     "global_cta_url": "https://www.amazon.com/dp/EXAMPLE?tag=AFFILIATE-TAG",
-    "klaviyo_company_id": "PLACEHOLDER",
-    "klaviyo_list_id": "PLACEHOLDER",
     "robots_index": false,
     "canonical_url_override": "",
     "og_image": null,

@@ -107,7 +107,10 @@ p{margin:0}
 }
 .hero__cta{display:flex;flex-direction:column;gap:12px;align-items:flex-start}
 .hero__cta .trust-badges{align-self:stretch}
-.hero__pricing{font-size:13px;color:var(--c-grey-500)}
+.hero__cta-row{display:flex;align-items:center;gap:16px;flex-wrap:nowrap;width:100%;margin-block:16px}
+.hero__cta-row .btn{flex:1 1 auto;padding:18px 36px;font-size:18px}
+.hero__cta-row .hero__pricing{flex:0 0 auto;margin-left:auto}
+.hero__pricing{display:flex;align-items:baseline;gap:8px;flex-wrap:nowrap;white-space:nowrap;font-size:18px;color:var(--c-grey-500);margin:0}
 
 /* ---- Trust badges row (snippets/trust-badges.liquid) ---- */
 .trust-badges{
@@ -137,11 +140,21 @@ p{margin:0}
   .trust-badge__icon{width:32px;height:32px}
   .trust-badge__icon svg{width:18px;height:18px}
   .trust-badge__label{font-size:10px}
+  /* final variant: 3 badges on row 1, last 2 centered on row 2 */
+  .trust-badges--final{grid-template-columns:repeat(6,1fr);gap:14px 8px}
+  .trust-badges--final .trust-badge{grid-column:span 2}
+  .trust-badges--final .trust-badge:nth-child(4){grid-column:2 / span 2}
+  .trust-badges--final .trust-badge:nth-child(5){grid-column:4 / span 2}
+  .hero__cta-row{flex-wrap:wrap;gap:10px}
+  .hero__cta-row .btn{flex:1 1 100%;width:100%}
+  .hero__cta-row .hero__pricing{flex-basis:100%;margin-left:0;justify-content:center}
 }
 .hero__pricing strong{color:var(--c-ink)}
+.hero__price-now{font-size:clamp(24px,3.2vw,32px);font-weight:800;line-height:1}
+.hero__price-was{text-decoration:line-through;color:var(--c-grey-500);font-size:18px}
 .hero__pricing-save{
-  display:inline-block;margin-left:4px;padding:2px 7px;
-  font-size:11px;font-weight:700;color:#fff;background:var(--c-red);
+  display:inline-block;padding:4px 10px;
+  font-size:14px;font-weight:700;color:#fff;background:var(--c-red);
   border-radius:var(--r-pill);letter-spacing:.02em;
 }
 .hero__visual{

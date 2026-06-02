@@ -30,36 +30,21 @@
       "settings": {}
     },
 
-    "quiz": {
-      "type": "dim-quiz",
+    "problem": {
+      "type": "dim-problem",
       "blocks": {
-        "q1": { "type": "question", "settings": { "heading": "When do your breakouts usually flare up?",         "option_1_label": "The week before my period", "option_1_value": "cyclical", "option_2_label": "Randomly, no pattern", "option_2_value": "random", "option_3_label": "During stressful weeks", "option_3_value": "stress", "option_4_label": "I have them constantly", "option_4_value": "constant" } },
-        "q2": { "type": "question", "settings": { "heading": "Where on your face do they show up most?",        "option_1_label": "Chin and jawline", "option_1_value": "chin-jaw", "option_2_label": "Forehead and cheeks", "option_2_value": "forehead", "option_3_label": "All over", "option_3_value": "all-over", "option_4_label": "Around the mouth", "option_4_value": "mouth" } },
-        "q3": { "type": "question", "settings": { "heading": "Have you tried any of these?",                     "option_1_label": "Retinoids / antibiotics", "option_1_value": "rx", "option_2_label": "Birth control for acne", "option_2_value": "bc", "option_3_label": "Diet and elimination", "option_3_value": "diet", "option_4_label": "Nothing so far", "option_4_value": "none" } },
-        "q4": { "type": "question", "settings": { "heading": "Which of these also sounds familiar?",             "option_1_label": "Heavy PMS or bloating", "option_1_value": "pms", "option_2_label": "Irregular cycles", "option_2_value": "irreg", "option_3_label": "Both", "option_3_value": "both", "option_4_label": "Neither", "option_4_value": "neither" } },
-        "r-cyclical": { "type": "result_card", "settings": { "outcome_value": "cyclical", "badge": "Your result · Cyclical pattern",  "heading": "Your skin is on a hormonal clock",                                  "paragraph": "Breakouts that arrive on schedule (the week before your period) are the textbook hormonal-acne pattern. Estrogen fluctuations drive sebum, inflammation, and chin/jaw breakouts. DIM is formulated to support how your body metabolizes estrogen — which is why cyclical breakouts are exactly the use-case it's built for.", "cta_label": "See DIM for cyclical breakouts →",  "micro": "Most users notice the first shift within 2–4 weeks of consistent use." } },
-        "r-constant": { "type": "result_card", "settings": { "outcome_value": "constant", "badge": "Your result · Persistent pattern", "heading": "When topicals aren't enough — look inside",                          "paragraph": "If retinoids, antibiotics, and cleansers keep failing, the trigger is likely INTERNAL — not on the surface of your skin. Persistent adult breakouts almost always trace back to the hormonal pathway: DIM supports the estrogen metabolism that topical treatments can't touch.",                              "cta_label": "See DIM for persistent acne →",     "micro": "Full effect typically takes 60–90 days. Stay consistent." } },
-        "r-stress":   { "type": "result_card", "settings": { "outcome_value": "stress",   "badge": "Your result · Stress-amplified",   "heading": "Stress messes with your hormones — and your skin",                  "paragraph": "Cortisol from chronic stress raises androgen activity, which boosts sebum and inflammation. The result: breakouts that flare during your hardest weeks. DIM supports the hormone balance that stress most reliably disrupts.",                                                                                "cta_label": "See DIM for stress-driven breakouts →", "micro": "Pair DIM with sleep + magnesium for the strongest results." } },
-        "r-random":   { "type": "result_card", "settings": { "outcome_value": "random",   "badge": "Your result · Mixed pattern",      "heading": "Random isn't always random — there's usually a pattern underneath", "paragraph": "What looks random often masks a cycle-linked or stress-linked pattern that becomes visible only after a few months of consistent observation. DIM is a 60-day commitment that helps reveal — and improve — the pattern beneath.",                                                                       "cta_label": "See DIM and start tracking →",      "micro": "Keep a quick skin journal for the first 8 weeks — patterns will emerge." } }
+        "pain-1": { "type": "pain_card", "settings": { "icon": "🔴",  "text": "Deep, painful cystic pimples along your jaw and chin" } },
+        "pain-2": { "type": "pain_card", "settings": { "icon": "📅",  "text": "Breakouts that show up like clockwork before your period" } },
+        "pain-3": { "type": "pain_card", "settings": { "icon": "💊",  "text": "Tried every cream, retinoid, antibiotic — nothing sticks" } },
+        "pain-4": { "type": "pain_card", "settings": { "icon": "🛢️", "text": "Oily T-zone by 11 AM, no matter what cleanser you use" } },
+        "pain-5": { "type": "pain_card", "settings": { "icon": "😞",  "text": "Scarring and dark spots that take months to fade" } },
+        "pain-6": { "type": "pain_card", "settings": { "icon": "🩸",  "text": "Heavy PMS, bloating, or mood swings alongside breakouts" } }
       },
-      "block_order": ["q1", "q2", "q3", "q4", "r-cyclical", "r-constant", "r-stress", "r-random"],
-      "settings": {}
-    },
-
-    "essentials-banner": {
-      "type": "dim-essentials-banner",
-      "blocks": {
-        "prop-1": { "type": "proposition", "settings": { "title": "Multi-Pathway Hormonal Support", "body": "Targets the estrogen-metabolism pathway behind adult chin & jawline breakouts.", "icon_svg": "<svg viewBox='0 0 40 40' fill='none' stroke='currentColor' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'><path d='M14 9l-5 3v6l5 3 5-3v-6l-5-3z'/><path d='M26 9l-5 3v6l5 3 5-3v-6l-5-3z'/><path d='M20 22l-5 3v6l5 3 5-3v-6l-5-3z'/></svg>" } },
-        "prop-2": { "type": "proposition", "settings": { "title": "370mg DIM Per Capsule", "body": "Clinically meaningful dose — one capsule replaces pounds of broccoli daily.", "icon_svg": "<svg viewBox='0 0 40 40' fill='none' stroke='currentColor' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'><rect x='7' y='14' width='26' height='12' rx='6'/><path d='M20 14v12'/></svg>" } },
-        "prop-3": { "type": "proposition", "settings": { "title": "BioPerine® Enhanced Absorption", "body": "Patented black-pepper extract studied for improved nutrient bioavailability.", "icon_svg": "<svg viewBox='0 0 40 40' fill='none' stroke='currentColor' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'><path d='M20 30V14m-6 6 6-6 6 6'/><circle cx='20' cy='10' r='2'/></svg>" } },
-        "prop-4": { "type": "proposition", "settings": { "title": "Third-Party Lab Tested", "body": "Independently verified for purity & potency. Made in USA, GMP-certified.", "icon_svg": "<svg viewBox='0 0 40 40' fill='none' stroke='currentColor' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'><path d='M16 8h8M17 8v9l-6 11a3 3 0 0 0 2.6 4.5h12.8A3 3 0 0 0 29 28l-6-11V8'/><path d='M13.5 22h13'/></svg>" } }
-      },
-      "block_order": ["prop-1", "prop-2", "prop-3", "prop-4"],
+      "block_order": ["pain-1", "pain-2", "pain-3", "pain-4", "pain-5", "pain-6"],
       "settings": {
-        "eyebrow": "Why DIM works",
-        "h2": "Feel like yourself again — clear skin from the inside out.",
-        "background_image_fallback": "essentials-bg.jpg",
-        "image_alt": "Calm woman with clear skin, eyes closed at golden hour"
+        "h2": "Sound familiar? You're not alone.",
+        "lede": "Hormonal acne affects roughly half of women aged 20–29 and a quarter of women aged 40–49. If any of these sound like you — your hormones are sending you a signal.",
+        "close_line": "These aren't separate problems. They share one underlying factor — how efficiently your body metabolizes estrogen."
       }
     },
 
@@ -178,8 +163,6 @@
       }
     },
 
-    "email-optin":             { "type": "dim-email-optin", "settings": {} },
-
     "final-cta": {
       "type": "dim-final-cta",
       "blocks": {
@@ -194,9 +177,9 @@
         "g-9":  { "type": "gallery_image", "settings": { "fallback_image": "pdp-9.png",  "alt": "Skin clarity — before and after" } },
         "g-10": { "type": "gallery_image", "settings": { "fallback_image": "pdp-10.jpg", "alt": "Amazon delivery unboxing" } },
         "perk-1": { "type": "perk", "settings": { "text": "<strong>FREE</strong> Fast Shipping" } },
-        "perk-2": { "type": "perk", "settings": { "text": "<strong>15% DISCOUNT</strong> each delivery" } },
-        "perk-3": { "type": "perk", "settings": { "text": "<strong>NO CONTRACT</strong> Cancel anytime" } },
-        "perk-4": { "type": "perk", "settings": { "text": "<strong>Out of Stock</strong> PROTECTION" } }
+        "perk-2": { "type": "perk", "settings": { "text": "<strong>30-DAY</strong> money-back guarantee" } },
+        "perk-3": { "type": "perk", "settings": { "text": "<strong>THIRD-PARTY</strong> lab tested" } },
+        "perk-4": { "type": "perk", "settings": { "text": "<strong>MADE IN USA</strong> · GMP-certified" } }
       },
       "block_order": ["g-1", "g-2", "g-3", "g-4", "g-5", "g-6", "g-7", "g-8", "g-9", "g-10", "perk-1", "perk-2", "perk-3", "perk-4"],
       "settings": {}
@@ -226,17 +209,14 @@
       },
       "block_order": ["nav-1", "nav-2", "nav-3", "nav-4", "nav-5"],
       "settings": {}
-    },
-
-    "exit-popup":              { "type": "dim-exit-popup", "settings": {} }
+    }
   },
   "order": [
     "announcement-countdown",
     "sticky-cta",
     "hero",
     "social-proof",
-    "quiz",
-    "essentials-banner",
+    "problem",
     "science",
     "skip-link",
     "ingredients",
@@ -248,10 +228,8 @@
     "mid-cta-2",
     "comparison",
     "faq",
-    "email-optin",
     "final-cta",
     "sources",
-    "footer",
-    "exit-popup"
+    "footer"
   ]
 }

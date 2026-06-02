@@ -55,7 +55,7 @@
       <div class="product-merged__right">
         {%- assign ing_blocks = section.blocks | where: 'type', 'ingredient' -%}
         {%- if ing_blocks.size > 0 -%}
-          <div class="ing-grid">
+          <div class="ing-grid" data-ing-grid>
             {%- for block in ing_blocks -%}
               <div class="ing-card" {{ block.shopify_attributes }}>
                 {%- if block.settings.icon != blank -%}
@@ -75,6 +75,18 @@
               </div>
             {%- endfor -%}
           </div>
+
+          {%- if ing_blocks.size > 1 -%}
+            <div class="ing-dots" role="tablist" aria-label="{{ 'sections.dim_ingredients.carousel_aria' | t }}">
+              {%- for block in ing_blocks -%}
+                <button type="button"
+                        class="ing-dot{% if forloop.first %} is-active{% endif %}"
+                        data-ing-dot
+                        aria-current="{% if forloop.first %}true{% else %}false{% endif %}"
+                        aria-label="{{ block.settings.name | escape }}"></button>
+              {%- endfor -%}
+            </div>
+          {%- endif -%}
         {%- endif -%}
 
         {%- if section.settings.close_line != blank -%}
@@ -83,6 +95,42 @@
       </div>
     </div>
   </div>
+
+  <script>
+    (() => {
+      const root = document.currentScript.closest('.product-merged');
+      if (!root) return;
+      const grid = root.querySelector('[data-ing-grid]');
+      const dots = Array.from(root.querySelectorAll('[data-ing-dot]'));
+      if (!grid || dots.length < 2) return;
+      const cards = Array.from(grid.children);
+      let raf = 0;
+      const sync = () => {
+        const g = grid.getBoundingClientRect();
+        const center = g.left + g.width / 2;
+        let best = 0, bd = Infinity;
+        cards.forEach((card, i) => {
+          const r = card.getBoundingClientRect();
+          const d = Math.abs(center - (r.left + r.width / 2));
+          if (d < bd) { bd = d; best = i; }
+        });
+        dots.forEach((dot, i) => {
+          const on = i === best;
+          dot.classList.toggle('is-active', on);
+          dot.setAttribute('aria-current', on ? 'true' : 'false');
+        });
+      };
+      grid.addEventListener('scroll', () => {
+        if (raf) cancelAnimationFrame(raf);
+        raf = requestAnimationFrame(sync);
+      }, { passive: true });
+      dots.forEach((dot, i) => dot.addEventListener('click', () => {
+        const card = cards[i];
+        if (card) card.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
+      }));
+      sync();
+    })();
+  </script>
 </section>
 
 {% schema %}

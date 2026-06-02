@@ -30,21 +30,22 @@
         {%- endif -%}
 
         <div class="hero__cta">
-          {%- render 'cta-button',
-            url: settings.global_cta_url,
-            label: section.settings.cta_label,
-            icon: section.settings.cta_icon,
-            cta_id: 'hero-primary',
-            section_id: 'hero',
-            position: 'top',
-            size: 'lg'
-          -%}
+          <div class="hero__cta-row">
+            {%- render 'cta-button',
+              url: settings.global_cta_url,
+              label: section.settings.cta_label,
+              icon: section.settings.cta_icon,
+              cta_id: 'hero-primary',
+              section_id: 'hero',
+              position: 'top'
+            -%}
 
-          <p class="hero__pricing">
-            <strong>{{ section.settings.price_amount_once }}</strong> {{ section.settings.price_label_once }} ·
-            <strong>{{ section.settings.price_amount_sub }}</strong> {{ section.settings.price_label_sub }}
-            {%- if section.settings.save_badge != blank %} <span class="hero__pricing-save">{{ section.settings.save_badge }}</span>{%- endif -%}
-          </p>
+            <p class="hero__pricing">
+              <strong class="hero__price-now">{{ section.settings.price_now }}</strong>
+              {%- if section.settings.price_was != blank %} <span class="hero__price-was">{{ section.settings.price_was }}</span>{%- endif -%}
+              {%- if section.settings.save_badge != blank %} <span class="hero__pricing-save">{{ section.settings.save_badge }}</span>{%- endif -%}
+            </p>
+          </div>
 
           {%- render 'trust-badges', variant: 'hero' -%}
         </div>
@@ -95,11 +96,9 @@
     { "type": "text", "id": "cta_label", "label": "t:sections.dim_hero.label_cta_label", "default": "t:sections.dim_hero.cta_label_default" },
 
     { "type": "header", "content": "t:sections.dim_hero.header_price" },
-    { "type": "text", "id": "price_amount_once", "label": "t:sections.dim_hero.label_price_amount_once", "default": "t:sections.dim_hero.price_amount_once_default" },
-    { "type": "text", "id": "price_label_once",  "label": "t:sections.dim_hero.label_price_label_once",  "default": "t:sections.dim_hero.price_label_once_default" },
-    { "type": "text", "id": "price_amount_sub",  "label": "t:sections.dim_hero.label_price_amount_sub",  "default": "t:sections.dim_hero.price_amount_sub_default" },
-    { "type": "text", "id": "price_label_sub",   "label": "t:sections.dim_hero.label_price_label_sub",   "default": "t:sections.dim_hero.price_label_sub_default" },
-    { "type": "text", "id": "save_badge",        "label": "t:sections.dim_hero.label_save_badge",        "default": "t:sections.dim_hero.save_badge_default" },
+    { "type": "text", "id": "price_now",  "label": "t:sections.dim_hero.label_price_now",  "default": "t:sections.dim_hero.price_now_default" },
+    { "type": "text", "id": "price_was",  "label": "t:sections.dim_hero.label_price_was",  "default": "t:sections.dim_hero.price_was_default" },
+    { "type": "text", "id": "save_badge", "label": "t:sections.dim_hero.label_save_badge", "default": "t:sections.dim_hero.save_badge_default" },
 
     { "type": "header", "content": "t:sections.dim_hero.header_visual" },
     { "type": "text", "id": "badge_text",  "label": "t:sections.dim_hero.label_badge_text",  "default": "t:sections.dim_hero.badge_text_default" },

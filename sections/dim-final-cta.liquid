@@ -4,7 +4,7 @@
   Turn 19 — per-turn STOP. PDP-style final conversion CTA.
   - Second <dim-countdown> consumer (re-uses Turn 14 dim-carousel.js? no — countdown.js. Already loaded by Turn 2.)
   - OI5 aria-live fix APPLIED (data-clock-sr + dim-countdown-aria snippet)
-  - 2 CTAs via cta-button (final-cta-sub + final-cta-once) — both → settings.global_cta_url
+  - Single offer CTA via cta-button (final-cta-offer) → settings.global_cta_url
   - id="buy" anchor target for Turn 9 dim-skip-link (#buy navigation resolves)
   - schema tag "div" so outer wrapper is <div>, inner <section id="buy"> = the named anchor
   - Plan-card visual reuses .review-card pattern (border + radius + padding + box-shadow); .plan-card adds layout + featured variant
@@ -125,22 +125,22 @@
 
         <div class="pdp-plans">
           <div class="plan-card plan-card--featured">
-            {%- if section.settings.sub_badge != blank -%}
-              <span class="plan-card__badge">{{ section.settings.sub_badge }}</span>
+            {%- if section.settings.offer_badge != blank -%}
+              <span class="plan-card__badge">{{ section.settings.offer_badge }}</span>
             {%- endif -%}
             <div class="plan-card__copy">
-              <span class="plan-card__label">{{ section.settings.sub_label }}</span>
+              <span class="plan-card__label">{{ section.settings.offer_label }}</span>
               <span class="plan-card__pricing">
-                {%- if section.settings.sub_price_was != blank -%}
-                  <span class="plan-card__was">{{ section.settings.sub_price_was }}</span>
+                {%- if section.settings.offer_price_was != blank -%}
+                  <span class="plan-card__was">{{ section.settings.offer_price_was }}</span>
                 {%- endif -%}
-                <span class="plan-card__now">{{ section.settings.sub_price_now }}</span>
+                <span class="plan-card__now">{{ section.settings.offer_price_now }}</span>
               </span>
             </div>
             {%- render 'cta-button',
               url: settings.global_cta_url,
-              label: section.settings.sub_cta_label,
-              cta_id: 'final-cta-sub',
+              label: section.settings.offer_cta_label,
+              cta_id: 'final-cta-offer',
               section_id: 'final-cta',
               position: 'bottom',
               size: 'lg'
@@ -155,24 +155,6 @@
               {%- endfor -%}
             </ul>
           {%- endif -%}
-
-          <div class="plan-card">
-            <div class="plan-card__copy">
-              <span class="plan-card__label">{{ section.settings.once_label }}</span>
-              <span class="plan-card__pricing">
-                <span class="plan-card__now">{{ section.settings.once_price }}</span>
-              </span>
-            </div>
-            {%- render 'cta-button',
-              url: settings.global_cta_url,
-              label: section.settings.once_cta_label,
-              cta_id: 'final-cta-once',
-              section_id: 'final-cta',
-              position: 'bottom',
-              style: 'secondary',
-              size: 'lg'
-            -%}
-          </div>
         </div>
 
         {%- render 'trust-badges', variant: 'final' -%}
@@ -207,15 +189,11 @@
     { "type": "text",   "id": "timer_expired_label", "label": "t:sections.dim_final_cta.label_timer_expired_label", "default": "t:sections.dim_final_cta.timer_expired_label_default" },
 
     { "type": "header", "content": "t:sections.dim_final_cta.header_plans" },
-    { "type": "text", "id": "sub_badge",     "label": "t:sections.dim_final_cta.label_sub_badge",     "default": "t:sections.dim_final_cta.sub_badge_default" },
-    { "type": "text", "id": "sub_label",     "label": "t:sections.dim_final_cta.label_sub_label",     "default": "t:sections.dim_final_cta.sub_label_default" },
-    { "type": "text", "id": "sub_price_was", "label": "t:sections.dim_final_cta.label_sub_price_was", "default": "t:sections.dim_final_cta.sub_price_was_default" },
-    { "type": "text", "id": "sub_price_now", "label": "t:sections.dim_final_cta.label_sub_price_now", "default": "t:sections.dim_final_cta.sub_price_now_default" },
-    { "type": "text", "id": "sub_cta_label", "label": "t:sections.dim_final_cta.label_sub_cta_label", "default": "t:sections.dim_final_cta.sub_cta_label_default" },
-
-    { "type": "text", "id": "once_label",     "label": "t:sections.dim_final_cta.label_once_label",     "default": "t:sections.dim_final_cta.once_label_default" },
-    { "type": "text", "id": "once_price",     "label": "t:sections.dim_final_cta.label_once_price",     "default": "t:sections.dim_final_cta.once_price_default" },
-    { "type": "text", "id": "once_cta_label", "label": "t:sections.dim_final_cta.label_once_cta_label", "default": "t:sections.dim_final_cta.once_cta_label_default" }
+    { "type": "text", "id": "offer_badge",     "label": "t:sections.dim_final_cta.label_offer_badge",     "default": "t:sections.dim_final_cta.offer_badge_default" },
+    { "type": "text", "id": "offer_label",     "label": "t:sections.dim_final_cta.label_offer_label",     "default": "t:sections.dim_final_cta.offer_label_default" },
+    { "type": "text", "id": "offer_price_was", "label": "t:sections.dim_final_cta.label_offer_price_was", "default": "t:sections.dim_final_cta.offer_price_was_default" },
+    { "type": "text", "id": "offer_price_now", "label": "t:sections.dim_final_cta.label_offer_price_now", "default": "t:sections.dim_final_cta.offer_price_now_default" },
+    { "type": "text", "id": "offer_cta_label", "label": "t:sections.dim_final_cta.label_offer_cta_label", "default": "t:sections.dim_final_cta.offer_cta_label_default" }
   ],
   "blocks": [
     {

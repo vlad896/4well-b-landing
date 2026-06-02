@@ -44,6 +44,19 @@
         }
       });
 
+      // Hover-pan: move the CSS zoom focus to the cursor so corners/edges are reachable.
+      // CSS handles the scale on :hover; here we just steer transform-origin.
+      this.mainEl.addEventListener('pointermove', (e) => {
+        if (e.pointerType === 'touch') return;
+        const r = this.mainEl.getBoundingClientRect();
+        const x = Math.min(100, Math.max(0, ((e.clientX - r.left) / r.width) * 100));
+        const y = Math.min(100, Math.max(0, ((e.clientY - r.top) / r.height) * 100));
+        this.mainImg.style.transformOrigin = `${x}% ${y}%`;
+      });
+      this.mainEl.addEventListener('pointerleave', () => {
+        this.mainImg.style.transformOrigin = '';
+      });
+
       if (this.dialog) {
         this.closeBtn?.addEventListener('click', () => this.dialog.close());
         this.dialog.addEventListener('click', (e) => {

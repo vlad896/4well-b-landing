@@ -49,16 +49,8 @@
     <div class="announcement-bar__btns">
       {%- render 'cta-button',
         url: settings.global_cta_url,
-        label: section.settings.btn_once_label,
-        cta_id: 'sticky-top-once',
-        section_id: 'announcement-countdown',
-        position: 'sticky',
-        style: 'sticky-once'
-      -%}
-      {%- render 'cta-button',
-        url: settings.global_cta_url,
-        label: section.settings.btn_sub_label,
-        cta_id: 'sticky-top-sub',
+        label: section.settings.btn_label,
+        cta_id: 'sticky-top-primary',
         section_id: 'announcement-countdown',
         position: 'sticky',
         style: 'sticky-sub'
@@ -99,8 +91,7 @@
     { "type": "text", "id": "expired_label", "label": "t:sections.dim_announcement_countdown.label_expired_label", "default": "t:sections.dim_announcement_countdown.expired_label_default" },
 
     { "type": "header", "content": "t:sections.dim_announcement_countdown.header_buttons" },
-    { "type": "text", "id": "btn_once_label", "label": "t:sections.dim_announcement_countdown.label_btn_once", "default": "t:sections.dim_announcement_countdown.btn_once_default" },
-    { "type": "text", "id": "btn_sub_label",  "label": "t:sections.dim_announcement_countdown.label_btn_sub",  "default": "t:sections.dim_announcement_countdown.btn_sub_default" }
+    { "type": "text", "id": "btn_label", "label": "t:sections.dim_announcement_countdown.label_btn", "default": "t:sections.dim_announcement_countdown.btn_default" }
   ],
   "presets": [
     { "name": "t:sections.dim_announcement_countdown.preset_name" }

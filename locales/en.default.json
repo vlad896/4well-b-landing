@@ -9,7 +9,6 @@
     "video_legal": "Stories from verified customers. Compensation: free product. Individual results vary and are not typical.",
     "video_modal_legal": "Verified customer. Compensation: free product. Individual results vary.",
     "timeline_disclaimer": "*Results vary by individual. Most customers report first changes within 2–4 weeks of consistent daily use.*",
-    "email_consent": "By submitting, you agree to receive emails from 4WELL. Unsubscribe anytime. We never share your data.",
     "advertorial_badge": "Advertorial"
   },
   "ui": {
@@ -49,11 +48,11 @@
       "stars_aria": "4.6 out of 5 stars",
       "snippets_aria": "What customers say"
     },
-    "dim_quiz": {
-      "progress_aria": "Quiz progress"
-    },
     "dim_science": {
       "dose_aria": "Dose comparison"
+    },
+    "dim_ingredients": {
+      "carousel_aria": "Ingredients carousel"
     },
     "dim_skip_link": {
       "region_aria": "Quick-access for ready visitors"
@@ -78,11 +77,6 @@
       "status_warn": "Partial",
       "status_bad": "No"
     },
-    "dim_email_optin": {
-      "email_label": "Email address",
-      "privacy_link": "Privacy",
-      "editor_warning": "Configure Klaviyo List ID in Theme Settings → Email (Klaviyo) to enable this form."
-    },
     "dim_countdown": {
       "aria_under_minute": "Less than 1 minute remaining",
       "aria_under_5_min": "Less than 5 minutes remaining",
@@ -99,9 +93,6 @@
     },
     "dim_sources": {
       "region_aria": "Sources and substantiation"
-    },
-    "dim_exit_popup": {
-      "editor_warning": "Configure Klaviyo List ID in Theme Settings → Email (Klaviyo) to enable this popup."
     },
     "footer_minimal": {
       "nav_aria": "Footer navigation"
