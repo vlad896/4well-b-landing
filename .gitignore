@@ -1,0 +1,9 @@
+# Theme export / packaging artifacts
+*.zip
+
+# Shopify CLI
+.shopify/
+
+# OS / editor cruft
+.DS_Store
+Thumbs.db
