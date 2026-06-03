@@ -101,14 +101,15 @@
     "video-testimonials": {
       "type": "dim-video-testimonials",
       "blocks": {
+        "v0": { "type": "video", "settings": { "poster_asset": "snaptik-poster.webp", "duration": "0:56", "name_age": "Real customer", "quote": "\"Watch my real DIM story →\"", "video_src_url": "" } },
         "v1": { "type": "video", "settings": { "poster_bg_gradient": "linear-gradient(135deg,#5C3A92,#3A2161)", "duration": "0:48", "name_age": "Lauren, 32", "quote": "\"Three months in. Clearer than I've been since high school.\"" } },
         "v2": { "type": "video", "settings": { "poster_bg_gradient": "linear-gradient(135deg,#E63946,#8B1E29)", "duration": "1:12", "name_age": "Maya, 34",   "quote": "\"Bonus: less bloating, calmer PMS.\"" } },
         "v3": { "type": "video", "settings": { "poster_bg_gradient": "linear-gradient(135deg,#FFB800,#C28200)", "duration": "0:39", "name_age": "Ashley, 27", "quote": "\"Bare-faced more often. Took about 8 weeks.\"" } },
         "v4": { "type": "video", "settings": { "poster_bg_gradient": "linear-gradient(135deg,#D85AA8,#8C2F62)", "duration": "1:24", "name_age": "Sarah, 38",  "quote": "\"Perimenopause acne calmed down. Cycle by month two.\"" } },
         "v5": { "type": "video", "settings": { "poster_bg_gradient": "linear-gradient(135deg,#3A9D8E,#1A6961)", "duration": "0:56", "name_age": "Jordan, 29", "quote": "\"Cycle is finally predictable. Less PMS too.\"" } }
       },
-      "block_order": ["v1", "v2", "v3", "v4", "v5"],
-      "settings": {}
+      "block_order": ["v0", "v1", "v2", "v3", "v4", "v5"],
+      "settings": { "start_index": 1 }
     },
 
     "reviews": {

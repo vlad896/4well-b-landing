@@ -1,6 +1,10 @@
 # Theme export / packaging artifacts
 *.zip
 
+# Source media (host in Shopify Content > Files, not the theme repo)
+*.mp4
+*.mov
+
 # Shopify CLI
 .shopify/
 

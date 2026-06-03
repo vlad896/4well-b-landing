@@ -12,7 +12,7 @@
 
 {%- assign has_real_videos = false -%}
 {%- for block in video_blocks -%}
-  {%- if block.settings.video_src_url != blank -%}
+  {%- if block.settings.video_src_url != blank or block.settings.video_native != blank -%}
     {%- assign has_real_videos = true -%}
   {%- endif -%}
 {%- endfor -%}
@@ -43,18 +43,53 @@
              aria-roledescription="carousel"
              aria-label="{{ 'sections.dim_video_testimonials.carousel_aria' | t }}">
           {%- for block in video_blocks -%}
-            {%- assign is_initial_active = false -%}
-            {%- if forloop.index0 == start_idx -%}{%- assign is_initial_active = true -%}{%- endif -%}
+            {%- liquid
+              assign is_initial_active = false
+              if forloop.index0 == start_idx
+                assign is_initial_active = true
+              endif
+
+              # Resolve video source — priority: native Shopify video (Mux) > theme asset > external URL.
+              # Native video: pick the progressive MP4 source so the plain <video> plays everywhere (no hls.js).
+              assign v_native = block.settings.video_native
+              assign video_src = block.settings.video_src_url
+              assign video_type = block.settings.video_src_type | default: 'video/mp4'
+              if v_native != blank
+                for s in v_native.sources
+                  if s.format == 'mp4'
+                    assign video_src = s.url
+                    assign video_type = 'video/mp4'
+                  endif
+                endfor
+              endif
+
+              # Resolve poster (first-frame) — priority: native auto preview > image picker > theme asset.
+              assign poster_url = ''
+              if v_native != blank and v_native.preview_image != blank
+                assign poster_url = v_native.preview_image | image_url: width: 640
+              elsif block.settings.poster_image != blank
+                assign poster_url = block.settings.poster_image | image_url: width: 640
+              elsif block.settings.poster_asset != blank
+                assign poster_url = block.settings.poster_asset | asset_url
+              endif
+            -%}
             <button class="video-tile carousel-card{% if is_initial_active %} is-active{% endif %}"
                     type="button"
                     aria-current="{% if is_initial_active %}true{% else %}false{% endif %}"
                     style="--poster-gradient:{{ block.settings.poster_bg_gradient | default: 'linear-gradient(135deg,#5C3A92,#3A2161)' | escape }};"
-                    {%- if block.settings.video_src_url != blank %}
-                      data-video-src="{{ block.settings.video_src_url | escape }}"
-                      data-video-type="{{ block.settings.video_src_type | default: 'video/mp4' | escape }}"
+                    {%- if video_src != blank %}
+                      data-video-src="{{ video_src | escape }}"
+                      data-video-type="{{ video_type | escape }}"
                     {%- endif -%}
                     {{ block.shopify_attributes }}>
-              <div class="video-tile__poster">
+              <div class="video-tile__poster{% if poster_url != blank %} video-tile__poster--img{% endif %}">
+                {%- if poster_url != blank -%}
+                  <img class="video-tile__poster-img"
+                       src="{{ poster_url }}"
+                       alt=""
+                       loading="lazy" decoding="async"
+                       width="406" height="720">
+                {%- endif -%}
                 {%- if block.settings.verified_label != blank -%}
                   <span class="video-tile__verified">{{ block.settings.verified_label }}</span>
                 {%- endif -%}
@@ -138,11 +173,16 @@
       "type": "video",
       "name": "t:sections.dim_video_testimonials.block_video_name",
       "settings": [
+        { "type": "header",   "content": "t:sections.dim_video_testimonials.header_poster" },
+        { "type": "image_picker", "id": "poster_image", "label": "t:sections.dim_video_testimonials.label_poster_image", "info": "t:sections.dim_video_testimonials.info_poster_image" },
+        { "type": "text",     "id": "poster_asset", "label": "t:sections.dim_video_testimonials.label_poster_asset", "info": "t:sections.dim_video_testimonials.info_poster_asset" },
         { "type": "text",     "id": "poster_bg_gradient", "label": "t:sections.dim_video_testimonials.label_poster_bg_gradient", "info": "t:sections.dim_video_testimonials.info_poster_bg_gradient", "default": "linear-gradient(135deg,#5C3A92,#3A2161)" },
         { "type": "text",     "id": "verified_label", "label": "t:sections.dim_video_testimonials.label_verified_label", "default": "t:sections.dim_video_testimonials.verified_label_default" },
         { "type": "text",     "id": "duration", "label": "t:sections.dim_video_testimonials.label_duration" },
         { "type": "text",     "id": "name_age", "label": "t:sections.dim_video_testimonials.label_name_age" },
         { "type": "textarea", "id": "quote",    "label": "t:sections.dim_video_testimonials.label_quote" },
+        { "type": "header",   "content": "t:sections.dim_video_testimonials.header_video_source" },
+        { "type": "video",    "id": "video_native",   "label": "t:sections.dim_video_testimonials.label_video_native",   "info": "t:sections.dim_video_testimonials.info_video_native" },
         { "type": "url",      "id": "video_src_url",  "label": "t:sections.dim_video_testimonials.label_video_src_url",  "info": "t:sections.dim_video_testimonials.info_video_src_url" },
         { "type": "text",     "id": "video_src_type", "label": "t:sections.dim_video_testimonials.label_video_src_type", "default": "video/mp4" }
       ]
