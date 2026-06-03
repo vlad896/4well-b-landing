@@ -501,6 +501,7 @@
             "duration": "0:48",
             "name_age": "Lauren, 32",
             "quote": "\"Three months in. Clearer than I've been since high school.\"",
+            "video_native": "shopify://files/videos/it’s so easy once you add this_shopify.mp4",
             "video_src_url": "",
             "video_src_type": "video/mp4"
           }
@@ -514,6 +515,7 @@
             "duration": "1:12",
             "name_age": "Maya, 34",
             "quote": "\"Bonus: less bloating, calmer PMS.\"",
+            "video_native": "shopify://files/videos/itsxandoor_7639873421379144974_shopify.mp4",
             "video_src_url": "",
             "video_src_type": "video/mp4"
           }
@@ -527,6 +529,7 @@
             "duration": "0:39",
             "name_age": "Ashley, 27",
             "quote": "\"Bare-faced more often. Took about 8 weeks.\"",
+            "video_native": "shopify://files/videos/snaptik_7632461860956065037_shopify.mp4",
             "video_src_url": "",
             "video_src_type": "video/mp4"
           }
@@ -540,19 +543,7 @@
             "duration": "1:24",
             "name_age": "Sarah, 38",
             "quote": "\"Perimenopause acne calmed down. Cycle by month two.\"",
-            "video_src_url": "",
-            "video_src_type": "video/mp4"
-          }
-        },
-        "v5": {
-          "type": "video",
-          "settings": {
-            "poster_asset": "",
-            "poster_bg_gradient": "linear-gradient(135deg,#3A9D8E,#1A6961)",
-            "verified_label": "✓ Verified customer",
-            "duration": "0:56",
-            "name_age": "Jordan, 29",
-            "quote": "\"Cycle is finally predictable. Less PMS too.\"",
+            "video_native": "shopify://files/videos/snaptik_7636140413966912799_shopify.mp4",
             "video_src_url": "",
             "video_src_type": "video/mp4"
           }
@@ -563,8 +554,7 @@
         "v1",
         "v2",
         "v3",
-        "v4",
-        "v5"
+        "v4"
       ],
       "settings": {
         "eyebrow": "Customer stories",
