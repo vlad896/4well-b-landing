@@ -98,7 +98,31 @@
 
 {%- render 'schema-faq', qa_blocks: qa_blocks -%}
 
-<script src="{{ 'dim-accordion.js' | asset_url }}" type="module" defer></script>
+{%- comment -%} Lazy-load accordion JS only when the section nears the viewport. {%- endcomment -%}
+<script>
+  (() => {
+    const src = {{ 'dim-accordion.js' | asset_url | json }};
+    const here = document.currentScript;
+    const target = here.closest('.shopify-section') || here.previousElementSibling || document.body;
+    let done = false;
+    const load = () => {
+      if (done) return;
+      done = true;
+      const s = document.createElement('script');
+      s.src = src;
+      s.type = 'module';
+      document.head.appendChild(s);
+    };
+    if ('IntersectionObserver' in window) {
+      const io = new IntersectionObserver((entries) => {
+        if (entries.some((e) => e.isIntersecting)) { io.disconnect(); load(); }
+      }, { rootMargin: '400px' });
+      io.observe(target);
+    } else {
+      load();
+    }
+  })();
+</script>
 
 {% schema %}
 {

@@ -24,13 +24,13 @@
                 {%- assign first_url = first.settings.image | image_url: width: 1200 -%}
                 {%- assign first_alt = first.settings.alt | default: section.settings.bottle_aria -%}
                 <img src="{{ first_url }}" alt="{{ first_alt | escape }}"
-                     loading="eager" decoding="async" fetchpriority="high"
+                     loading="lazy" decoding="async"
                      data-pdp-main-img>
               {%- elsif first.settings.fallback_image != blank -%}
                 {%- assign first_alt = first.settings.alt | default: section.settings.bottle_aria -%}
                 <img src="{{ first.settings.fallback_image | asset_url }}"
                      alt="{{ first_alt | escape }}"
-                     loading="eager" decoding="async" fetchpriority="high"
+                     loading="lazy" decoding="async"
                      data-pdp-main-img>
               {%- endif -%}
               <span class="pdp-gallery__zoom-hint" aria-hidden="true">
@@ -163,8 +163,33 @@
   </div>
 </section>
 
-<script src="{{ 'dim-countdown.js' | asset_url }}" type="module" defer></script>
-<script src="{{ 'dim-pdp-gallery.js' | asset_url }}" type="module" defer></script>
+{%- comment -%} Lazy-load countdown + gallery JS only when the section nears the viewport. {%- endcomment -%}
+<script>
+  (() => {
+    const assets = [{{ 'dim-countdown.js' | asset_url | json }}, {{ 'dim-pdp-gallery.js' | asset_url | json }}];
+    const here = document.currentScript;
+    const target = here.closest('.shopify-section') || here.previousElementSibling || document.body;
+    let done = false;
+    const load = () => {
+      if (done) return;
+      done = true;
+      assets.forEach((src) => {
+        const s = document.createElement('script');
+        s.src = src;
+        s.type = 'module';
+        document.head.appendChild(s);
+      });
+    };
+    if ('IntersectionObserver' in window) {
+      const io = new IntersectionObserver((entries) => {
+        if (entries.some((e) => e.isIntersecting)) { io.disconnect(); load(); }
+      }, { rootMargin: '400px' });
+      io.observe(target);
+    } else {
+      load();
+    }
+  })();
+</script>
 
 {% schema %}
 {

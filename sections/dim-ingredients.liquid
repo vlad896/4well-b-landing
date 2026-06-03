@@ -22,13 +22,12 @@
               image: section.settings.bottle_image,
               sizes: '(min-width: 1024px) 320px, 80vw',
               alt: section.settings.bottle_aria,
-              fetchpriority: 'high',
-              loading: 'eager'
+              loading: 'lazy'
             -%}
           {%- elsif section.settings.bottle_image_fallback != blank -%}
             <img src="{{ section.settings.bottle_image_fallback | asset_url }}"
                  alt="{{ section.settings.bottle_aria | escape }}"
-                 loading="eager" decoding="async" fetchpriority="high">
+                 loading="lazy" decoding="async">
           {%- else -%}
             <svg class="bottle" viewBox="0 0 220 320" width="220" height="320" role="img" focusable="false" aria-label="{{ section.settings.bottle_aria | escape }}">
               <use href="#bottle"></use>
