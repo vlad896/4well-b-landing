@@ -146,9 +146,34 @@
   </dim-video-modal>
 {%- endif -%}
 
-<script src="{{ 'dim-carousel.js' | asset_url }}" type="module" defer></script>
-{%- if has_real_videos -%}
-  <script src="{{ 'dim-video-modal.js' | asset_url }}" type="module" defer></script>
+{%- if video_blocks.size > 0 -%}
+  {%- comment -%} Lazy-load carousel (+ modal) JS only when the section nears the viewport. {%- endcomment -%}
+  <script>
+    (() => {
+      const assets = [{{ 'dim-carousel.js' | asset_url | json }}{% if has_real_videos %}, {{ 'dim-video-modal.js' | asset_url | json }}{% endif %}];
+      const here = document.currentScript;
+      const target = here.closest('.shopify-section') || here.previousElementSibling || document.body;
+      let done = false;
+      const load = () => {
+        if (done) return;
+        done = true;
+        assets.forEach((src) => {
+          const s = document.createElement('script');
+          s.src = src;
+          s.type = 'module';
+          document.head.appendChild(s);
+        });
+      };
+      if ('IntersectionObserver' in window) {
+        const io = new IntersectionObserver((entries) => {
+          if (entries.some((e) => e.isIntersecting)) { io.disconnect(); load(); }
+        }, { rootMargin: '400px' });
+        io.observe(target);
+      } else {
+        load();
+      }
+    })();
+  </script>
 {%- endif -%}
 
 {% schema %}
