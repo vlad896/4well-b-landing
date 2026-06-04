@@ -9,14 +9,6 @@
 {%- endcomment -%}
 
 {%- assign qa_blocks = section.blocks | where: 'type', 'qa' -%}
-{%- liquid
-  assign faq_img_url = ''
-  if section.settings.portrait_image != blank
-    assign faq_img_url = section.settings.portrait_image | image_url: width: 1200
-  elsif section.settings.portrait_image_fallback != blank
-    assign faq_img_url = section.settings.portrait_image_fallback | asset_url
-  endif
--%}
 
 <section class="faq" {{ section.shopify_attributes }}>
   <div class="container">
@@ -30,18 +22,6 @@
             {{ section.settings.h2 }}{%- if section.settings.h2_emphasis != blank -%}<br><em>{{ section.settings.h2_emphasis }}</em>{%- endif -%}
           </h2>
         </div>
-
-        {%- if faq_img_url != blank -%}
-          <figure class="faq__portrait">
-            <span class="faq__portrait-deco" aria-hidden="true"></span>
-            <img src="{{ faq_img_url }}"
-                 alt="{{ section.settings.portrait_alt | escape }}"
-                 loading="lazy" decoding="async">
-            {%- if section.settings.image_caption != blank -%}
-              <figcaption class="faq__portrait-caption">{{ section.settings.image_caption }}</figcaption>
-            {%- endif -%}
-          </figure>
-        {%- endif -%}
       </div>
 
       <div class="faq__body">
@@ -134,12 +114,6 @@
     { "type": "text",     "id": "eyebrow",      "label": "t:sections.dim_faq.label_eyebrow",      "default": "t:sections.dim_faq.eyebrow_default" },
     { "type": "text",     "id": "h2",           "label": "t:sections.dim_faq.label_h2",           "default": "t:sections.dim_faq.h2_default" },
     { "type": "text",     "id": "h2_emphasis",  "label": "t:sections.dim_faq.label_h2_emphasis",  "info": "t:sections.dim_faq.info_h2_emphasis", "default": "t:sections.dim_faq.h2_emphasis_default" },
-
-    { "type": "header", "content": "t:sections.dim_faq.header_portrait" },
-    { "type": "image_picker", "id": "portrait_image",          "label": "t:sections.dim_faq.label_portrait_image",          "info": "t:sections.dim_faq.info_portrait_image" },
-    { "type": "text",         "id": "portrait_image_fallback", "label": "t:sections.dim_faq.label_portrait_image_fallback", "info": "t:sections.dim_faq.info_portrait_image_fallback" },
-    { "type": "text",         "id": "portrait_alt",            "label": "t:sections.dim_faq.label_portrait_alt",            "default": "t:sections.dim_faq.portrait_alt_default" },
-    { "type": "text",         "id": "image_caption",           "label": "t:sections.dim_faq.label_image_caption",           "default": "t:sections.dim_faq.image_caption_default" },
 
     { "type": "header", "content": "t:sections.dim_faq.header_behavior" },
     { "type": "checkbox", "id": "single_open",       "label": "t:sections.dim_faq.label_single_open", "info": "t:sections.dim_faq.info_single_open", "default": true },
