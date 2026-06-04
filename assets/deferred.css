@@ -815,8 +815,9 @@ dim-video-modal{
   .pdp-gallery__main img{transition:none}
   .pdp-gallery__main:hover img,.pdp-gallery__main:focus-visible img{transform:none}
 }
-/* Mobile: drop the inline hover-scale (sticky on touch); tap still opens the scrollable lightbox */
+/* Mobile: no image zoom — disable tap-to-lightbox + hover-scale */
 @media (max-width:767px){
+  .pdp-gallery__main{cursor:default;pointer-events:none}
   .pdp-gallery__main img{transform:none !important;transition:none}
 }
 .pdp-gallery__zoom-hint{
@@ -824,6 +825,9 @@ dim-video-modal{
   width:34px;height:34px;display:grid;place-items:center;
   background:rgba(20,18,26,.78);color:#fff;border-radius:999px;
   pointer-events:none;
+}
+@media (max-width:767px){
+  .pdp-gallery__zoom-hint{display:none}
 }
 .pdp-gallery__thumbs{
   display:grid;grid-template-columns:repeat(5,1fr);gap:8px;
