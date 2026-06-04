@@ -15,42 +15,6 @@
     </div>
 
     <div class="product-merged__grid">
-      <div class="product-merged__left">
-        <div class="product-merged__visual">
-          {%- if section.settings.bottle_image != blank -%}
-            {%- render 'img',
-              image: section.settings.bottle_image,
-              sizes: '(min-width: 1024px) 320px, 80vw',
-              alt: section.settings.bottle_aria,
-              loading: 'lazy'
-            -%}
-          {%- elsif section.settings.bottle_image_fallback != blank -%}
-            <img src="{{ section.settings.bottle_image_fallback | asset_url }}"
-                 alt="{{ section.settings.bottle_aria | escape }}"
-                 loading="lazy" decoding="async">
-          {%- else -%}
-            <svg class="bottle" viewBox="0 0 220 320" width="220" height="320" role="img" focusable="false" aria-label="{{ section.settings.bottle_aria | escape }}">
-              <use href="#bottle"></use>
-            </svg>
-          {%- endif -%}
-        </div>
-
-        <div class="product-merged__cta">
-          {%- render 'cta-button',
-            url: settings.global_cta_url,
-            label: section.settings.cta_label,
-            icon: section.settings.cta_icon,
-            cta_id: 'ingredients-primary',
-            section_id: 'ingredients',
-            position: 'mid'
-          -%}
-        </div>
-
-        {%- if section.settings.qualifiers != blank -%}
-          <p class="product-merged__qualifiers">{{ section.settings.qualifiers }}</p>
-        {%- endif -%}
-      </div>
-
       <div class="product-merged__right">
         {%- assign ing_blocks = section.blocks | where: 'type', 'ingredient' -%}
         {%- if ing_blocks.size > 0 -%}

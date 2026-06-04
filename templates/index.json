@@ -287,14 +287,6 @@
         "h2": "Why your skin keeps breaking out — and what research says actually supports it"
       }
     },
-    "skip-link": {
-      "type": "dim-skip-link",
-      "settings": {
-        "text": "Already convinced? Skip to pricing",
-        "arrow": "↓",
-        "anchor": "#buy"
-      }
-    },
     "ingredients": {
       "type": "dim-ingredients",
       "blocks": {
@@ -462,17 +454,6 @@
         "show_alt_table": false,
         "before_th": "Before DIM",
         "after_th": "After 60 days"
-      }
-    },
-    "mid-cta-1": {
-      "type": "dim-mid-cta",
-      "settings": {
-        "eyebrow": "Ready to start?",
-        "h2": "Order yours after seeing the results.",
-        "sub": "Free Prime shipping · 30-day money-back guarantee.",
-        "cta_icon": "🛒",
-        "cta_label": "Order on Amazon",
-        "background_image_fallback": "mid-cta-bg.jpg"
       }
     },
     "video-testimonials": {
@@ -653,17 +634,6 @@
         "bar_2_pct": 2,
         "bar_1_pct": 1,
         "start_index": 1
-      }
-    },
-    "mid-cta-2": {
-      "type": "dim-mid-cta",
-      "settings": {
-        "eyebrow": "Ready to start?",
-        "h2": "Order yours after seeing the results.",
-        "sub": "Free Prime shipping · 30-day money-back guarantee.",
-        "cta_icon": "🛒",
-        "cta_label": "Order on Amazon",
-        "background_image_fallback": "mid-cta-bg.jpg"
       }
     },
     "comparison": {
@@ -1111,14 +1081,11 @@
     "social-proof",
     "problem",
     "science",
-    "skip-link",
     "ingredients",
     "timeline",
     "before-after",
-    "mid-cta-1",
     "video-testimonials",
     "reviews",
-    "mid-cta-2",
     "comparison",
     "faq",
     "final-cta",

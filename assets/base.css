@@ -178,6 +178,14 @@ p{margin:0}
 }
 .bottle{display:block;width:100%;height:auto;filter:drop-shadow(0 24px 30px rgba(74,44,122,.18))}
 
+/* Stacked (mobile/tablet): product image sits between symptom chips and the CTA */
+@media (max-width:1023px){
+  .hero__grid{display:flex;flex-direction:column;gap:0;align-items:stretch}
+  .hero__copy{display:contents}
+  .hero__visual{order:1;margin-bottom:24px}
+  .hero__cta{order:2}
+}
+
 @media (min-width:1024px){
   .hero__grid{grid-template-columns:1.05fr .95fr;gap:56px}
 }

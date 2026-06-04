@@ -224,13 +224,6 @@
 .mech-step__body p{margin:0 0 10px}
 .mech-step__body sup{font-size:11px;font-weight:700}
 .mech-step__body sup a{color:var(--c-purple);text-decoration:none}
-.callout{
-  background:#FFF6DF;border:1px solid #f4dd95;color:#6c4a00;
-  border-radius:var(--r-md);padding:14px 18px;margin:16px 0 0;
-  font-weight:600;font-size:15px;
-  display:flex;align-items:center;gap:10px;flex-wrap:wrap;
-}
-.callout .cta-link{color:#6c4a00;font-weight:700}
 .dose-diagram{
   display:flex;align-items:center;justify-content:center;gap:24px;
   margin-top:22px;background:var(--c-purple-50);
@@ -241,29 +234,13 @@
 .dose-diagram__arrow{font-weight:800;color:var(--c-grey-500);font-size:32px;line-height:1}
 .dose-diagram__sub{font-style:italic;font-size:13px;font-weight:400;color:var(--c-grey-700)}
 
-/* ---- Block 4.5: Skip-link bar ---- */
-.skip-link-bar{background:var(--c-purple-50);padding:16px 0;text-align:center}
-.skip-link__link{
-  color:var(--c-purple);font-weight:700;font-size:14px;
-  text-decoration:none;display:inline-flex;align-items:center;gap:8px;
-}
-.skip-link__link:hover{text-decoration:underline}
-.skip-link__arrow{font-weight:600;font-size:14px}
 
 /* ---- Block 5+6: Product intro + Ingredients ---- */
 .product-merged{background:#fff;padding-block:60px;overflow:hidden}
 .product-merged > .container{min-width:0;max-width:100%}
 .product-merged__head{text-align:center;max-width:760px;margin:0 auto 40px}
 .product-merged__head .eyebrow{display:inline-block;margin-bottom:10px}
-.product-merged__grid{display:grid;grid-template-columns:1fr;gap:40px;align-items:stretch}
-@media (min-width:1024px){.product-merged__grid{grid-template-columns:1fr 1.5fr;gap:48px}}
-.product-merged__left{display:flex;flex-direction:column;align-items:center;gap:20px}
-.product-merged__visual{width:100%;max-width:440px}
-.product-merged__visual .bottle{width:100%;height:auto}
-.product-merged__visual picture,
-.product-merged__visual img{display:block;width:100%;height:auto;border-radius:18px;aspect-ratio:1/1;object-fit:cover}
-.product-merged__cta{display:flex;justify-content:center;width:100%}
-.product-merged__qualifiers{font-size:13px;color:var(--c-grey-500);text-align:center;line-height:1.55;margin:0}
+.product-merged__grid{display:grid;grid-template-columns:1fr;gap:40px;max-width:860px;margin:0 auto}
 .product-merged__right{display:flex;flex-direction:column}
 .ing-grid{display:grid;grid-template-columns:1fr;gap:14px;align-items:start;flex:1}
 @media (min-width:700px){.ing-grid{grid-template-columns:1fr 1fr;gap:18px}}
@@ -424,44 +401,6 @@
 .ba-card__txt{padding:18px 20px;font-size:14px;color:var(--c-grey-700);line-height:1.5}
 .ba-card__txt strong{display:block;margin-bottom:6px;color:var(--c-ink);font-size:15px}
 .beforeafter__legal{text-align:center;font-size:13px;color:var(--c-grey-500);margin-top:32px;font-style:italic}
-
-/* ---- Block 8.5 / 10.5: Mid CTA (reusable) ---- */
-.mid-cta{
-  --mid-cta-outer-bg:#FEF5EA;
-  background:var(--mid-cta-outer-bg);
-}
-.mid-cta--has-bg{
-  background-color:var(--mid-cta-outer-bg);
-  background-size:cover;background-position:left center;background-repeat:no-repeat;
-  padding-block:64px;
-}
-.mid-cta__card{
-  background:#fff;border-radius:18px;
-  padding:24px 28px;
-  box-shadow:0 2px 8px rgba(0,0,0,.04);
-  display:flex;align-items:center;justify-content:space-between;
-  flex-wrap:wrap;gap:28px;
-}
-@media (min-width:768px){
-  .mid-cta--has-bg .mid-cta__card{
-    max-width:58%;margin-left:auto;
-    box-shadow:0 8px 28px rgba(34,18,60,.12);
-    backdrop-filter:saturate(110%);
-  }
-}
-.mid-cta__copy{flex:1 1 280px;min-width:0}
-.mid-cta__copy .eyebrow{display:inline-block;margin-bottom:6px}
-.mid-cta__h{font-size:clamp(20px,2.4vw,26px);margin:0 0 8px;line-height:1.25;font-weight:800;color:var(--c-ink)}
-.mid-cta__sub{font-size:14px;color:var(--c-grey-500);margin:0;line-height:1.5}
-.mid-cta .btn{flex:0 0 auto}
-@media (max-width:767px){
-  .mid-cta--has-bg{background-image:none !important;padding-block:36px}
-}
-@media (max-width:599px){
-  .mid-cta__card{gap:18px}
-  .mid-cta__copy{flex:1 1 100%;text-align:center}
-  .mid-cta .btn{width:100%;justify-content:center}
-}
 
 /* ---- Shared carousel infrastructure (Turn 14 dim-video-testimonials, Turn 15 dim-reviews) ---- */
 dim-carousel{display:block;position:relative}
@@ -876,6 +815,10 @@ dim-video-modal{
   .pdp-gallery__main img{transition:none}
   .pdp-gallery__main:hover img,.pdp-gallery__main:focus-visible img{transform:none}
 }
+/* Mobile: drop the inline hover-scale (sticky on touch); tap still opens the scrollable lightbox */
+@media (max-width:767px){
+  .pdp-gallery__main img{transform:none !important;transition:none}
+}
 .pdp-gallery__zoom-hint{
   position:absolute;bottom:12px;right:12px;
   width:34px;height:34px;display:grid;place-items:center;
@@ -915,8 +858,9 @@ dim-video-modal{
 .pdp-gallery__zoom-close:hover{background:rgba(255,255,255,.22)}
 .pdp-gallery__zoom-scroll{
   width:100%;height:calc(96vh - 0px);max-height:96vh;
-  overflow:auto;display:grid;place-items:center;
+  overflow:auto;display:grid;place-items:safe center;
   -webkit-overflow-scrolling:touch;
+  touch-action:pan-x pan-y;overscroll-behavior:contain;
 }
 .pdp-gallery__zoom-scroll img{
   display:block;max-width:none;width:auto;height:auto;

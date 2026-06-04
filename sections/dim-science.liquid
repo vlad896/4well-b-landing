@@ -24,23 +24,6 @@
           <div class="mech-step__body">{{ block.settings.body }}</div>
         {%- endif -%}
 
-        {%- if block.settings.callout_text != blank -%}
-          <div class="callout">
-            <span>{{ block.settings.callout_text }}</span>
-            {%- if block.settings.callout_link_text != blank -%}
-              {%- render 'cta-button',
-                url: block.settings.callout_link_url,
-                label: block.settings.callout_link_text,
-                cta_id: 'sources-anchor',
-                section_id: 'science',
-                position: 'inline',
-                internal: true,
-                style: 'text-link'
-              -%}
-            {%- endif -%}
-          </div>
-        {%- endif -%}
-
         {%- if block.settings.show_dose_diagram -%}
           <div class="dose-diagram" aria-label="{{ 'sections.dim_science.dose_aria' | t }}">
             <div class="dose-diagram__item">
@@ -88,10 +71,6 @@
       "settings": [
         { "type": "text", "id": "heading", "label": "t:sections.dim_science.label_heading" },
         { "type": "textarea", "id": "body", "label": "t:sections.dim_science.label_body" },
-        { "type": "header", "content": "t:sections.dim_science.header_callout" },
-        { "type": "text", "id": "callout_text",      "label": "t:sections.dim_science.label_callout_text",      "info": "t:sections.dim_science.info_callout_text" },
-        { "type": "text", "id": "callout_link_text", "label": "t:sections.dim_science.label_callout_link_text" },
-        { "type": "text", "id": "callout_link_url",  "label": "t:sections.dim_science.label_callout_link_url", "default": "#refs" },
         { "type": "header", "content": "t:sections.dim_science.header_dose" },
         { "type": "checkbox", "id": "show_dose_diagram", "label": "t:sections.dim_science.label_show_dose", "default": false },
         { "type": "text", "id": "dose_left_icon",  "label": "t:sections.dim_science.label_dose_left_icon" },
@@ -120,9 +99,7 @@
           "type": "step",
           "settings": {
             "heading":            "t:sections.dim_science.step_2_heading",
-            "body":               "t:sections.dim_science.step_2_body",
-            "callout_text":       "t:sections.dim_science.step_2_callout_text",
-            "callout_link_text":  "t:sections.dim_science.step_2_callout_link_text"
+            "body":               "t:sections.dim_science.step_2_body"
           }
         },
         {
