@@ -246,7 +246,7 @@ body{padding-top:90px}
   .announcement-bar__timer{grid-column:2;justify-self:end;flex-shrink:0}
   .announcement-bar__btns{grid-column:1/-1;margin-left:0;width:100%;justify-content:stretch;gap:8px}
   .btn--sticky-once,.btn--sticky-sub{flex:1 1 0;text-align:center;min-width:0;padding:8px 10px;font-size:12px}
-  body{padding-top:130px}
+  body{padding-top:93px}
 }
 
 /* ---- Sticky bottom Amazon CTA (block 0c) ---- */
