@@ -354,41 +354,57 @@
         "t1": {
           "type": "step",
           "settings": {
-            "dot_num": "1",
+            "number": "01",
             "period": "Days 1–7",
             "title": "Your Body Is Adjusting",
-            "bullets": "<ul><li>Possible mild headache in days 1–3</li><li>This means hormones are beginning to shift</li><li>Take with food + drink plenty of water</li><li>Many people experience no side effects at all</li></ul>",
+            "image_fallback": "timeline-1.webp",
+            "image_alt": "Glass of water on a wooden table in morning light",
+            "b1_icon": "head",  "b1_text": "Mild headaches possible",
+            "b2_icon": "drop",  "b2_text": "Hormones start to shift",
+            "b3_icon": "glass", "b3_text": "Eat well & drink plenty of water",
             "quote": "\"I had a headache on day 2 but pushed through. By day 10 I was sleeping better than I had in months.\""
           }
         },
         "t2": {
           "type": "step",
           "settings": {
-            "dot_num": "2",
+            "number": "02",
             "period": "Weeks 2–4",
             "title": "Early Signals",
-            "bullets": "<ul><li>Less bloating &amp; water retention</li><li>PMS symptoms beginning to soften</li><li>Sleep becoming more even</li><li>Skin starting to calm down</li></ul>",
-            "quote": "\"Still waiting for the big changes, but I already feel less puffy. Something is happening.\""
+            "image_fallback": "timeline-2.webp",
+            "image_alt": "Calm, dimly lit bedroom",
+            "b1_icon": "waves",   "b1_text": "Less bloating & water retention",
+            "b2_icon": "zzz",     "b2_text": "Sleep becomes more even",
+            "b3_icon": "sparkle", "b3_text": "Skin starts to calm down",
+            "quote": "\"Still waiting for the big changes, but I already feel less puffy.\""
           }
         },
         "t3": {
           "type": "step",
           "settings": {
-            "dot_num": "3",
+            "number": "03",
             "period": "Month 1–2",
             "title": "Noticeable Shifts",
-            "bullets": "<ul><li>Hormonal breakouts visibly reduced</li><li>Energy more stable throughout the day</li><li>Fewer mood swings around your cycle</li><li>Hot flashes less frequent and less intense</li></ul>",
+            "image_fallback": "timeline-3.webp",
+            "image_alt": "Woman running on a coastal road at sunrise",
+            "b1_icon": "bolt",    "b1_text": "Hormonal breakouts visibly reduced",
+            "b2_icon": "battery", "b2_text": "Energy more stable throughout the day",
+            "b3_icon": "smile",   "b3_text": "Fewer mood swings",
             "quote": "\"After about a month, I looked in the mirror and my skin was actually clear. I hadn't seen that in years.\""
           }
         },
         "t4": {
           "type": "step",
           "settings": {
-            "dot_num": "4",
+            "number": "04",
             "period": "Month 2–3",
             "title": "Full Effect",
-            "bullets": "<ul><li>Clearest skin of your adult life</li><li>Hormonal cycle more regular</li><li>Feeling like yourself again</li><li>Energy and mood consistently stable</li></ul>",
-            "quote": "\"I finally feel like myself. The difference is dramatic. I won't go a day without it.\""
+            "image_fallback": "timeline-4.webp",
+            "image_alt": "Woman with clear skin smiling in a mirror",
+            "b1_icon": "sparkle", "b1_text": "Clearest skin of your adult life",
+            "b2_icon": "refresh", "b2_text": "Hormonal cycle more regular",
+            "b3_icon": "heart",   "b3_text": "Feel like yourself again",
+            "quote": "\"I finally feel like myself. The difference is dramatic.\""
           }
         }
       },
@@ -399,10 +415,12 @@
         "t4"
       ],
       "settings": {
-        "eyebrow": "Results timeline",
-        "h2": "What to Expect —<br>An Honest Timeline",
-        "lede": "The most common reason people give up on DIM too soon is not knowing what's normal in the first few weeks. Here's the real picture.",
-        "disclaimer": "*Results vary by individual. Most customers report first changes within 2–4 weeks of consistent daily use.*"
+        "eyebrow": "Results Timeline",
+        "h2": "What to Expect",
+        "subtitle": "Your body changes in predictable ways. Here's a realistic timeline of what actually happens.",
+        "hero_image_fallback": "timeline-hero.webp",
+        "hero_image_alt": "Woman breathing in mountain air at sunrise",
+        "disclaimer": "Results vary by individual. Most customers report first changes within 2–4 weeks of consistent daily use."
       }
     },
     "before-after": {

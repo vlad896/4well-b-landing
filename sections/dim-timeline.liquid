@@ -1,85 +1,225 @@
 {%- comment -%}
-  section: dim-timeline
-  source mapping: index.html block 7 (lines 492-558)
-  Turn 11 (Batch D). 4-step results timeline + compliance.timeline_disclaimer (shared).
-  No CTAs.
+  section: dim-timeline — "Results Timeline" (rebuilt)
+  Modern, interactive progress timeline. Purple-gradient dark theme.
+  - Header: eyebrow + title + gradient rule + subtitle + hero image (top-right on desktop)
+  - 4 step cards: photo (with number/period badge) → title → icon bullet list → quote
+  - Desktop: 4 cards in a row with ">" connectors; Tablet: horizontal scroll + arrows; Mobile: vertical
+  - Reveal-on-scroll animation; per-bullet line icons via snippet 'dim-rt-icon'
+  Images are theme assets (timeline-1..4 / timeline-hero) and overridable via image pickers.
 {%- endcomment -%}
 
-<section class="timeline-section" {{ section.shopify_attributes }}>
-  <div class="section-inner">
-    {%- if section.settings.eyebrow != blank -%}
-      <div class="section-tag">{{ section.settings.eyebrow }}</div>
-    {%- endif -%}
-    <h2 class="section-title">{{ section.settings.h2 }}</h2>
-    {%- if section.settings.lede != blank -%}
-      <p class="section-sub">{{ section.settings.lede }}</p>
-    {%- endif -%}
+{%- liquid
+  assign steps = section.blocks | where: 'type', 'step'
 
-    {%- assign step_blocks = section.blocks | where: 'type', 'step' -%}
-    {%- if step_blocks.size > 0 -%}
-      <div class="timeline-track">
-        {%- for block in step_blocks -%}
-          <div class="timeline-step" {{ block.shopify_attributes }}>
-            {%- if block.settings.dot_num != blank -%}
-              <div class="timeline-dot" aria-hidden="true">{{ block.settings.dot_num }}</div>
-            {%- endif -%}
-            {%- if block.settings.period != blank -%}
-              <div class="timeline-period">{{ block.settings.period }}</div>
-            {%- endif -%}
-            <div class="timeline-title">{{ block.settings.title }}</div>
-            <div class="timeline-body">
-              {{ block.settings.bullets }}
-              {%- if block.settings.quote != blank -%}
-                <div class="timeline-quote">{{ block.settings.quote }}</div>
-              {%- endif -%}
-            </div>
-          </div>
-        {%- endfor -%}
+  assign hero_url = ''
+  if section.settings.hero_image != blank
+    assign hero_url = section.settings.hero_image | image_url: width: 1000
+  elsif section.settings.hero_image_fallback != blank
+    assign hero_url = section.settings.hero_image_fallback | asset_url
+  endif
+-%}
+
+<section class="rt" {{ section.shopify_attributes }}>
+
+  {%- comment -%} ---- Full-bleed header image (top-right background, fades into the dark left) ---- {%- endcomment -%}
+  {%- if hero_url != blank -%}
+    <figure class="rt__hero">
+      <img src="{{ hero_url }}" alt="{{ section.settings.hero_image_alt | escape }}"
+           loading="lazy" decoding="async" width="1000" height="667">
+    </figure>
+  {%- endif -%}
+
+  <div class="rt__inner">
+
+    {%- comment -%} ---- Header ---- {%- endcomment -%}
+    <div class="rt__head">
+      <div class="rt__head-copy">
+        {%- if section.settings.eyebrow != blank -%}
+          <p class="rt__eyebrow">{{ section.settings.eyebrow }}</p>
+        {%- endif -%}
+        <h2 class="rt__title">{{ section.settings.h2 }}</h2>
+        <span class="rt__rule" aria-hidden="true"></span>
+        {%- if section.settings.subtitle != blank -%}
+          <p class="rt__sub">{{ section.settings.subtitle }}</p>
+        {%- endif -%}
+      </div>
+    </div>
+
+    {%- comment -%} ---- Timeline cards ---- {%- endcomment -%}
+    {%- if steps.size > 0 -%}
+      <div class="rt__viewport">
+        <button class="rt__nav rt__nav--prev" type="button" data-rt-prev aria-label="{{ 'ui.previous' | t }}">‹</button>
+
+        <ol class="rt__track" data-rt-track>
+          {%- for block in steps -%}
+            {%- liquid
+              assign img_url = ''
+              if block.settings.image != blank
+                assign img_url = block.settings.image | image_url: width: 720
+              elsif block.settings.image_fallback != blank
+                assign img_url = block.settings.image_fallback | asset_url
+              endif
+            -%}
+            <li class="rt__card" data-rt-card style="--rt-i:{{ forloop.index0 }}" {{ block.shopify_attributes }}>
+
+              {%- comment -%} Photo + number/period badge {%- endcomment -%}
+              <div class="rt__media{% if img_url == blank %} rt__media--ph{% endif %}"
+                   style="--rt-grad:{{ block.settings.gradient | default: 'linear-gradient(150deg,#5b3aa6,#2a1747)' }}">
+                {%- if img_url != blank -%}
+                  <img class="rt__photo" src="{{ img_url }}" alt="{{ block.settings.image_alt | escape }}"
+                       loading="lazy" decoding="async" width="720" height="495">
+                {%- endif -%}
+                <span class="rt__badge">
+                  {%- if block.settings.number != blank -%}<b>{{ block.settings.number }}</b>{%- endif -%}
+                  {{ block.settings.period }}
+                </span>
+              </div>
+
+              {%- comment -%} Title + icon bullets + quote {%- endcomment -%}
+              <div class="rt__body">
+                <h3 class="rt__card-title">{{ block.settings.title }}</h3>
+
+                <ul class="rt__list">
+                  {%- if block.settings.b1_text != blank -%}
+                    <li><span class="rt__ico">{%- render 'dim-rt-icon', icon: block.settings.b1_icon -%}</span><span>{{ block.settings.b1_text }}</span></li>
+                  {%- endif -%}
+                  {%- if block.settings.b2_text != blank -%}
+                    <li><span class="rt__ico">{%- render 'dim-rt-icon', icon: block.settings.b2_icon -%}</span><span>{{ block.settings.b2_text }}</span></li>
+                  {%- endif -%}
+                  {%- if block.settings.b3_text != blank -%}
+                    <li><span class="rt__ico">{%- render 'dim-rt-icon', icon: block.settings.b3_icon -%}</span><span>{{ block.settings.b3_text }}</span></li>
+                  {%- endif -%}
+                  {%- if block.settings.b4_text != blank -%}
+                    <li><span class="rt__ico">{%- render 'dim-rt-icon', icon: block.settings.b4_icon -%}</span><span>{{ block.settings.b4_text }}</span></li>
+                  {%- endif -%}
+                </ul>
+
+                {%- if block.settings.quote != blank -%}
+                  <blockquote class="rt__quote">{{ block.settings.quote }}</blockquote>
+                {%- endif -%}
+              </div>
+            </li>
+
+            {%- comment -%} Connector chevron between cards (desktop only) {%- endcomment -%}
+            {%- unless forloop.last -%}
+              <li class="rt__connector" aria-hidden="true"><span>›</span></li>
+            {%- endunless -%}
+          {%- endfor -%}
+        </ol>
+
+        <button class="rt__nav rt__nav--next" type="button" data-rt-next aria-label="{{ 'ui.next' | t }}">›</button>
       </div>
     {%- endif -%}
 
+    {%- comment -%} ---- Bottom disclaimer ---- {%- endcomment -%}
     {%- if section.settings.disclaimer != blank -%}
-      <p class="timeline-disclaimer">{{ section.settings.disclaimer }}</p>
+      <p class="rt__note">
+        <span class="rt__note-ico" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg>
+        </span>
+        <span>{{ section.settings.disclaimer }}</span>
+      </p>
     {%- endif -%}
   </div>
+
+  {%- comment -%} Lazy interactivity: reveal-on-scroll + nav arrows {%- endcomment -%}
+  <script>
+    (() => {
+      const root = document.currentScript.closest('.rt');
+      if (!root) return;
+
+      // Reveal cards when the section scrolls into view
+      if ('IntersectionObserver' in window) {
+        const io = new IntersectionObserver((entries) => {
+          entries.forEach((e) => { if (e.isIntersecting) { root.classList.add('is-in'); io.disconnect(); } });
+        }, { rootMargin: '0px 0px -12% 0px' });
+        io.observe(root);
+      } else {
+        root.classList.add('is-in');
+      }
+
+      // Prev/next arrows (active when the track scrolls horizontally — tablet)
+      const track = root.querySelector('[data-rt-track]');
+      const prev = root.querySelector('[data-rt-prev]');
+      const next = root.querySelector('[data-rt-next]');
+      if (track && prev && next) {
+        const stepW = () => {
+          const c = track.querySelector('.rt__card');
+          return c ? c.getBoundingClientRect().width + 16 : 320;
+        };
+        prev.addEventListener('click', () => track.scrollBy({ left: -stepW(), behavior: 'smooth' }));
+        next.addEventListener('click', () => track.scrollBy({ left: stepW(), behavior: 'smooth' }));
+        let raf = 0;
+        const sync = () => {
+          prev.disabled = track.scrollLeft < 8;
+          next.disabled = track.scrollLeft + track.clientWidth >= track.scrollWidth - 8;
+        };
+        track.addEventListener('scroll', () => {
+          if (raf) cancelAnimationFrame(raf);
+          raf = requestAnimationFrame(sync);
+        }, { passive: true });
+        sync();
+      }
+    })();
+  </script>
 </section>
 
 {% schema %}
 {
-  "name": "t:sections.dim_timeline.section_name",
+  "name": "Results Timeline",
   "tag": "section",
   "class": "dim-section dim-timeline-section",
   "settings": [
-    { "type": "header", "content": "t:sections.dim_timeline.header_intro" },
-    { "type": "text",     "id": "eyebrow",   "label": "t:sections.dim_timeline.label_eyebrow",   "default": "t:sections.dim_timeline.eyebrow_default" },
-    { "type": "textarea", "id": "h2",        "label": "t:sections.dim_timeline.label_h2",        "info": "t:sections.dim_timeline.info_h2", "default": "t:sections.dim_timeline.h2_default" },
-    { "type": "textarea", "id": "lede",      "label": "t:sections.dim_timeline.label_lede",      "default": "t:sections.dim_timeline.lede_default" },
+    { "type": "header", "content": "Header" },
+    { "type": "text",     "id": "eyebrow",  "label": "Eyebrow",  "default": "Results Timeline" },
+    { "type": "text",     "id": "h2",       "label": "Title",    "default": "What to Expect" },
+    { "type": "textarea", "id": "subtitle", "label": "Subtitle", "default": "Your body changes in predictable ways. Here's a realistic timeline of what actually happens." },
+    { "type": "image_picker", "id": "hero_image",          "label": "Header image (overrides asset below)" },
+    { "type": "text",         "id": "hero_image_fallback", "label": "Header image — theme asset filename", "info": "File in theme/assets (default: timeline-hero.webp).", "default": "timeline-hero.webp" },
+    { "type": "text",         "id": "hero_image_alt",      "label": "Header image alt text", "default": "Woman breathing in mountain air at sunrise" },
 
-    { "type": "header", "content": "t:sections.dim_timeline.header_disclaimer", "info": "t:sections.dim_timeline.info_disclaimer_header" },
-    { "type": "text",     "id": "disclaimer", "label": "t:sections.dim_timeline.label_disclaimer", "info": "t:sections.dim_timeline.info_disclaimer", "default": "t:compliance.timeline_disclaimer" }
+    { "type": "header", "content": "Disclaimer" },
+    { "type": "text", "id": "disclaimer", "label": "Bottom disclaimer", "default": "Results vary by individual. Most customers report first changes within 2–4 weeks of consistent daily use." }
   ],
   "blocks": [
     {
       "type": "step",
-      "name": "t:sections.dim_timeline.block_step_name",
+      "name": "Step",
       "settings": [
-        { "type": "text",     "id": "dot_num", "label": "t:sections.dim_timeline.label_dot_num" },
-        { "type": "text",     "id": "period",  "label": "t:sections.dim_timeline.label_period" },
-        { "type": "text",     "id": "title",   "label": "t:sections.dim_timeline.label_title" },
-        { "type": "richtext", "id": "bullets", "label": "t:sections.dim_timeline.label_bullets" },
-        { "type": "textarea", "id": "quote",   "label": "t:sections.dim_timeline.label_quote" }
+        { "type": "text", "id": "number", "label": "Number", "default": "01" },
+        { "type": "text", "id": "period", "label": "Period",  "default": "Days 1–7" },
+        { "type": "text", "id": "title",  "label": "Card title", "default": "Your Body Is Adjusting" },
+
+        { "type": "header", "content": "Photo" },
+        { "type": "image_picker", "id": "image",          "label": "Image (overrides asset below)" },
+        { "type": "text",         "id": "image_fallback", "label": "Theme asset filename", "info": "File in theme/assets (e.g. timeline-1.webp). Falls back to the gradient if empty." },
+        { "type": "text",         "id": "image_alt",      "label": "Image alt text" },
+        { "type": "text",         "id": "gradient",       "label": "Placeholder gradient (CSS)", "info": "Used when no photo is set.", "default": "linear-gradient(150deg,#5b3aa6,#2a1747)" },
+
+        { "type": "header", "content": "Bullets", "info": "Icon = a key (head, drop, glass, waves, moon, sparkle, bolt, battery, smile, refresh, heart, sun, leaf) or an emoji." },
+        { "type": "text", "id": "b1_icon", "label": "Bullet 1 — icon", "default": "head" },
+        { "type": "text", "id": "b1_text", "label": "Bullet 1 — text", "default": "Mild headaches possible" },
+        { "type": "text", "id": "b2_icon", "label": "Bullet 2 — icon", "default": "drop" },
+        { "type": "text", "id": "b2_text", "label": "Bullet 2 — text", "default": "Hormones start to shift" },
+        { "type": "text", "id": "b3_icon", "label": "Bullet 3 — icon", "default": "glass" },
+        { "type": "text", "id": "b3_text", "label": "Bullet 3 — text", "default": "Eat well & drink plenty of water" },
+        { "type": "text", "id": "b4_icon", "label": "Bullet 4 — icon" },
+        { "type": "text", "id": "b4_text", "label": "Bullet 4 — text" },
+
+        { "type": "header", "content": "Quote" },
+        { "type": "textarea", "id": "quote", "label": "Quote / micro-testimonial" }
       ]
     }
   ],
   "max_blocks": 6,
   "presets": [
     {
-      "name": "t:sections.dim_timeline.preset_name",
+      "name": "Results Timeline",
       "blocks": [
-        { "type": "step", "settings": { "dot_num": "1", "period": "t:sections.dim_timeline.step_1_period", "title": "t:sections.dim_timeline.step_1_title", "bullets": "t:sections.dim_timeline.step_1_bullets", "quote": "t:sections.dim_timeline.step_1_quote" } },
-        { "type": "step", "settings": { "dot_num": "2", "period": "t:sections.dim_timeline.step_2_period", "title": "t:sections.dim_timeline.step_2_title", "bullets": "t:sections.dim_timeline.step_2_bullets", "quote": "t:sections.dim_timeline.step_2_quote" } },
-        { "type": "step", "settings": { "dot_num": "3", "period": "t:sections.dim_timeline.step_3_period", "title": "t:sections.dim_timeline.step_3_title", "bullets": "t:sections.dim_timeline.step_3_bullets", "quote": "t:sections.dim_timeline.step_3_quote" } },
-        { "type": "step", "settings": { "dot_num": "4", "period": "t:sections.dim_timeline.step_4_period", "title": "t:sections.dim_timeline.step_4_title", "bullets": "t:sections.dim_timeline.step_4_bullets", "quote": "t:sections.dim_timeline.step_4_quote" } }
+        { "type": "step", "settings": { "number": "01", "period": "Days 1–7",  "title": "Your Body Is Adjusting", "image_fallback": "timeline-1.webp", "image_alt": "Glass of water on a wooden table in morning light", "b1_icon": "head",    "b1_text": "Mild headaches possible",            "b2_icon": "drop",    "b2_text": "Hormones start to shift",              "b3_icon": "glass",   "b3_text": "Eat well & drink plenty of water",     "quote": "\"I had a headache on day 2 but pushed through. By day 10 I was sleeping better than I had in months.\"" } },
+        { "type": "step", "settings": { "number": "02", "period": "Weeks 2–4", "title": "Early Signals",          "image_fallback": "timeline-2.webp", "image_alt": "Calm, dimly lit bedroom",                  "b1_icon": "waves",   "b1_text": "Less bloating & water retention",      "b2_icon": "zzz",     "b2_text": "Sleep becomes more even",              "b3_icon": "sparkle", "b3_text": "Skin starts to calm down",             "quote": "\"Still waiting for the big changes, but I already feel less puffy.\"" } },
+        { "type": "step", "settings": { "number": "03", "period": "Month 1–2", "title": "Noticeable Shifts",      "image_fallback": "timeline-3.webp", "image_alt": "Woman running on a coastal road at sunrise", "b1_icon": "bolt",    "b1_text": "Hormonal breakouts visibly reduced",  "b2_icon": "battery", "b2_text": "Energy more stable throughout the day", "b3_icon": "smile",  "b3_text": "Fewer mood swings",                    "quote": "\"After about a month, I looked in the mirror and my skin was actually clear. I hadn't seen that in years.\"" } },
+        { "type": "step", "settings": { "number": "04", "period": "Month 2–3", "title": "Full Effect",            "image_fallback": "timeline-4.webp", "image_alt": "Woman with clear skin smiling in a mirror", "b1_icon": "sparkle", "b1_text": "Clearest skin of your adult life",     "b2_icon": "refresh", "b2_text": "Hormonal cycle more regular",          "b3_icon": "heart",   "b3_text": "Feel like yourself again",             "quote": "\"I finally feel like myself. The difference is dramatic.\"" } }
       ]
     }
   ]
