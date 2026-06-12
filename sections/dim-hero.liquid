@@ -47,6 +47,11 @@
             </p>
           </div>
 
+          {%- comment -%} TEMP: cart-drawer design trigger — remove when the real ATC flow lands {%- endcomment -%}
+          <button type="button" class="btn btn--amazon hero__atc-temp" data-cart-drawer-open>
+            <span class="btn__icon" aria-hidden="true">&#128722;</span> Add to cart
+          </button>
+
           {%- render 'trust-badges', variant: 'hero' -%}
         </div>
       </div>

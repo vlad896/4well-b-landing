@@ -1,0 +1,255 @@
+{%- comment -%}
+  cart-drawer — slide-out cart panel (design phase).
+  Rendered once from layout/theme.liquid. Opened by any [data-cart-drawer-open] trigger.
+
+  Layout reference: Gruns / UpCart drawer (screens 2026-06-11):
+    header → rewards progress bar → announcement strip → grouped line items
+    (+ subscription upsell card) → cross-sell module → order summary →
+    accent footer (discount badges, subtotal w/ savings badge, secure checkout, trust row).
+
+  TEMP: while the store cart is empty, hardcoded demo content stands in so the
+  design can be iterated on. Real cart.items take over automatically once the
+  cart has contents (chrome modules stay; line items swap to the real loop).
+{%- endcomment -%}
+
+{{ 'cart-drawer.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'cart-drawer.js' | asset_url }}" defer></script>
+
+<cart-drawer class="cart-drawer" hidden>
+  <div class="cart-drawer__overlay" data-cart-drawer-close></div>
+
+  <div class="cart-drawer__panel" role="dialog" aria-modal="true" aria-label="Your cart" tabindex="-1">
+    <header class="cart-drawer__header">
+      <h2 class="cart-drawer__title">Your Cart <span class="cart-drawer__count">({% if cart != empty %}{{ cart.item_count }}{% else %}2{% endif %})</span></h2>
+      <button type="button" class="cart-drawer__close" data-cart-drawer-close aria-label="Close cart">
+        <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" aria-hidden="true" focusable="false">
+          <path d="M6 6l12 12M18 6L6 18"/>
+        </svg>
+      </button>
+    </header>
+
+    <div class="cart-drawer__body">
+      <div class="cart-drawer__rewards">
+        <p class="cart-drawer__rewards-msg">Congrats! You've unlocked <strong>FREE SHIPPING!</strong></p>
+        <div class="cart-drawer__progress" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" aria-label="Free shipping progress">
+          <div class="cart-drawer__progress-fill" style="width:100%"></div>
+        </div>
+      </div>
+
+      <div class="cart-drawer__announcement">
+        <h3>Limited Time Discount Auto-Applied</h3>
+      </div>
+
+      <div class="cart-drawer__items" role="list">
+        {%- if cart != empty -%}
+          {%- for item in cart.items -%}
+            <div class="cart-drawer__item" role="listitem">
+              <a class="cart-drawer__item-media" href="{{ item.url }}" tabindex="-1" aria-hidden="true">
+                {%- if item.image -%}
+                  <img
+                    src="{{ item.image | image_url: width: 176 }}"
+                    alt="{{ item.image.alt | escape }}"
+                    width="88" height="88" loading="lazy"
+                  >
+                {%- endif -%}
+              </a>
+              <div class="cart-drawer__item-info">
+                <div class="cart-drawer__item-head">
+                  <p class="cart-drawer__item-title">{{ item.product.title | escape }}</p>
+                  <button type="button" class="cart-drawer__item-remove" aria-label="Remove {{ item.product.title | escape }}">
+                    <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+                      <rect x="5" y="5" width="14" height="16" rx="1.5"/><path d="M3 5h18M9 5V3.5h6V5M9.8 10l4.4 6M14.2 10l-4.4 6"/>
+                    </svg>
+                  </button>
+                </div>
+                {%- if item.product.has_only_default_variant == false -%}
+                  <p class="cart-drawer__item-variant">{{ item.variant.title | escape }}</p>
+                {%- endif -%}
+                <p class="cart-drawer__item-pricing">
+                  <strong class="cart-drawer__item-price">{{ item.final_line_price | money }}</strong>
+                  {%- if item.original_line_price != item.final_line_price -%}
+                    <s class="cart-drawer__item-compare">{{ item.original_line_price | money }}</s>
+                  {%- endif -%}
+                </p>
+                <div class="cart-drawer__item-controls">
+                  <div class="cart-drawer__qty" data-qty>
+                    <button type="button" class="cart-drawer__qty-btn" data-qty-minus aria-label="Decrease quantity">&minus;</button>
+                    <input class="cart-drawer__qty-input" type="number" value="{{ item.quantity }}" min="0" inputmode="numeric" aria-label="Quantity">
+                    <button type="button" class="cart-drawer__qty-btn" data-qty-plus aria-label="Increase quantity">+</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          {%- endfor -%}
+        {%- else -%}
+          {%- comment -%} TEMP demo content — design stand-ins while cart is empty {%- endcomment -%}
+
+          <p class="cart-drawer__group-label">One-Time Purchase</p>
+
+          <div class="cart-drawer__item" role="listitem">
+            <span class="cart-drawer__item-media">
+              <img src="{{ 'product-bottle.jpg' | asset_url }}" alt="" width="88" height="88" loading="lazy">
+            </span>
+            <div class="cart-drawer__item-info">
+              <div class="cart-drawer__item-head">
+                <p class="cart-drawer__item-title">4Well DIM Complex</p>
+                <button type="button" class="cart-drawer__item-remove" aria-label="Remove item">
+                  <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+                    <rect x="5" y="5" width="14" height="16" rx="1.5"/><path d="M3 5h18M9 5V3.5h6V5M9.8 10l4.4 6M14.2 10l-4.4 6"/>
+                  </svg>
+                </button>
+              </div>
+              <p class="cart-drawer__item-variant">Extra Strength</p>
+              <p class="cart-drawer__item-meta">60 capsules once</p>
+              <p class="cart-drawer__item-pricing">
+                <strong class="cart-drawer__item-price">$29.95</strong>
+                <s class="cart-drawer__item-compare">$39.99</s>
+              </p>
+              <div class="cart-drawer__item-controls">
+                <div class="cart-drawer__qty" data-qty>
+                  <button type="button" class="cart-drawer__qty-btn" data-qty-minus aria-label="Decrease quantity">&minus;</button>
+                  <input class="cart-drawer__qty-input" type="number" value="1" min="0" inputmode="numeric" aria-label="Quantity">
+                  <button type="button" class="cart-drawer__qty-btn" data-qty-plus aria-label="Increase quantity">+</button>
+                </div>
+                <span class="cart-drawer__tag">
+                  <svg viewBox="0 0 20 20" width="11" height="11" fill="currentColor" aria-hidden="true" focusable="false"><path fill-rule="evenodd" d="M8.575 4.649a3.75 3.75 0 0 1 2.7-1.149h1.975a3.25 3.25 0 0 1 3.25 3.25v2.187a3.25 3.25 0 0 1-.996 2.34l-4.747 4.572a2.5 2.5 0 0 1-3.502-.033l-2.898-2.898a2.75 2.75 0 0 1-.036-3.852l4.254-4.417Zm4.425 3.351a1 1 0 1 0 0-2 1 1 0 0 0 0 2Z"/></svg>
+                  BUY2SAVE5
+                </span>
+              </div>
+            </div>
+          </div>
+
+          <div class="cart-drawer__upsell">
+            <span class="cart-drawer__upsell-flag">Most Popular</span>
+            <h4 class="cart-drawer__upsell-heading">Subscribe &amp; Save an Extra 25%</h4>
+            <ul class="cart-drawer__upsell-list">
+              <li>
+                <svg viewBox="0 0 20 20" width="14" height="14" fill="currentColor" aria-hidden="true" focusable="false"><path fill-rule="evenodd" d="M8.575 4.649a3.75 3.75 0 0 1 2.7-1.149h1.975a3.25 3.25 0 0 1 3.25 3.25v2.187a3.25 3.25 0 0 1-.996 2.34l-4.747 4.572a2.5 2.5 0 0 1-3.502-.033l-2.898-2.898a2.75 2.75 0 0 1-.036-3.852l4.254-4.417Zm4.425 3.351a1 1 0 1 0 0-2 1 1 0 0 0 0 2Z"/></svg>
+                Instantly save more off your first order
+              </li>
+              <li>
+                <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M12 3l8 4.5v9L12 21l-8-4.5v-9L12 3zM4 7.5l8 4.5 8-4.5M12 12v9"/></svg>
+                Our most flexible plan
+              </li>
+              <li>
+                <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M12 3l7 3v5c0 4.5-3 8.5-7 10-4-1.5-7-5.5-7-10V6l7-3z"/><path d="M9 11.5l2 2 4-4" stroke-linecap="round"/></svg>
+                Backed By 30-Day Guarantee
+              </li>
+            </ul>
+            <button type="button" class="btn btn--amazon cart-drawer__upsell-btn">Upgrade and Save</button>
+          </div>
+
+          <p class="cart-drawer__group-label">Delivered every 4 weeks</p>
+
+          <div class="cart-drawer__item" role="listitem">
+            <span class="cart-drawer__item-media">
+              <img src="{{ 'pdp-1.png' | asset_url }}" alt="" width="88" height="88" loading="lazy">
+            </span>
+            <div class="cart-drawer__item-info">
+              <div class="cart-drawer__item-head">
+                <p class="cart-drawer__item-title">4Well DIM Complex</p>
+                <button type="button" class="cart-drawer__item-remove" aria-label="Remove item">
+                  <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+                    <rect x="5" y="5" width="14" height="16" rx="1.5"/><path d="M3 5h18M9 5V3.5h6V5M9.8 10l4.4 6M14.2 10l-4.4 6"/>
+                  </svg>
+                </button>
+              </div>
+              <p class="cart-drawer__item-variant">Extra Strength</p>
+              <p class="cart-drawer__item-meta">60 capsules each 4 weeks</p>
+              <p class="cart-drawer__item-pricing">
+                <strong class="cart-drawer__item-price">$22.46</strong>
+                <s class="cart-drawer__item-compare">$39.99</s>
+              </p>
+              <p class="cart-drawer__item-tags">
+                <span class="cart-drawer__tag">
+                  <svg viewBox="0 0 20 20" width="11" height="11" fill="currentColor" aria-hidden="true" focusable="false"><path fill-rule="evenodd" d="M8.575 4.649a3.75 3.75 0 0 1 2.7-1.149h1.975a3.25 3.25 0 0 1 3.25 3.25v2.187a3.25 3.25 0 0 1-.996 2.34l-4.747 4.572a2.5 2.5 0 0 1-3.502-.033l-2.898-2.898a2.75 2.75 0 0 1-.036-3.852l4.254-4.417Zm4.425 3.351a1 1 0 1 0 0-2 1 1 0 0 0 0 2Z"/></svg>
+                  SAVING W/ MONTHLY
+                </span>
+              </p>
+              <div class="cart-drawer__item-controls">
+                <div class="cart-drawer__qty" data-qty>
+                  <button type="button" class="cart-drawer__qty-btn" data-qty-minus aria-label="Decrease quantity">&minus;</button>
+                  <input class="cart-drawer__qty-input" type="number" value="1" min="0" inputmode="numeric" aria-label="Quantity">
+                  <button type="button" class="cart-drawer__qty-btn" data-qty-plus aria-label="Increase quantity">+</button>
+                </div>
+                <span class="cart-drawer__tag">
+                  <svg viewBox="0 0 20 20" width="11" height="11" fill="currentColor" aria-hidden="true" focusable="false"><path fill-rule="evenodd" d="M8.575 4.649a3.75 3.75 0 0 1 2.7-1.149h1.975a3.25 3.25 0 0 1 3.25 3.25v2.187a3.25 3.25 0 0 1-.996 2.34l-4.747 4.572a2.5 2.5 0 0 1-3.502-.033l-2.898-2.898a2.75 2.75 0 0 1-.036-3.852l4.254-4.417Zm4.425 3.351a1 1 0 1 0 0-2 1 1 0 0 0 0 2Z"/></svg>
+                  BUY2SAVE5
+                </span>
+              </div>
+            </div>
+          </div>
+        {%- endif -%}
+
+        <div class="cart-drawer__crosssell">
+          <h4 class="cart-drawer__crosssell-heading">Complete Your Routine</h4>
+          <p class="cart-drawer__crosssell-intro">Customers who pair DIM with our Sleep &amp; Calm Gummies report better results.* Make it a daily ritual.</p>
+          <p class="cart-drawer__crosssell-footnote">* Based on actual customer data from the last 3 months</p>
+          <div class="cart-drawer__crosssell-tile">
+            <span class="cart-drawer__crosssell-media">
+              <img src="{{ 'pdp-2.png' | asset_url }}" alt="" width="140" height="140" loading="lazy">
+            </span>
+            <div class="cart-drawer__crosssell-info">
+              <p class="cart-drawer__crosssell-title">Sleep &amp; Calm Gummies &middot; <strong>$24.95</strong> <s>$34.99</s></p>
+              <p class="cart-drawer__crosssell-variant">Berry flavor</p>
+              <p class="cart-drawer__crosssell-desc">Essential nutrients to wind down and recover overnight</p>
+              <p class="cart-drawer__crosssell-rating"><span aria-hidden="true">★★★★★</span> <span>(3,927 reviews)</span></p>
+              <button type="button" class="cart-drawer__crosssell-btn">Add to Cart</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="cart-drawer__summary">
+          <h3 class="cart-drawer__summary-heading">Order Summary</h3>
+          <div class="cart-drawer__summary-row">
+            <span>Subtotal</span>
+            <span>{% if cart != empty %}{{ cart.original_total_price | money }}{% else %}$52.41{% endif %}</span>
+          </div>
+          <div class="cart-drawer__summary-row">
+            <span>Discount</span>
+            <span class="cart-drawer__summary-savings">-$27.57</span>
+          </div>
+          <p class="cart-drawer__summary-tags">
+            <span class="cart-drawer__tag">BUY2SAVE5</span>
+            <span class="cart-drawer__tag">SAVING W/ MONTHLY</span>
+          </p>
+          <div class="cart-drawer__summary-row">
+            <span>Shipping</span>
+            <span class="cart-drawer__summary-free">FREE SHIPPING</span>
+          </div>
+          <div class="cart-drawer__summary-row">
+            <span>Taxes</span>
+            <span>Calculated at checkout</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <footer class="cart-drawer__footer">
+      <div class="cart-drawer__subtotal">
+        <span class="cart-drawer__subtotal-label">Subtotal</span>
+        <span class="cart-drawer__subtotal-badge">35% Off</span>
+        <s class="cart-drawer__subtotal-compare">$79.98</s>
+        <strong class="cart-drawer__subtotal-value">{% if cart != empty %}{{ cart.total_price | money }}{% else %}$52.41{% endif %}</strong>
+      </div>
+      <button type="button" class="btn btn--amazon cart-drawer__checkout">
+        Secure Checkout
+        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="5" y="10.5" width="14" height="10" rx="2"/><path d="M8 10.5V7.7a4 4 0 0 1 8 0v2.8"/></svg>
+      </button>
+      <ul class="cart-drawer__trust">
+        <li>
+          <svg viewBox="0 0 24 24" width="15" height="15" fill="currentColor" aria-hidden="true" focusable="false"><path d="M12 2.5l2.9 5.9 6.5.9-4.7 4.6 1.1 6.5L12 17.3l-5.8 3.1 1.1-6.5L2.6 9.3l6.5-.9L12 2.5z"/></svg>
+          4.8 stars, 12k+ reviews
+        </li>
+        <li>
+          <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="3.5" y="5" width="17" height="16" rx="2"/><path d="M3.5 9.5h17M8 3v4M16 3v4"/></svg>
+          Pause or cancel anytime
+        </li>
+        <li>
+          <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true" focusable="false"><path d="M12 2.5v19M16.5 6.5c-.6-1.4-2.4-2-4.5-2s-4.2.9-4.2 2.9c0 4.6 8.9 1.7 8.9 6.4 0 2-2.1 2.9-4.7 2.9-2.2 0-4-.7-4.6-2.1"/></svg>
+          30-day money-back guarantee
+        </li>
+      </ul>
+    </footer>
+  </div>
+</cart-drawer>
